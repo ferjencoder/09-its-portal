@@ -1,0 +1,22 @@
+{% extends 'main/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-4">Create New Post</h1>
+        <hr class="my-5">
+    </div>
+
+    <form method="post" action="{% url 'forum_app:create_forum_post' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_content">Content:</label>
+            <textarea id="id_content" name="content" class="form-control" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Post</button>
+        <input type="hidden" name="topic" value="{{ topic.id }}">
+    </form>
+</div>
+{% endblock %}

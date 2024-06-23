@@ -1,0 +1,10 @@
+{% extends 'employee_portal/employee_dashboard_base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>{{ project.name }}</h2>
+    <p>{{ project.description }}</p>
+    <p>Status: {{ project.status }}</p>
+    <p>Assigned to: {{ project.assigned_to.username }}</p>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'main/base_generic.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-4">Request a Quote</h1>
+        <p class="lead">Fill out the form below to receive a customized quote for our services.</p>
+        <hr class="my-5">
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" action="#">
+                        {% csrf_token %}
+                        <div class="form-group text-left">
+                            <label for="name">Full Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="form-group text-left">
+                            <label for="email">Email Address</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="form-group text-left">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" name="phone">
+                        </div>
+                        <div class="form-group text-left">
+                            <label for="company">Company Name</label>
+                            <input type="text" class="form-control" id="company" name="company">
+                        </div>
+                        <div class="form-group text-left">
+                            <label for="service">Select Service</label>
+                            <select class="form-control" id="service" name="service" required>
+                                <option value="Automation">Automation</option>
+                                <option value="Data Visualization">Data Visualization</option>
+                                <option value="Project Management">Project Management</option>
+                                <option value="Training">Training</option>
+                            </select>
+                        </div>
+                        <div class="form-group text-left">
+                            <label for="message">Message</label>
+                            <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Send Request</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

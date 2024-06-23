@@ -1,0 +1,17 @@
+{% extends 'employee_portal/employee_dashboard_base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Active Projects</h1>
+    <ul class="list-unstyled">
+        {% for project in projects %}
+        <li class="mb-2">
+            <strong>{{ project.name }}</strong> - Due: {{ project.deadline }}
+            <a href="{% url 'project_detail' project.id %}">Details</a>
+        </li>
+        {% empty %}
+        <li>No active projects.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

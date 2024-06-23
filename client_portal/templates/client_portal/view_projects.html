@@ -1,0 +1,17 @@
+{% extends "main/base_sidebar.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-4">Your Projects</h1>
+        <hr class="my-5">
+    </div>
+
+    <h5>Projects</h5>
+    <ul>
+      {% for project in projects %}
+        <li>{{ project.name }} - {{ project.status }}</li>
+      {% endfor %}
+    </ul>
+</div>
+{% endblock %}

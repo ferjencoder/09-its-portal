@@ -1,0 +1,22 @@
+<!--messages_app/messages.html-->
+
+{% extends "main/base_sidebar.html" %}
+
+{% block title %}Messages - ITS Portal{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-4">Your Messages</h1>
+        <hr class="my-5">
+    </div>
+
+    <ul>
+      {% for message in messages %}
+        <li>{{ message.sender }}: {{ message.content }}</li>
+      {% endfor %}
+    </ul>
+</div>
+{% endblock %}

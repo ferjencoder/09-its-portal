@@ -1,0 +1,22 @@
+<!-- forum_app/forum.html -->
+
+{% extends "main/base_sidebar.html" %}
+
+{% block title %}Forum - ITS Portal{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-4">Forum</h1>
+        <hr class="my-5">
+    </div>
+
+    <ul>
+      {% for topic in topics %}
+        <li><a href="{% url 'forum_app:topic_detail' topic.id %}">{{ topic.title }}</a> - {{ topic.author }}</li>
+      {% endfor %}
+    </ul>
+</div>
+{% endblock %}
