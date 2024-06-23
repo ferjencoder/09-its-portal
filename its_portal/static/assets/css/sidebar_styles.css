@@ -1,0 +1,81 @@
+/*its_portal/sidebar_styles.css*/
+
+/* Css para los wrappers y la sidebar */
+#wrapper, #sidebar-wrapper {
+    min-height: 100vh;
+}
+
+#sidebar-wrapper {
+    width: 200px;
+    background: #202327;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.sidebar-heading img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+
+.list-group-item {
+    transition: color 0.3s ease, background-color 0.3s ease;
+    color: #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.list-group-item:hover, .list-group-item.active {
+    color: #fff;
+    background-color: #3a3a3a;
+    border-color: #b34040;
+}
+
+.list-group-item i {
+    margin-right: 10px;
+    color: #e0e0e0; /* Change icon color to match button */
+}
+
+/* Toggling sidebar visibility */
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: -200px;
+}
+
+#wrapper #page-content-wrapper {
+    width: calc(100% - 200px);
+    transition: all 0.3s ease;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    width: 100%;
+}
+
+.bi {
+    color: #e0e0e0; /* Change icon color to match button */
+}
+
+.list-group-item:focus {
+    outline: 2px solid #fff; /* Change focus outline to white */
+}
+
+@media (max-width: 768px) {
+    #sidebar-wrapper {
+        width: 100%;
+    }
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: 0;
+    }
+    #wrapper #page-content-wrapper {
+        width: 100%;
+    }
+}
+
+.card {
+    border: none;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.badge-primary {
+    background-color: #007bff;
+    color: white;
+}
+

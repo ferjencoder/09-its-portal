@@ -1,3 +1,5 @@
+# main/views.py
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -58,6 +60,12 @@ def register(request):
     else:
         form = RegisterForm()
     return render(request, "main/register.html", {"form": form})
+
+
+@login_required
+def messages_view(request):
+    messages = Message.objects.filter(recipient=request.user)
+    return render(request, "messages_app/messages.html", {"messages": messages})
 
 
 @login_required

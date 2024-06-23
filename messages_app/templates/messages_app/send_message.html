@@ -1,0 +1,28 @@
+<!--messages_app/send_messages.html-->
+
+{% extends "main/base_sidebar.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-4">Send Message</h1>
+        <hr class="my-5">
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group text-left">
+                            <label for="content">Message Content</label>
+                            <textarea name="content" id="content" class="form-control" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block mt-4">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

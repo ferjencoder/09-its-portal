@@ -1,4 +1,4 @@
-<!-- main/base_sidebar.html -->
+<!--main/base_sidebar.html-->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +35,7 @@
                 {% if user.is_authenticated %}
                     {% if user|has_group:"admin" %}
                         <a href="{% url 'its_admin:admin_dashboard' %}" class="list-group-item list-group-item-action bg-transparent second-text {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">
-                            <i class="bi-house me-2"></i> Admin Dashboard
+                            <i class="bi-speedometer me-2"></i> Dashboard
                         </a>
                         <a href="{% url 'its_admin:assignment_list' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold {% if request.resolver_match.url_name == 'assignment_list' %}active{% endif %}">
                             <i class="bi-list-check me-2"></i> Assignments
@@ -60,7 +60,7 @@
                         </a>
                     {% elif user|has_group:"employee" %}
                         <a href="{% url 'employee_portal:employee_dashboard' %}" class="list-group-item list-group-item-action bg-transparent second-text {% if request.resolver_match.url_name == 'employee_dashboard' %}active{% endif %}">
-                            <i class="bi-house me-2"></i> Employee Dashboard
+                            <i class="bi-speedometer me-2"></i> Dashboard
                         </a>
                         <a href="{% url 'projects:view_projects' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold {% if request.resolver_match.url_name == 'view_projects' %}active{% endif %}">
                             <i class="bi-briefcase me-2"></i> Projects
@@ -73,7 +73,7 @@
                         </a>
                     {% elif user|has_group:"client" %}
                         <a href="{% url 'client_portal:client_dashboard' %}" class="list-group-item list-group-item-action bg-transparent second-text {% if request.resolver_match.url_name == 'client_dashboard' %}active{% endif %}">
-                            <i class="bi-house me-2"></i> Client Dashboard
+                            <i class="bi-speedometer me-2"></i> Dashboard
                         </a>
                         <a href="{% url 'client_portal:view_projects' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold {% if request.resolver_match.url_name == 'view_projects' %}active{% endif %}">
                             <i class="bi-briefcase me-2"></i> Projects
@@ -87,9 +87,9 @@
                     {% endif %}
                 {% endif %}
             </div>
-            <div class="list-group-item list-group-item-action bg-transparent text-danger fw-bold mt-auto">
-                <a href="{% url 'main:logout' %}" class="d-block">
-                    <i class="bi-box-arrow-left me-2"></i> Logout
+            <div class="list-group-item list-group-item-action bg-transparent fw-bold mt-auto">
+                <a href="{% url 'main:logout' %}" class="d-block text-danger">
+                    <i id="sidebar-toggle-icon" class="bi bi-box-arrow-left me-2"></i> Logout
                 </a>
             </div>
         </div>
@@ -99,7 +99,7 @@
         <div id="page-content-wrapper">
             <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
                 <div class="d-flex align-items-center">
-                    <i class="bi-list bi-toggle-sidebar me-3" id="menu-toggle"></i>
+                    <i class="bi bi-arrow-bar-left me-3" id="menu-toggle"></i>
                 </div>
             </nav>
 

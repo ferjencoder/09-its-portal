@@ -43,8 +43,14 @@ def edit_project(request, pk):
 
 
 @login_required
+def view_projects(request):
+    projects = Project.objects.all()
+    return render(request, "projects/view_projects.html", {"projects": projects})
+
+
+@login_required
 def view_project(request, project_id):
-    project = get_object_or_404(Project, id=project_id)
+    project = get_object_or_404(Project, pk=project_id)
     return render(request, "projects/view_project.html", {"project": project})
 
 
