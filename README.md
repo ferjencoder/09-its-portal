@@ -205,13 +205,13 @@ its-portal/
 ```
 
 ## Pendientes
-README.md: versión inglés también
-Video: versión esp e inglés
-Tests: testear mejor el foro
-Refactorizar: quizás modularizar los links de la sidebar y otros que pueda optimizar.
-Repensar: uso de jquery, es poco pero...
-User experience: mejorar la cantidad de clicks y que el tablero tenga toda la info.
-Look and feel: el dark-mode para los group-items por ej.
+- [ ] README.md: versión inglés también
+- [ ] Video: versión esp e inglés
+- [ ] Tests: testear mejor el foro
+- [ ] Refactorizar: quizás modularizar los links de la sidebar y otros que pueda optimizar.
+- [ ] Repensar: uso de jquery, es poco pero...
+- [ ] User experience: mejorar la cantidad de clicks y que el tablero tenga toda la info.
+- [ ] Look and feel: el dark-mode para los group-items por ej.
 
 
 ## Contribuir
