@@ -10,494 +10,494 @@ msgid "Blog"
 msgstr "Blog"
 
 #: .\blog\templates\blog\blog.html:21 .\blog\templates\blog\blog_list.html:22
-msgid "Read More"
-msgstr "Leer Más"
+msgid "Leer Más"
+msgstr "Read More"
 
 #: .\blog\templates\blog\blog.html:24
-msgid "Posted on"
-msgstr "Publicado el"
+msgid "Publicado el"
+msgstr "Posted on"
 
 #: .\blog\templates\blog\blog.html:24
 #: .\blog\templates\blog\blog_detail.html:12
-msgid "by"
-msgstr "por"
+msgid "por"
+msgstr "by"
 
 #: .\blog\templates\blog\blog_detail.html:12
 #: .\forum_app\templates\forum_app\topic_detail.html:14
-msgid "on"
-msgstr "en"
+msgid "en"
+msgstr "on"
 
 #: .\blog\templates\blog\blog_list.html:9
-msgid "Blog List"
-msgstr "Lista de Blogs"
+msgid "Lista de Blogs"
+msgstr "Blog List"
 
 #: .\blog\templates\blog\create_blog_post.html:10
 #: .\employee_portal\templates\employee_portal\create_blog_post.html:10
 #: .\employee_portal\templates\employee_portal\create_blog_post.html:32
-msgid "Create Blog Post"
-msgstr "Crear Publicación en el Blog"
+msgid "Crear Publicación en el Blog"
+msgstr "Create Blog Post"
 
 #: .\blog\templates\blog\create_blog_post.html:34
 #: .\client_portal\templates\client_portal\profile.html:33
-msgid "Submit"
-msgstr "Enviar"
+msgid "Enviar"
+msgstr "Submit"
 
 #: .\client_portal\templates\client_portal\client_dashboard.html:11
 #: .\employee_portal\templates\employee_portal\employee_dashboard_base.html:11
-msgid "Your Dashboard"
-msgstr "Tu Panel"
+msgid "Tu Panel"
+msgstr "Your Dashboard"
 
 #: .\client_portal\templates\client_portal\client_dashboard.html:20
 #: .\client_portal\templates\client_portal\view_projects.html:9
-msgid "Your Projects"
-msgstr "Tus Proyectos"
+msgid "Tus Proyectos"
+msgstr "Your Projects"
 
 #: .\client_portal\templates\client_portal\client_dashboard.html:39
 #: .\messages_app\templates\messages_app\messages.html:9
-msgid "Messages"
-msgstr "Mensajes"
+msgid "Mensajes"
+msgstr "Messages"
 
 #: .\client_portal\templates\client_portal\client_dashboard.html:57
-msgid "Forum Posts"
-msgstr "Publicaciones del Foro"
+msgid "Publicaciones del Foro"
+msgstr "Forum Posts"
 
 #: .\client_portal\templates\client_portal\client_dashboard.html:75
-msgid "Blog Posts"
-msgstr "Publicaciones del Blog"
+msgid "Publicaciones del Blog"
+msgstr "Blog Posts"
 
 #: .\client_portal\templates\client_portal\edit_profile.html:9
 #: .\employee_portal\templates\employee_portal\edit_profile.html:9
-msgid "Edit Profile"
-msgstr "Editar Perfil"
+msgid "Editar Perfil"
+msgstr "Edit Profile"
 
 #: .\client_portal\templates\client_portal\edit_profile.html:33
 #: .\employee_portal\templates\employee_portal\edit_profile.html:31
-msgid "Save Changes"
-msgstr "Guardar Cambios"
+msgid "Guardar Cambios"
+msgstr "Save Changes"
 
 #: .\client_portal\templates\client_portal\profile.html:9
 #: .\employee_portal\templates\employee_portal\profile.html:11
 #: .\main\templates\main\base.html:64
 #: .\main\templates\main\base_generic.html:63
 #: .\main\templates\main\profile.html:9
-msgid "Profile"
-msgstr "Perfil"
+msgid "Perfil"
+msgstr "Profile"
 
 #: .\client_portal\templates\client_portal\view_projects.html:13
 #: .\its_admin\templates\its_admin\project_list.html:11
-msgid "Projects"
-msgstr "Proyectos"
+msgid "Proyectos"
+msgstr "Projects"
 
 #: .\employee_portal\templates\employee_portal\active_projects.html:6
 #: .\employee_portal\templates\employee_portal\active_projects.html:11
-msgid "Active Projects"
-msgstr "Proyectos Activos"
+msgid "Proyectos Activos"
+msgstr "Active Projects"
 
 #: .\employee_portal\templates\employee_portal\active_projects.html:17
-msgid "Due"
-msgstr "Fecha Límite"
+msgid "Fecha Límite"
+msgstr "Due"
 
 #: .\employee_portal\templates\employee_portal\active_projects.html:18
-msgid "Details"
-msgstr "Detalles"
+msgid "Detalles"
+msgstr "Details"
 
 #: .\employee_portal\templates\employee_portal\active_projects.html:21
-msgid "No active projects."
-msgstr "No hay proyectos activos."
+msgid "No hay proyectos activos."
+msgstr "No active projects."
 
 #: .\employee_portal\templates\employee_portal\approve_work.html:6
 #: .\employee_portal\templates\employee_portal\approve_work.html:11
-msgid "Approve Work"
-msgstr "Aprobar Trabajo"
+msgid "Aprobar Trabajo"
+msgstr "Approve Work"
 
 #: .\employee_portal\templates\employee_portal\approve_work.html:18
-msgid "Work approval functionality will be implemented here."
-msgstr "La funcionalidad de aprobación de trabajo se implementará aquí."
+msgid "La funcionalidad de aprobación de trabajo se implementará aquí."
+msgstr "Work approval functionality will be implemented here."
 
 #: .\employee_portal\templates\employee_portal\create_blog_post.html:17
 #: .\forum_app\templates\forum_app\create_topic.html:21
-msgid "Title:"
-msgstr "Título:"
+msgid "Título:"
+msgstr "Title:"
 
 #: .\employee_portal\templates\employee_portal\create_blog_post.html:18
 #: .\forum_app\templates\forum_app\create_topic.html:22
-msgid "Enter title"
-msgstr "Ingrese el título"
+msgid "Ingrese el título"
+msgstr "Enter title"
 
 #: .\employee_portal\templates\employee_portal\create_blog_post.html:21
-msgid "Subtitle:"
-msgstr "Subtítulo:"
+msgid "Subtítulo:"
+msgstr "Subtitle:"
 
 #: .\employee_portal\templates\employee_portal\create_blog_post.html:22
-msgid "Enter subtitle"
-msgstr "Ingrese el subtítulo"
+msgid "Ingrese el subtítulo"
+msgstr "Enter subtitle"
 
 #: .\employee_portal\templates\employee_portal\create_blog_post.html:25
-msgid "Body:"
-msgstr "Cuerpo:"
+msgid "Cuerpo:"
+msgstr "Body:"
 
 #: .\employee_portal\templates\employee_portal\create_blog_post.html:26
-msgid "Enter body"
-msgstr "Ingrese el cuerpo"
+msgid "Ingrese el cuerpo"
+msgstr "Enter body"
 
 #: .\employee_portal\templates\employee_portal\create_blog_post.html:29
-msgid "Image:"
-msgstr "Imagen:"
+msgid "Imagen:"
+msgstr "Image:"
 
 #: .\employee_portal\templates\employee_portal\documents.html:6
-msgid "Documents - ITS Portal"
-msgstr "Documentos - Portal ITS"
+msgid "Documentos - Portal ITS"
+msgstr "Documents - ITS Portal"
 
 #: .\employee_portal\templates\employee_portal\documents.html:11
-msgid "Documents"
-msgstr "Documentos"
+msgid "Documentos"
+msgstr "Documents"
 
 #: .\employee_portal\templates\employee_portal\documents.html:18
-msgid "Document management will be implemented here."
-msgstr "La gestión de documentos se implementará aquí."
+msgid "La gestión de documentos se implementará aquí."
+msgstr "Document management will be implemented here."
 
 #: .\employee_portal\templates\employee_portal\edit_profile.html:16
 #: .\employee_portal\templates\employee_portal\profile.html:24
-msgid "Bio:"
-msgstr "Biografía:"
+msgid "Biografía:"
+msgstr "Bio:"
 
 #: .\employee_portal\templates\employee_portal\edit_profile.html:20
 #: .\employee_portal\templates\employee_portal\profile.html:25
-msgid "Location:"
-msgstr "Ubicación:"
+msgid "Ubicación:"
+msgstr "Location:"
 
 #: .\employee_portal\templates\employee_portal\edit_profile.html:24
 #: .\employee_portal\templates\employee_portal\profile.html:26
-msgid "Birth Date:"
-msgstr "Fecha de Nacimiento:"
+msgid "Fecha de Nacimiento:"
+msgstr "Birth Date:"
 
 #: .\employee_portal\templates\employee_portal\edit_profile.html:28
-msgid "Profile Picture:"
-msgstr "Foto de Perfil:"
+msgid "Foto de Perfil:"
+msgstr "Profile Picture:"
 
 #: .\employee_portal\templates\employee_portal\employee_dashboard_base.html:6
-msgid "Your Dashboard - ITS Portal"
-msgstr "Tu Panel - Portal ITS"
+msgid "Tu Panel - Portal ITS"
+msgstr "Your Dashboard - ITS Portal"
 
 #: .\employee_portal\templates\employee_portal\profile.html:6
-msgid "Profile - ITS Portal"
-msgstr "Perfil - Portal ITS"
+msgid "Perfil - Portal ITS"
+msgstr "Profile - ITS Portal"
 
 #: .\employee_portal\templates\employee_portal\profile.html:20
-msgid "Email:"
-msgstr "Correo Electrónico:"
+msgid "Correo Electrónico:"
+msgstr "Email:"
 
 #: .\employee_portal\templates\employee_portal\profile.html:21
-msgid "First Name:"
-msgstr "Nombre:"
+msgid "Nombre:"
+msgstr "First Name:"
 
 #: .\employee_portal\templates\employee_portal\profile.html:22
-msgid "Last Name:"
-msgstr "Apellido:"
+msgid "Apellido:"
+msgstr "Last Name:"
 
 #: .\employee_portal\templates\employee_portal\profile.html:23
-msgid "Role:"
-msgstr "Rol:"
+msgid "Rol:"
+msgstr "Role:"
 
 #: .\employee_portal\templates\employee_portal\profile.html:27
 #: .\main\templates\main\profile.html:17
-msgid "Profile Picture"
-msgstr "Foto de Perfil"
+msgid "Foto de Perfil"
+msgstr "Profile Picture"
 
 #: .\employee_portal\templates\employee_portal\view_project.html:6
-msgid "Project Details - ITS Portal"
-msgstr "Detalles del Proyecto - Portal ITS"
+msgid "Detalles del Proyecto - Portal ITS"
+msgstr "Project Details - ITS Portal"
 
 #: .\employee_portal\templates\employee_portal\view_project.html:12
 #: .\projects\templates\projects\project_detail.html:11
 #: .\projects\templates\projects\view_project.html:16
-msgid "Status:"
-msgstr "Estado:"
+msgid "Estado:"
+msgstr "Status:"
 
 #: .\employee_portal\templates\employee_portal\view_project.html:13
 #: .\projects\templates\projects\project_detail.html:15
-msgid "Assigned to:"
-msgstr "Asignado a:"
+msgid "Asignado a:"
+msgstr "Assigned to:"
 
 #: .\forum_app\templates\forum_app\create_forum_post.html:8
-msgid "Create New Post - ITS Portal"
-msgstr "Crear Nueva Publicación - Portal ITS"
+msgid "Crear Nueva Publicación - Portal ITS"
+msgstr "Create New Post - ITS Portal"
 
 #: .\forum_app\templates\forum_app\create_forum_post.html:13
-msgid "Create New Post"
-msgstr "Crear Nueva Publicación"
+msgid "Crear Nueva Publicación"
+msgstr "Create New Post"
 
 #: .\forum_app\templates\forum_app\create_forum_post.html:20
 #: .\forum_app\templates\forum_app\topic_detail.html:29
-msgid "Content:"
-msgstr "Contenido:"
+msgid "Contenido:"
+msgstr "Content:"
 
 #: .\forum_app\templates\forum_app\create_forum_post.html:23
-msgid "Create Post"
-msgstr "Crear Publicación"
+msgid "Crear Publicación"
+msgstr "Create Post"
 
 #: .\forum_app\templates\forum_app\create_topic.html:6
 #: .\forum_app\templates\forum_app\forum.html:6
-msgid "Forum - ITS Portal"
-msgstr "Foro - Portal ITS"
+msgid "Foro - Portal ITS"
+msgstr "Forum - ITS Portal"
 
 #: .\forum_app\templates\forum_app\create_topic.html:14
-msgid "Create New Topic"
-msgstr "Crear Nuevo Tema"
+msgid "Crear Nuevo Tema"
+msgstr "Create New Topic"
 
 #: .\forum_app\templates\forum_app\create_topic.html:24
-msgid "Create Topic"
-msgstr "Crear Tema"
+msgid "Crear Tema"
+msgstr "Create Topic"
 
 #: .\forum_app\templates\forum_app\forum.html:13
-msgid "Forum"
-msgstr "Foro"
+msgid "Foro"
+msgstr "Forum"
 
 #: .\forum_app\templates\forum_app\topic_detail.html:14
-msgid "By"
-msgstr "Por"
+msgid "Por"
+msgstr "By"
 
 #: .\forum_app\templates\forum_app\topic_detail.html:25
-msgid "Post a Reply"
-msgstr "Publicar una Respuesta"
+msgid "Publicar una Respuesta"
+msgstr "Post a Reply"
 
 #: .\forum_app\templates\forum_app\topic_detail.html:32
-msgid "Post Reply"
-msgstr "Publicar Respuesta"
+msgid "Publicar Respuesta"
+msgstr "Post Reply"
 
 #: .\its_admin\templates\its_admin\admin_dashboard.html:6
-msgid "Admin Dashboard - ITS Portal"
-msgstr "Panel de Administrador - Portal ITS"
+msgid "Panel de Administrador - Portal ITS"
+msgstr "Admin Dashboard - ITS Portal"
 
 #: .\its_admin\templates\its_admin\admin_dashboard.html:9
-msgid "Admin dashboard content here"
-msgstr "Contenido del panel de administrador aquí"
+msgid "Contenido del panel de administrador aquí"
+msgstr "Admin dashboard content here"
 
 #: .\its_admin\templates\its_admin\assignment_list.html:6
-msgid "Assignments - ITS Portal"
-msgstr "Asignaciones - Portal ITS"
+msgid "Asignaciones - Portal ITS"
+msgstr "Assignments - ITS Portal"
 
 #: .\its_admin\templates\its_admin\assignment_list.html:11
-msgid "Assignments"
-msgstr "Asignaciones"
+msgid "Asignaciones"
+msgstr "Assignments"
 
 #: .\its_admin\templates\its_admin\create_assignment.html:7
-msgid "Create Assignment - ITS Portal"
-msgstr "Crear Asignación - Portal ITS"
+msgid "Crear Asignación - Portal ITS"
+msgstr "Create Assignment - ITS Portal"
 
 #: .\its_admin\templates\its_admin\create_assignment.html:12
 #: .\its_admin\templates\its_admin\create_assignment.html:40
-msgid "Create Assignment"
-msgstr "Crear Asignación"
+msgid "Crear Asignación"
+msgstr "Create Assignment"
 
 #: .\its_admin\templates\its_admin\create_project.html:6
-msgid "Create Project - ITS Portal"
-msgstr "Crear Proyecto - Portal ITS"
+msgid "Crear Proyecto - Portal ITS"
+msgstr "Create Project - ITS Portal"
 
 #: .\its_admin\templates\its_admin\create_project.html:11
 #: .\projects\templates\projects\project_form.html:9
-msgid "Create Project"
-msgstr "Crear Proyecto"
+msgid "Crear Proyecto"
+msgstr "Create Project"
 
 #: .\its_admin\templates\its_admin\create_project.html:17
 #: .\projects\templates\projects\project_form.html:15
-msgid "Save"
-msgstr "Guardar"
+msgid "Guardar"
+msgstr "Save"
 
 #: .\its_admin\templates\its_admin\project_list.html:6
-msgid "Projects - ITS Portal"
-msgstr "Proyectos - Portal ITS"
+msgid "Proyectos - Portal ITS"
+msgstr "Projects - ITS Portal"
 
 #: .\main\templates\main\about.html:6
-msgid "About Ideas Tech Support - ITS Portal"
-msgstr "Sobre Ideas Tech Support - Portal ITS"
+msgid "Sobre Ideas Tech Support - Portal ITS"
+msgstr "About Ideas Tech Support - ITS Portal"
 
 #: .\main\templates\main\about.html:12
-msgid "About Ideas Tech Support"
-msgstr "Sobre Ideas Tech Support"
+msgid "Sobre Ideas Tech Support"
+msgstr "About Ideas Tech Support"
 
 #: .\main\templates\main\about.html:13
-msgid "Enhancing Productivity through Advanced Tools and Automation"
-msgstr "Mejorando la Productividad a través de Herramientas Avanzadas y Automatización"
+msgid "Mejorando la Productividad a través de Herramientas Avanzadas y Automatización"
+msgstr "Enhancing Productivity through Advanced Tools and Automation"
 
 #: .\main\templates\main\about.html:19
-msgid "Our Mission"
-msgstr "Nuestra Misión"
+msgid "Nuestra Misión"
+msgstr "Our Mission"
 
 #: .\main\templates\main\about.html:20
 msgid ""
+"En Ideas Tech Support, nuestra misión es empoderar a las empresas maximizando la eficiencia "
+"y minimizando los errores humanos a través del uso de herramientas avanzadas y automatización. "
+"Con un fuerte enfoque en la visualización de datos, la narración, la gestión de proyectos y la automatización, "
+"entregamos soluciones personalizadas que satisfacen las necesidades únicas de nuestros clientes."
+msgstr ""
 "At Ideas Tech Support, our mission is to empower businesses by maximizing "
 "efficiency and minimizing human error through the use of advanced tools and "
 "automation. With a strong focus on data visualization, storytelling, project "
 "management, and automation, we deliver tailored solutions that meet the "
 "unique needs of our clients."
-msgstr ""
-"En Ideas Tech Support, nuestra misión es empoderar a las empresas maximizando la eficiencia "
-"y minimizando los errores humanos a través del uso de herramientas avanzadas y automatización. "
-"Con un fuerte enfoque en la visualización de datos, la narración, la gestión de proyectos y la automatización, "
-"entregamos soluciones personalizadas que satisfacen las necesidades únicas de nuestros clientes."
 
 #: .\main\templates\main\about.html:23 .\main\templates\main\base.html:28
 #: .\main\templates\main\base_generic.html:27
-msgid "About Us"
-msgstr "Sobre Nosotros"
+msgid "Sobre Nosotros"
+msgstr "About Us"
 
 #: .\main\templates\main\about.html:28
-msgid "Our Expertise"
-msgstr "Nuestra Experiencia"
+msgid "Nuestra Experiencia"
+msgstr "Our Expertise"
 
 #: .\main\templates\main\about.html:29
 msgid ""
+"Con más de 13 años de experiencia en la industria del petróleo y gas de ritmo acelerado, "
+"aportamos una comprensión profunda de los desafíos administrativos y de gestión de proyectos. Nuestra experiencia incluye:"
+msgstr ""
 "With over 13 years of experience in the fast-paced Oil and Gas industry, we "
 "bring a deep understanding of administrative and project management "
 "challenges. Our expertise includes:"
-msgstr ""
-"Con más de 13 años de experiencia en la industria del petróleo y gas de ritmo acelerado, "
-"aportamos una comprensión profunda de los desafíos administrativos y de gestión de proyectos. Nuestra experiencia incluye:"
 
 #: .\main\templates\main\about.html:31
-msgid "Excel Automation with VBA"
-msgstr "Automatización de Excel con VBA"
+msgid "Automatización de Excel con VBA"
+msgstr "Excel Automation with VBA"
 
 #: .\main\templates\main\about.html:32
-msgid "Business Intelligence with Power BI"
-msgstr "Inteligencia de Negocios con Power BI"
+msgid "Inteligencia de Negocios con Power BI"
+msgstr "Business Intelligence with Power BI"
 
 #: .\main\templates\main\about.html:33
-msgid "Project Management with MS Project and Primavera P6"
-msgstr "Gestión de Proyectos con MS Project y Primavera P6"
+msgid "Gestión de Proyectos con MS Project y Primavera P6"
+msgstr "Project Management with MS Project and Primavera P6"
 
 #: .\main\templates\main\about.html:34
 #: .\main\templates\main\request_quote.html:39
 #: .\main\templates\main\services.html:33
 #: .\main\templates\main\services.html:36
-msgid "Data Visualization"
-msgstr "Visualización de Datos"
+msgid "Visualización de Datos"
+msgstr "Data Visualization"
 
 #: .\main\templates\main\about.html:35
-msgid "Full Stack Development"
-msgstr "Desarrollo Full Stack"
+msgid "Desarrollo Full Stack"
+msgstr "Full Stack Development"
 
 #: .\main\templates\main\about.html:39
-msgid "Why Choose Us?"
-msgstr "¿Por qué Elegirnos?"
+msgid "¿Por qué Elegirnos?"
+msgstr "Why Choose Us?"
 
 #: .\main\templates\main\about.html:40
 msgid ""
+"Estamos dedicados a entender sus necesidades únicas y desarrollar soluciones creativas "
+"que mejoren la productividad y generen resultados. Aprovechando nuestra amplia experiencia y pericia técnica, "
+"estamos seguros de ofrecer herramientas que superen sus expectativas."
+msgstr ""
 "We are dedicated to understanding your unique needs and developing creative "
 "solutions that enhance productivity and drive results. By leveraging our "
 "extensive experience and technical expertise, we are confident in delivering "
 "tools that exceed your expectations."
-msgstr ""
-"Estamos dedicados a entender sus necesidades únicas y desarrollar soluciones creativas "
-"que mejoren la productividad y generen resultados. Aprovechando nuestra amplia experiencia y pericia técnica, "
-"estamos seguros de ofrecer herramientas que superen sus expectativas."
 
 #: .\main\templates\main\about.html:41
 msgid ""
-"Our client-centric approach ensures seamless integration and user adoption, "
-"providing comprehensive support throughout the project lifecycle."
-msgstr ""
 "Nuestra aproximación centrada en el cliente asegura una integración perfecta y una adopción por parte del usuario, "
 "proporcionando soporte integral a lo largo del ciclo de vida del proyecto."
+msgstr ""
+"Our client-centric approach ensures seamless integration and user adoption, "
+"providing comprehensive support throughout the project lifecycle."
 
 #: .\main\templates\main\about.html:46
-msgid "Meet the Team"
-msgstr "Conozca al Equipo"
+msgid "Conozca al Equipo"
+msgstr "Meet the Team"
 
 #: .\main\templates\main\about.html:47
 msgid ""
+"Nuestro equipo está compuesto por profesionales altamente capacitados que son apasionados por "
+"la tecnología y la innovación. Trabajamos de manera colaborativa para asegurar que cada proyecto que emprendemos sea un éxito."
+msgstr ""
 "Our team consists of highly skilled professionals who are passionate about "
 "technology and innovation. We work collaboratively to ensure that every "
 "project we undertake is a success."
-msgstr ""
-"Nuestro equipo está compuesto por profesionales altamente capacitados que son apasionados por "
-"la tecnología y la innovación. Trabajamos de manera colaborativa para asegurar que cada proyecto que emprendemos sea un éxito."
 
 #: .\main\templates\main\base.html:15 .\main\templates\main\base.html:21
 #: .\main\templates\main\base_generic.html:14
 #: .\main\templates\main\base_generic.html:20
-msgid "ITS Portal"
-msgstr "Portal ITS"
+msgid "Portal ITS"
+msgstr "ITS Portal"
 
 #: .\main\templates\main\base.html:22
 #: .\main\templates\main\base_generic.html:21
-msgid "Toggle navigation"
-msgstr "Alternar navegación"
+msgid "Alternar navegación"
+msgstr "Toggle navigation"
 
 #: .\main\templates\main\base.html:27
 #: .\main\templates\main\base_generic.html:26
-msgid "Home"
-msgstr "Inicio"
+msgid "Inicio"
+msgstr "Home"
 
 #: .\main\templates\main\base.html:29
 #: .\main\templates\main\base_generic.html:28
-msgid "Contact"
-msgstr "Contacto"
+msgid "Contacto"
+msgstr "Contact"
 
 #: .\main\templates\main\base.html:30
 #: .\main\templates\main\base_generic.html:29
-msgid "Services"
-msgstr "Servicios"
+msgid "Servicios"
+msgstr "Services"
 
 #: .\main\templates\main\base.html:32
 #: .\main\templates\main\base_generic.html:31
 #: .\main\templates\main\request_quote.html:9
-msgid "Request a Quote"
-msgstr "Solicitar una Cotización"
+msgid "Solicitar una Cotización"
+msgstr "Request a Quote"
 
 #: .\main\templates\main\base.html:43
 #: .\main\templates\main\base_generic.html:42
-msgid "English"
-msgstr "Inglés"
+msgid "Inglés"
+msgstr "English"
 
 #: .\main\templates\main\base.html:44
 #: .\main\templates\main\base_generic.html:43
-msgid "Spanish"
-msgstr "Español"
+msgid "Español"
+msgstr "Spanish"
 
 #: .\main\templates\main\base.html:51
 #: .\main\templates\main\base_generic.html:50
-msgid "Profile Image"
-msgstr "Imagen de Perfil"
+msgid "Imagen de Perfil"
+msgstr "Profile Image"
 
 #: .\main\templates\main\base.html:53
 #: .\main\templates\main\base_generic.html:52
-msgid "Default Avatar"
-msgstr "Avatar por Defecto"
+msgid "Avatar por Defecto"
+msgstr "Default Avatar"
 
 #: .\main\templates\main\base.html:58
 #: .\main\templates\main\base_generic.html:57
-msgid "Admin Dashboard"
-msgstr "Panel de Administrador"
+msgid "Panel de Administrador"
+msgstr "Admin Dashboard"
 
 #: .\main\templates\main\base.html:60
 #: .\main\templates\main\base_generic.html:59
-msgid "Employee Dashboard"
-msgstr "Panel de Empleado"
+msgid "Panel de Empleado"
+msgstr "Employee Dashboard"
 
 #: .\main\templates\main\base.html:62
 #: .\main\templates\main\base_generic.html:61
-msgid "Client Dashboard"
-msgstr "Panel de Cliente"
+msgid "Panel de Cliente"
+msgstr "Client Dashboard"
 
 #: .\main\templates\main\base.html:66
 #: .\main\templates\main\base_generic.html:64
-msgid "Logout"
-msgstr "Cerrar Sesión"
+msgid "Cerrar Sesión"
+msgstr "Logout"
 
 #: .\main\templates\main\base.html:70
 #: .\main\templates\main\base_generic.html:68
 #: .\main\templates\main\login.html:9 .\main\templates\main\login.html:27
-msgid "Login"
-msgstr "Iniciar Sesión"
+msgid "Iniciar Sesión"
+msgstr "Login"
 
 #: .\main\templates\main\base.html:71
 #: .\main\templates\main\base_generic.html:69
 #: .\main\templates\main\register.html:9
 #: .\main\templates\main\register.html:22
-msgid "Register"
-msgstr "Registrarse"
+msgid "Registrarse"
+msgstr "Register"
 
 #: .\main\templates\main\base.html:94
 #: .\main\templates\main\base_generic.html:92
@@ -505,160 +505,166 @@ msgid "Todos los derechos reservados"
 msgstr "Todos los derechos reservados"
 
 #: .\main\templates\main\contact.html:9
-msgid "Contact Us"
-msgstr "Contáctenos"
+msgid "Contáctenos"
+msgstr "Contact Us"
 
 #: .\main\templates\main\contact.html:10
-msgid "We'd love to hear from you. Fill out the form below to get in touch."
-msgstr "Nos encantaría saber de usted. Complete el formulario a continuación para ponerse en contacto."
+msgid "Nos encantaría saber de usted. Complete el formulario a continuación para ponerse en contacto."
+msgstr "We'd love to hear from you. Fill out the form below to get in touch."
 
 #: .\main\templates\main\contact.html:20
-msgid "Name"
-msgstr "Nombre"
+msgid "Nombre"
+msgstr "Name"
 
 #: .\main\templates\main\contact.html:24
-msgid "Email address"
-msgstr "Dirección de correo electrónico"
+msgid "Dirección de correo electrónico"
+msgstr "Email address"
 
 #: .\main\templates\main\contact.html:28
-msgid "Subject"
-msgstr "Asunto"
+msgid "Asunto"
+msgstr "Subject"
 
 #: .\main\templates\main\contact.html:32
 #: .\main\templates\main\request_quote.html:45
 #: .\messages_app\templates\messages_app\send_message.html:25
-msgid "Message"
-msgstr "Mensaje"
+msgid "Mensaje"
+msgstr "Message"
 
 #: .\main\templates\main\contact.html:35
 #: .\messages_app\templates\messages_app\send_message.html:9
-msgid "Send Message"
-msgstr "Enviar Mensaje"
+msgid "Enviar Mensaje"
+msgstr "Send Message"
 
 #: .\main\templates\main\home.html:10
-msgid "Your browser does not support HTML5 video."
-msgstr "Su navegador no admite video HTML5."
+msgid "Su navegador no admite video HTML5."
+msgstr "Your browser does not support HTML5 video."
 
 #: .\main\templates\main\home.html:14
-msgid "Welcome to ITS Portal"
-msgstr "Bienvenido al Portal ITS"
+msgid "Bienvenido al Portal ITS"
+msgstr "Welcome to ITS Portal"
 
 #: .\main\templates\main\home.html:15
-msgid "We offer a variety of services to help your business succeed."
-msgstr "Ofrecemos una variedad de servicios para ayudar a su negocio a tener éxito."
+msgid "Ofrecemos una variedad de servicios para ayudar a su negocio a tener éxito."
+msgstr "We offer a variety of services to help your business succeed."
 
 #: .\main\templates\main\home.html:17
-msgid "Explore our services to learn more."
-msgstr "Explore nuestros servicios para saber más."
+msgid "Explore nuestros servicios para saber más."
+msgstr "Explore our services to learn more."
 
 #: .\main\templates\main\home.html:18
-msgid "Learn more"
-msgstr "Saber más"
+msgid "Saber más"
+msgstr "Learn more"
 
 #: .\main\templates\main\login.html:10
-msgid "Please login to access your account."
-msgstr "Por favor, inicie sesión para acceder a su cuenta."
+msgid "Por favor, inicie sesión para acceder a su cuenta."
+msgstr "Please login to access your account."
 
 #: .\main\templates\main\login.html:20
-msgid "Username"
-msgstr "Nombre de Usuario"
+msgid "Nombre de Usuario"
+msgstr "Username"
 
 #: .\main\templates\main\login.html:24
-msgid "Password"
-msgstr "Contraseña"
+msgid "Contraseña"
+msgstr "Password"
 
 #: .\main\templates\main\profile.html:21
-msgid "Bio"
-msgstr "Biografía"
+msgid "Biografía"
+msgstr "Bio"
 
 #: .\main\templates\main\profile.html:24
-msgid "Update Profile"
-msgstr "Actualizar Perfil"
+msgid "Actualizar Perfil"
+msgstr "Update Profile"
 
 #: .\main\templates\main\register.html:10
-msgid "Create an account to access our services."
-msgstr "Cree una cuenta para acceder a nuestros servicios."
+msgid "Cree una cuenta para acceder a nuestros servicios."
+msgstr "Create an account to access our services."
 
 #: .\main\templates\main\request_quote.html:10
-msgid "Fill out the form below to receive a customized quote for our services."
-msgstr "Complete el formulario a continuación para recibir una cotización personalizada de nuestros servicios."
+msgid "Complete el formulario a continuación para recibir una cotización personalizada de nuestros servicios."
+msgstr "Fill out the form below to receive a customized quote for our services."
 
 #: .\main\templates\main\request_quote.html:20
-msgid "Full Name"
-msgstr "Nombre Completo"
+msgid "Nombre Completo"
+msgstr "Full Name"
 
 #: .\main\templates\main\request_quote.html:24
-msgid "Email Address"
-msgstr "Dirección de Correo Electrónico"
+msgid "Dirección de Correo Electrónico"
+msgstr "Email Address"
 
 #: .\main\templates\main\request_quote.html:28
-msgid "Phone Number"
-msgstr "Número de Teléfono"
+msgid "Número de Teléfono"
+msgstr "Phone Number"
 
 #: .\main\templates\main\request_quote.html:32
-msgid "Company Name"
-msgstr "Nombre de la Compañía"
+msgid "Nombre de la Compañía"
+msgstr "Company Name"
 
 #: .\main\templates\main\request_quote.html:36
-msgid "Select Service"
-msgstr "Seleccione el Servicio"
+msgid "Seleccione el Servicio"
+msgstr "Select Service"
 
 #: .\main\templates\main\request_quote.html:38
-msgid "Automation"
-msgstr "Automatización"
+msgid "Automatización"
+msgstr "Automation"
 
 #: .\main\templates\main\request_quote.html:40
 #: .\main\templates\main\services.html:48
 #: .\main\templates\main\services.html:51
-msgid "Project Management"
-msgstr "Gestión de Proyectos"
+msgid "Gestión de Proyectos"
+msgstr "Project Management"
 
 #: .\main\templates\main\request_quote.html:41
-msgid "Training"
-msgstr "Capacitación"
+msgid "Capacitación"
+msgstr "Training"
 
 #: .\main\templates\main\request_quote.html:48
-msgid "Send Request"
-msgstr "Enviar Solicitud"
+msgid "Enviar Solicitud"
+msgstr "Send Request"
 
 #: .\main\templates\main\services.html:9
-msgid "Our Services"
-msgstr "Nuestros Servicios"
+msgid "Nuestros Servicios"
+msgstr "Our Services"
 
 #: .\main\templates\main\services.html:10
 msgid ""
-"Explore the range of services we offer to enhance your business operations."
-msgstr "Explore la gama de servicios que ofrecemos para mejorar las operaciones de su negocio."
+"Explore la gama de servicios que ofrecemos para mejorar las operaciones de su negocio."
+msgstr "Explore the range of services we offer to enhance your business operations."
 
 #: .\main\templates\main\services.html:18
 #: .\main\templates\main\services.html:21
-msgid "Automation Solutions"
-msgstr "Soluciones de Automatización"
+msgid "Soluciones de Automatización"
+msgstr "Automation Solutions"
 
 #: .\main\templates\main\services.html:22
 msgid ""
+"Transforme sus operaciones con nuestras avanzadas soluciones de automatización. "
+"Desde la optimización de flujos de trabajo hasta la minimización de errores, aseguramos eficiencia y confiabilidad. "
+"Nuestras soluciones se adaptan a sus necesidades únicas, proporcionando una integración sin problemas y un rendimiento incomparable. "
+"Eleve sus procesos empresariales con la automatización diseñada para el éxito. Ya sea reduciendo tareas manuales o mejorando la productividad, "
+"nuestra experiencia lo hace posible sin esfuerzo."
+msgstr ""
 "Transform your operations with our advanced automation solutions. From "
 "streamlining workflows to minimizing errors, we ensure efficiency and "
 "reliability. Our solutions adapt to your unique needs, providing seamless "
 "integration and unmatched performance. Elevate your business processes with "
 "automation designed for success. Whether it's reducing manual tasks or "
 "enhancing productivity, our expertise makes it happen effortlessly."
-msgstr ""
-"Transforme sus operaciones con nuestras avanzadas soluciones de automatización. "
-"Desde la optimización de flujos de trabajo hasta la minimización de errores, aseguramos eficiencia y confiabilidad. "
-"Nuestras soluciones se adaptan a sus necesidades únicas, proporcionando una integración sin problemas y un rendimiento incomparable. "
-"Eleve sus procesos empresariales con la automatización diseñada para el éxito. Ya sea reduciendo tareas manuales o mejorando la productividad, "
-"nuestra experiencia lo hace posible sin esfuerzo."
 
 #: .\main\templates\main\services.html:24
 #: .\main\templates\main\services.html:39
 #: .\main\templates\main\services.html:54
 #: .\main\templates\main\services.html:69
-msgid "Learn More"
-msgstr "Saber Más"
+msgid "Saber Más"
+msgstr "Learn More"
 
 #: .\main\templates\main\services.html:37
 msgid ""
+"Aproveche el potencial de sus datos con nuestras visualizaciones convincentes. Transformamos datos complejos en "
+"ideas claras y procesables que impulsan mejores decisiones. Nuestras visualizaciones están adaptadas a sus necesidades, "
+"haciendo que sea fácil entender y utilizar sus datos de manera efectiva. Con herramientas y técnicas de vanguardia, "
+"convertimos los datos en un activo poderoso para su negocio. Ya sea para informes, análisis o planificación estratégica, "
+"nuestras visualizaciones aportan claridad e insight."
+msgstr ""
 "Harness the potential of your data with our compelling visualizations. We "
 "transform complex data into clear, actionable insights that drive better "
 "decisions. Our visualizations are tailored to your needs, making it easy to "
@@ -666,33 +672,32 @@ msgid ""
 "techniques, we turn data into a powerful asset for your business. Whether "
 "for reporting, analysis, or strategic planning, our visualizations bring "
 "clarity and insight."
-msgstr ""
-"Aproveche el potencial de sus datos con nuestras visualizaciones convincentes. Transformamos datos complejos en "
-"ideas claras y procesables que impulsan mejores decisiones. Nuestras visualizaciones están adaptadas a sus necesidades, "
-"haciendo que sea fácil entender y utilizar sus datos de manera efectiva. Con herramientas y técnicas de vanguardia, "
-"convertimos los datos en un activo poderoso para su negocio. Ya sea para informes, análisis o planificación estratégica, "
-"nuestras visualizaciones aportan claridad e insight."
 
 #: .\main\templates\main\services.html:52
 msgid ""
+"Eleve el éxito de su proyecto con nuestros servicios integrales de gestión de proyectos. Desde cronogramas de referencia detallados "
+"y informes de progreso hasta la gestión de reclamos y EOT, nuestra experiencia garantiza una ejecución impecable. "
+"Aproveche el poder de Power BI para informes dinámicos y logre una eficiencia inigualable. ¿Necesita cronogramas de recuperación o "
+"propuestas de licitación? ¡Lo tenemos cubierto!"
+msgstr ""
 "Elevate your project success with our comprehensive project management "
 "services. From detailed baseline schedules and progress reports to handling "
 "claims and EOT, our expertise ensures flawless execution. Harness the power "
 "of Power BI for dynamic reporting and achieve unparalleled efficiency. Need "
 "recovery schedules or tender proposals? Weve got you covered!"
-msgstr ""
-"Eleve el éxito de su proyecto con nuestros servicios integrales de gestión de proyectos. Desde cronogramas de referencia detallados "
-"y informes de progreso hasta la gestión de reclamos y EOT, nuestra experiencia garantiza una ejecución impecable. "
-"Aproveche el poder de Power BI para informes dinámicos y logre una eficiencia inigualable. ¿Necesita cronogramas de recuperación o "
-"propuestas de licitación? ¡Lo tenemos cubierto!"
 
 #: .\main\templates\main\services.html:63
 #: .\main\templates\main\services.html:66
-msgid "Training Services"
-msgstr "Servicios de Capacitación"
+msgid "Servicios de Capacitación"
+msgstr "Training Services"
 
 #: .\main\templates\main\services.html:67
 msgid ""
+"Empodere a su equipo con nuestros programas de capacitación personalizados, diseñados para un máximo impacto. Ya sea en el sitio o en línea, "
+"nuestras sesiones cubren todos los aspectos de la gestión de proyectos, alineándose con los objetivos de su empresa. Colaboramos estrechamente "
+"para diseñar contenido que se ajuste a su industria, proyectos y objetivos. Mejore las habilidades y aumente la productividad con capacitaciones "
+"que se adaptan a sus necesidades. Desde principios fundamentales hasta técnicas avanzadas, nuestros programas preparan a su equipo para la excelencia."
+msgstr ""
 "Empower your team with our tailored training programs, crafted for maximum "
 "impact. Whether on-site or online, our sessions cover all aspects of project "
 "management, aligning with your companys objectives. We collaborate closely "
@@ -700,100 +705,95 @@ msgid ""
 "skills and boost productivity with training that adapts to your needs. From "
 "foundational principles to advanced techniques, our programs prepare your "
 "team for excellence."
-msgstr ""
-"Empodere a su equipo con nuestros programas de capacitación personalizados, diseñados para un máximo impacto. Ya sea en el sitio o en línea, "
-"nuestras sesiones cubren todos los aspectos de la gestión de proyectos, alineándose con los objetivos de su empresa. Colaboramos estrechamente "
-"para diseñar contenido que se ajuste a su industria, proyectos y objetivos. Mejore las habilidades y aumente la productividad con capacitaciones "
-"que se adaptan a sus necesidades. Desde principios fundamentales hasta técnicas avanzadas, nuestros programas preparan a su equipo para la excelencia."
 
 #: .\messages_app\templates\messages_app\messages.html:14
-msgid "Received Messages"
-msgstr "Mensajes Recibidos"
+msgid "Mensajes Recibidos"
+msgstr "Received Messages"
 
 #: .\messages_app\templates\messages_app\messages.html:18
-msgid "From:"
-msgstr "De:"
+msgid "De:"
+msgstr "From:"
 
 #: .\messages_app\templates\messages_app\messages.html:19
 #: .\messages_app\templates\messages_app\messages.html:29
-msgid "Message:"
-msgstr "Mensaje:"
+msgid "Mensaje:"
+msgstr "Message:"
 
 #: .\messages_app\templates\messages_app\messages.html:20
 #: .\messages_app\templates\messages_app\messages.html:30
-msgid "Date:"
-msgstr "Fecha:"
+msgid "Fecha:"
+msgstr "Date:"
 
 #: .\messages_app\templates\messages_app\messages.html:24
-msgid "Sent Messages"
-msgstr "Mensajes Enviados"
+msgid "Mensajes Enviados"
+msgstr "Sent Messages"
 
 #: .\messages_app\templates\messages_app\messages.html:28
-msgid "To:"
-msgstr "Para:"
+msgid "Para:"
+msgstr "To:"
 
 #: .\messages_app\templates\messages_app\send_message.html:17
-msgid "Recipient"
-msgstr "Destinatario"
+msgid "Destinatario"
+msgstr "Recipient"
 
 #: .\messages_app\templates\messages_app\send_message.html:28
-msgid "Send"
-msgstr "Enviar"
+msgid "Enviar"
+msgstr "Submit"
 
 #: .\projects\templates\projects\project_confirm_delete.html:9
-msgid "Delete Project"
-msgstr "Eliminar Proyecto"
+msgid "Eliminar Proyecto"
+msgstr "Delete Project"
 
 #: .\projects\templates\projects\project_confirm_delete.html:10
-msgid "Are you sure you want to delete the project"
-msgstr "¿Está seguro de que desea eliminar el proyecto"
+msgid "¿Está seguro de que desea eliminar el proyecto"
+msgstr "Are you sure you want to delete the project"
 
 #: .\projects\templates\projects\project_confirm_delete.html:13
-msgid "Delete"
-msgstr "Eliminar"
+msgid "Eliminar"
+msgstr "Delete"
 
 #: .\projects\templates\projects\project_confirm_delete.html:14
-msgid "Cancel"
-msgstr "Cancelar"
+msgid "Cancelar"
+msgstr "Cancel"
 
 #: .\projects\templates\projects\project_detail.html:12
 #: .\projects\templates\projects\view_project.html:17
-msgid "Start Date:"
-msgstr "Fecha de Inicio:"
+msgid "Fecha de Inicio:"
+msgstr "Start Date:"
 
 #: .\projects\templates\projects\project_detail.html:13
 #: .\projects\templates\projects\view_project.html:18
-msgid "End Date:"
-msgstr "Fecha de Finalización:"
+msgid "Fecha de Finalización:"
+msgstr "End Date:"
 
 #: .\projects\templates\projects\project_detail.html:14
-msgid "Client:"
-msgstr "Cliente:"
+msgid "Cliente:"
+msgstr "Client:"
 
 #: .\projects\templates\projects\project_list.html:5
-msgid "Project List - ITS Portal"
-msgstr "Lista de Proyectos - Portal ITS"
+msgid "Lista de Proyectos - Portal ITS"
+msgstr "Project List - ITS Portal"
 
 #: .\projects\templates\projects\project_list.html:10
-msgid "Project List"
-msgstr "Lista de Proyectos"
+msgid "Lista de Proyectos"
+msgstr "Project List"
 
 #: .\projects\templates\projects\project_list.html:24
-msgid "View"
-msgstr "Ver"
+msgid "Ver"
+msgstr "View"
 
 #: .\projects\templates\projects\update_project_status.html:8
-msgid "Update Status for"
-msgstr "Actualizar Estado de"
+msgid "Actualizar Estado de"
+msgstr "Update Status for"
 
 #: .\projects\templates\projects\update_project_status.html:12
-msgid "Update Status"
-msgstr "Actualizar Estado"
+msgid "Actualizar Estado"
+msgstr "Update Status"
 
 #: .\projects\templates\projects\view_project.html:15
-msgid "Description:"
-msgstr "Descripción:"
+msgid "Descripción:"
+msgstr "Description:"
 
 #: .\projects\templates\projects\view_projects.html:8
-msgid "All Projects"
-msgstr "Todos los Proyectos"
+msgid "Todos los Proyectos"
+msgstr "All Projects"

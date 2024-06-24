@@ -208,4 +208,5 @@ Si tienes alguna pregunta o comentario sobre el proyecto, no dudes en contactarm
 Nombre: Fernanda Jensen
 Email: ferjen.coder@gmail.com
 
-¡Gracias por visitar el proyecto y espero tus comentarios y contribuciones!
+> .[!IMPORTANT].
+> ¡Gracias por visitar el proyecto y espero tus comentarios y contribuciones!

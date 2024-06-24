@@ -1,5 +1,3 @@
-# its_portal/urls.py
-
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
@@ -11,6 +9,9 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("set_language/", include("django.conf.urls.i18n")),
+]
+
+urlpatterns += i18n_patterns(
     path("", include("main.urls")),
     path("its_admin/", include("its_admin.urls")),
     path("messages/", include("messages_app.urls")),
@@ -28,7 +29,7 @@ urlpatterns = [
     path("profile/", main_views.profile, name="profile"),
     path("request_quote/", main_views.request_quote, name="request_quote"),
     path("dashboard/", main_views.dashboard, name="dashboard"),
-]
+)
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

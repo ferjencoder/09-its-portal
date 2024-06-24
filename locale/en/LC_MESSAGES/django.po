@@ -1,8 +1,10 @@
 msgid ""
 msgstr ""
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-06-23 22:44-0300\n"
+"Language: en\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: en\n"
 
 #: .\blog\templates\blog\blog.html:11 .\main\templates\main\base.html:31
 #: .\main\templates\main\base_generic.html:30
@@ -308,6 +310,16 @@ msgstr "Guardar"
 msgid "Projects - ITS Portal"
 msgstr "Proyectos - ITS Portal"
 
+#: .\its_portal\settings.py:124 .\main\templates\main\base.html:43
+#: .\main\templates\main\base_generic.html:42
+msgid "English"
+msgstr "Inglés"
+
+#: .\its_portal\settings.py:125 .\main\templates\main\base.html:44
+#: .\main\templates\main\base_generic.html:43
+msgid "Spanish"
+msgstr "Español"
+
 #: .\main\templates\main\about.html:6
 msgid "About Ideas Tech Support - ITS Portal"
 msgstr "Acerca de Ideas Tech Support - ITS Portal"
@@ -318,7 +330,9 @@ msgstr "Acerca de Ideas Tech Support"
 
 #: .\main\templates\main\about.html:13
 msgid "Enhancing Productivity through Advanced Tools and Automation"
-msgstr "Mejorando la Productividad a través de Herramientas Avanzadas y Automatización"
+msgstr ""
+"Mejorando la Productividad a través de Herramientas Avanzadas y "
+"Automatización"
 
 #: .\main\templates\main\about.html:19
 msgid "Our Mission"
@@ -332,11 +346,12 @@ msgid ""
 "management, and automation, we deliver tailored solutions that meet the "
 "unique needs of our clients."
 msgstr ""
-"En Ideas Tech Support, nuestra misión es empoderar a las empresas maximizando "
-"la eficiencia y minimizando el error humano mediante el uso de herramientas "
-"avanzadas y automatización. Con un fuerte enfoque en la visualización de datos, "
-"narración de historias, gestión de proyectos y automatización, entregamos "
-"soluciones personalizadas que satisfacen las necesidades únicas de nuestros clientes."
+"En Ideas Tech Support, nuestra misión es empoderar a las empresas "
+"maximizando la eficiencia y minimizando el error humano mediante el uso de "
+"herramientas avanzadas y automatización. Con un fuerte enfoque en la "
+"visualización de datos, narración de historias, gestión de proyectos y "
+"automatización, entregamos soluciones personalizadas que satisfacen las "
+"necesidades únicas de nuestros clientes."
 
 #: .\main\templates\main\about.html:23 .\main\templates\main\base.html:28
 #: .\main\templates\main\base_generic.html:27
@@ -353,9 +368,9 @@ msgid ""
 "bring a deep understanding of administrative and project management "
 "challenges. Our expertise includes:"
 msgstr ""
-"Con más de 13 años de experiencia en la industria del Petróleo y Gas, traemos "
-"una profunda comprensión de los desafíos administrativos y de gestión de proyectos. "
-"Nuestra experiencia incluye:"
+"Con más de 13 años de experiencia en la industria del Petróleo y Gas, "
+"traemos una profunda comprensión de los desafíos administrativos y de "
+"gestión de proyectos. Nuestra experiencia incluye:"
 
 #: .\main\templates\main\about.html:31
 msgid "Excel Automation with VBA"
@@ -391,17 +406,19 @@ msgid ""
 "extensive experience and technical expertise, we are confident in delivering "
 "tools that exceed your expectations."
 msgstr ""
-"Nos dedicamos a entender sus necesidades únicas y desarrollar soluciones creativas "
-"que mejoren la productividad y generen resultados. Aprovechando nuestra amplia "
-"experiencia y conocimiento técnico, estamos seguros de ofrecer herramientas que superen sus expectativas."
+"Nos dedicamos a entender sus necesidades únicas y desarrollar soluciones "
+"creativas que mejoren la productividad y generen resultados. Aprovechando "
+"nuestra amplia experiencia y conocimiento técnico, estamos seguros de "
+"ofrecer herramientas que superen sus expectativas."
 
 #: .\main\templates\main\about.html:41
 msgid ""
 "Our client-centric approach ensures seamless integration and user adoption, "
 "providing comprehensive support throughout the project lifecycle."
 msgstr ""
-"Nuestra orientación al cliente asegura una integración fluida y adopción por parte de los usuarios, "
-"proporcionando un soporte integral durante todo el ciclo de vida del proyecto."
+"Nuestra orientación al cliente asegura una integración fluida y adopción por "
+"parte de los usuarios, proporcionando un soporte integral durante todo el "
+"ciclo de vida del proyecto."
 
 #: .\main\templates\main\about.html:46
 msgid "Meet the Team"
@@ -413,8 +430,9 @@ msgid ""
 "technology and innovation. We work collaboratively to ensure that every "
 "project we undertake is a success."
 msgstr ""
-"Nuestro equipo está compuesto por profesionales altamente capacitados que están apasionados por la "
-"tecnología y la innovación. Trabajamos de manera colaborativa para asegurar que cada proyecto que emprendemos sea un éxito."
+"Nuestro equipo está compuesto por profesionales altamente capacitados que "
+"están apasionados por la tecnología y la innovación. Trabajamos de manera "
+"colaborativa para asegurar que cada proyecto que emprendemos sea un éxito."
 
 #: .\main\templates\main\base.html:15 .\main\templates\main\base.html:21
 #: .\main\templates\main\base_generic.html:14
@@ -447,16 +465,6 @@ msgstr "Servicios"
 #: .\main\templates\main\request_quote.html:9
 msgid "Request a Quote"
 msgstr "Solicitar una Cotización"
-
-#: .\main\templates\main\base.html:43
-#: .\main\templates\main\base_generic.html:42
-msgid "English"
-msgstr "Inglés"
-
-#: .\main\templates\main\base.html:44
-#: .\main\templates\main\base_generic.html:43
-msgid "Spanish"
-msgstr "Español"
 
 #: .\main\templates\main\base.html:51
 #: .\main\templates\main\base_generic.html:50
@@ -512,7 +520,9 @@ msgstr "Contáctenos"
 
 #: .\main\templates\main\contact.html:10
 msgid "We'd love to hear from you. Fill out the form below to get in touch."
-msgstr "Nos encantaría saber de usted. Complete el formulario a continuación para ponerse en contacto."
+msgstr ""
+"Nos encantaría saber de usted. Complete el formulario a continuación para "
+"ponerse en contacto."
 
 #: .\main\templates\main\contact.html:20
 msgid "Name"
@@ -547,7 +557,8 @@ msgstr "Bienvenido al Portal ITS"
 
 #: .\main\templates\main\home.html:15
 msgid "We offer a variety of services to help your business succeed."
-msgstr "Ofrecemos una variedad de servicios para ayudar a que su negocio tenga éxito."
+msgstr ""
+"Ofrecemos una variedad de servicios para ayudar a que su negocio tenga éxito."
 
 #: .\main\templates\main\home.html:17
 msgid "Explore our services to learn more."
@@ -583,7 +594,9 @@ msgstr "Cree una cuenta para acceder a nuestros servicios."
 
 #: .\main\templates\main\request_quote.html:10
 msgid "Fill out the form below to receive a customized quote for our services."
-msgstr "Complete el formulario a continuación para recibir una cotización personalizada de nuestros servicios."
+msgstr ""
+"Complete el formulario a continuación para recibir una cotización "
+"personalizada de nuestros servicios."
 
 #: .\main\templates\main\request_quote.html:20
 msgid "Full Name"
@@ -628,8 +641,11 @@ msgid "Our Services"
 msgstr "Nuestros Servicios"
 
 #: .\main\templates\main\services.html:10
-msgid "Explore the range of services we offer to enhance your business operations."
-msgstr "Explore la gama de servicios que ofrecemos para mejorar las operaciones de su negocio."
+msgid ""
+"Explore the range of services we offer to enhance your business operations."
+msgstr ""
+"Explore la gama de servicios que ofrecemos para mejorar las operaciones de "
+"su negocio."
 
 #: .\main\templates\main\services.html:18
 #: .\main\templates\main\services.html:21
@@ -645,11 +661,14 @@ msgid ""
 "automation designed for success. Whether it's reducing manual tasks or "
 "enhancing productivity, our expertise makes it happen effortlessly."
 msgstr ""
-"Transforme sus operaciones con nuestras soluciones avanzadas de automatización. "
-"Desde la optimización de flujos de trabajo hasta la minimización de errores, "
-"garantizamos eficiencia y confiabilidad. Nuestras soluciones se adaptan a sus necesidades únicas, "
-"proporcionando una integración perfecta y un rendimiento inigualable. Mejore los procesos de su negocio con la automatización diseñada para el éxito. "
-"Ya sea reduciendo tareas manuales o mejorando la productividad, nuestra experiencia lo hace posible sin esfuerzo."
+"Transforme sus operaciones con nuestras soluciones avanzadas de "
+"automatización. Desde la optimización de flujos de trabajo hasta la "
+"minimización de errores, garantizamos eficiencia y confiabilidad. Nuestras "
+"soluciones se adaptan a sus necesidades únicas, proporcionando una "
+"integración perfecta y un rendimiento inigualable. Mejore los procesos de su "
+"negocio con la automatización diseñada para el éxito. Ya sea reduciendo "
+"tareas manuales o mejorando la productividad, nuestra experiencia lo hace "
+"posible sin esfuerzo."
 
 #: .\main\templates\main\services.html:24
 #: .\main\templates\main\services.html:39
@@ -668,24 +687,37 @@ msgid ""
 "for reporting, analysis, or strategic planning, our visualizations bring "
 "clarity and insight."
 msgstr ""
-"Aproveche el potencial de sus datos con nuestras visualizaciones convincentes. "
-"Transformamos datos complejos en información clara y accionable que impulsa mejores decisiones. "
-"Nuestras visualizaciones están adaptadas a sus necesidades, facilitando la comprensión y utilización efectiva de sus datos. "
-"Con herramientas y técnicas de vanguardia, convertimos los datos en un activo poderoso para su negocio. "
-"Ya sea para informes, análisis o planificación estratégica, nuestras visualizaciones aportan claridad y visión."
+"Aproveche el potencial de sus datos con nuestras visualizaciones "
+"convincentes. Transformamos datos complejos en información clara y "
+"accionable que impulsa mejores decisiones. Nuestras visualizaciones están "
+"adaptadas a sus necesidades, facilitando la comprensión y utilización "
+"efectiva de sus datos. Con herramientas y técnicas de vanguardia, "
+"convertimos los datos en un activo poderoso para su negocio. Ya sea para "
+"informes, análisis o planificación estratégica, nuestras visualizaciones "
+"aportan claridad y visión."
 
 #: .\main\templates\main\services.html:52
+#, fuzzy
+#| msgid ""
+#| "Elevate your project success with our comprehensive project management "
+#| "services. From detailed baseline schedules and progress reports to "
+#| "handling claims and EOT, our expertise ensures flawless execution. "
+#| "Harness the power of Power BI for dynamic reporting and achieve "
+#| "unparalleled efficiency. Need recovery schedules or tender proposals? "
+#| "Weve got you covered!"
 msgid ""
 "Elevate your project success with our comprehensive project management "
 "services. From detailed baseline schedules and progress reports to handling "
 "claims and EOT, our expertise ensures flawless execution. Harness the power "
 "of Power BI for dynamic reporting and achieve unparalleled efficiency. Need "
-"recovery schedules or tender proposals? Weve got you covered!"
+"recovery schedules or tender proposals? We’ve got you covered!"
 msgstr ""
-"Eleve el éxito de sus proyectos con nuestros servicios integrales de gestión de proyectos. "
-"Desde cronogramas detallados y reportes de progreso hasta el manejo de reclamos y EOT, "
-"nuestra experiencia asegura una ejecución impecable. Aproveche el poder de Power BI para informes dinámicos y logre una eficiencia sin igual. "
-"¿Necesita cronogramas de recuperación o propuestas de licitación? ¡Lo tenemos cubierto!"
+"Eleve el éxito de sus proyectos con nuestros servicios integrales de gestión "
+"de proyectos. Desde cronogramas detallados y reportes de progreso hasta el "
+"manejo de reclamos y EOT, nuestra experiencia asegura una ejecución "
+"impecable. Aproveche el poder de Power BI para informes dinámicos y logre "
+"una eficiencia sin igual. ¿Necesita cronogramas de recuperación o propuestas "
+"de licitación? ¡Lo tenemos cubierto!"
 
 #: .\main\templates\main\services.html:63
 #: .\main\templates\main\services.html:66
@@ -693,19 +725,31 @@ msgid "Training Services"
 msgstr "Servicios de Capacitación"
 
 #: .\main\templates\main\services.html:67
+#, fuzzy
+#| msgid ""
+#| "Empower your team with our tailored training programs, crafted for "
+#| "maximum impact. Whether on-site or online, our sessions cover all aspects "
+#| "of project management, aligning with your companys objectives. We "
+#| "collaborate closely to design content that fits your industry, projects, "
+#| "and goals. Enhance skills and boost productivity with training that "
+#| "adapts to your needs. From foundational principles to advanced "
+#| "techniques, our programs prepare your team for excellence."
 msgid ""
 "Empower your team with our tailored training programs, crafted for maximum "
 "impact. Whether on-site or online, our sessions cover all aspects of project "
-"management, aligning with your companys objectives. We collaborate closely "
+"management, aligning with your company’s objectives. We collaborate closely "
 "to design content that fits your industry, projects, and goals. Enhance "
 "skills and boost productivity with training that adapts to your needs. From "
 "foundational principles to advanced techniques, our programs prepare your "
 "team for excellence."
 msgstr ""
-"Empodere a su equipo con nuestros programas de capacitación personalizados, diseñados para un impacto máximo. "
-"Ya sea en el sitio o en línea, nuestras sesiones cubren todos los aspectos de la gestión de proyectos, alineándose con los objetivos de su empresa. "
-"Colaboramos estrechamente para diseñar contenido que se ajuste a su industria, proyectos y objetivos. "
-"Mejore las habilidades y aumente la productividad con capacitación que se adapta a sus necesidades. Desde principios fundamentales hasta técnicas avanzadas, "
+"Empodere a su equipo con nuestros programas de capacitación personalizados, "
+"diseñados para un impacto máximo. Ya sea en el sitio o en línea, nuestras "
+"sesiones cubren todos los aspectos de la gestión de proyectos, alineándose "
+"con los objetivos de su empresa. Colaboramos estrechamente para diseñar "
+"contenido que se ajuste a su industria, proyectos y objetivos. Mejore las "
+"habilidades y aumente la productividad con capacitación que se adapta a sus "
+"necesidades. Desde principios fundamentales hasta técnicas avanzadas, "
 "nuestros programas preparan a su equipo para la excelencia."
 
 #: .\messages_app\templates\messages_app\messages.html:14
