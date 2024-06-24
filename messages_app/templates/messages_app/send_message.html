@@ -1,27 +1,32 @@
 <!--messages_app/send_messages.html-->
 
 {% extends "main/base_sidebar.html" %}
+{% load i18n %}
 
 {% block content %}
 <div class="container mt-5">
     <div class="text-center">
-        <h1 class="display-4">Send Message</h1>
+        <h1 class="display-4">{% trans "Send Message" %}</h1>
         <hr class="my-5">
     </div>
-    <div class="row justify-content-center mt-4">
+    <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <form method="post">
-                        {% csrf_token %}
-                        <div class="form-group text-left">
-                            <label for="content">Message Content</label>
-                            <textarea name="content" id="content" class="form-control" rows="5" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block mt-4">Send Message</button>
-                    </form>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="recipient">{% trans "Recipient" %}</label>
+                    <select name="recipient" id="recipient" class="form-control" required>
+                        {% for user in users %}
+                            <option value="{{ user.id }}">{{ user.username }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
-            </div>
+                <div class="form-group">
+                    <label for="content">{% trans "Message" %}</label>
+                    <textarea name="content" id="content" rows="5" class="form-control" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block mt-4">{% trans "Send" %}</button>
+            </form>
         </div>
     </div>
 </div>

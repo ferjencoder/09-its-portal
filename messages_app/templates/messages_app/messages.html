@@ -1,31 +1,37 @@
 <!--messages_app/messages.html-->
 
 {% extends "main/base_sidebar.html" %}
+{% load i18n %}
 
 {% block content %}
 <div class="container mt-5">
     <div class="text-center">
-        <h1 class="display-4">Messages</h1>
+        <h1 class="display-4">{% trans "Messages" %}</h1>
         <hr class="my-5">
     </div>
-    <div class="row justify-content-center mt-4">
+    <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <ul class="list-group list-group-flush">
-                        {% for message in messages %}
-                        <li class="list-group-item">
-                            <strong>From:</strong> {{ message.sender.username }}<br>
-                            <strong>To:</strong> {{ message.recipient.username }}<br>
-                            <strong>Content:</strong> {{ message.content }}<br>
-                            <small><em>{{ message.timestamp }}</em></small>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
+            <h3>{% trans "Received Messages" %}</h3>
+            <ul class="list-group mb-4">
+                {% for message in messages_received %}
+                    <li class="list-group-item">
+                        <strong>{% trans "From:" %}</strong> {{ message.sender.username }}<br>
+                        <strong>{% trans "Message:" %}</strong> {{ message.content }}<br>
+                        <strong>{% trans "Date:" %}</strong> {{ message.timestamp }}
+                    </li>
+                {% endfor %}
+            </ul>
+            <h3>{% trans "Sent Messages" %}</h3>
+            <ul class="list-group">
+                {% for message in messages_sent %}
+                    <li class="list-group-item">
+                        <strong>{% trans "To:" %}</strong> {{ message.recipient.username }}<br>
+                        <strong>{% trans "Message:" %}</strong> {{ message.content }}<br>
+                        <strong>{% trans "Date:" %}</strong> {{ message.timestamp }}
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 </div>
 {% endblock %}
-

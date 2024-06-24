@@ -9,6 +9,7 @@ from django.contrib import messages
 from .forms import RegisterForm, ProfileForm
 from .models import Profile
 from .utils import get_profile
+from django.utils import translation
 from forum_app.models import ForumTopic
 from messages_app.models import Message
 from django.http import HttpResponse
@@ -17,6 +18,13 @@ from django.views.decorators.csrf import csrf_protect
 
 def csrf_failure(request, reason=""):
     return HttpResponse("CSRF verification failed. Reason: %s" % reason)
+
+
+def set_language(request):
+    user_language = request.GET.get("language", "en")
+    translation.activate(user_language)
+    request.session[translation.LANGUAGE_SESSION_KEY] = user_language
+    return redirect(request.META.get("HTTP_REFERER"))
 
 
 def home(request):

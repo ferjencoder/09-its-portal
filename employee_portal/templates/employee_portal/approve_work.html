@@ -1,23 +1,25 @@
-<!--employee_portal/approve_work.html-->
+<!-- employee_portal/approve_work.html -->
 
 {% extends "main/base_sidebar.html" %}
+{% load i18n %}
 
-{% block title %}Approve Work - ITS Portal{% endblock %}
+{% block title %}{% trans "Approve Work" %} - ITS Portal{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
     <div class="text-center">
-        <h1 class="display-4">Approve Work</h1>
+        <h1 class="display-4">{% trans "Approve Work" %}</h1>
         <hr class="my-5">
     </div>
     <div class="row justify-content-center mt-4">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <p>Work approval functionality will be implemented here.</p>
+                    <p>{% trans "Work approval functionality will be implemented here." %}</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
+

@@ -1,10 +1,13 @@
+<!--main/request_quote.html-->
+
 {% extends 'main/base_generic.html' %}
+{% load i18n %}
 
 {% block content %}
 <div class="container mt-5">
     <div class="text-center">
-        <h1 class="display-4">Request a Quote</h1>
-        <p class="lead">Fill out the form below to receive a customized quote for our services.</p>
+        <h1 class="display-4">{% trans "Request a Quote" %}</h1>
+        <p class="lead">{% trans "Fill out the form below to receive a customized quote for our services." %}</p>
         <hr class="my-5">
     </div>
     <div class="row justify-content-center mt-4">
@@ -14,35 +17,35 @@
                     <form method="post" action="#">
                         {% csrf_token %}
                         <div class="form-group text-left">
-                            <label for="name">Full Name</label>
+                            <label for="name">{% trans "Full Name" %}</label>
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                         <div class="form-group text-left">
-                            <label for="email">Email Address</label>
+                            <label for="email">{% trans "Email Address" %}</label>
                             <input type="email" class="form-control" id="email" name="email" required>
                         </div>
                         <div class="form-group text-left">
-                            <label for="phone">Phone Number</label>
+                            <label for="phone">{% trans "Phone Number" %}</label>
                             <input type="tel" class="form-control" id="phone" name="phone">
                         </div>
                         <div class="form-group text-left">
-                            <label for="company">Company Name</label>
+                            <label for="company">{% trans "Company Name" %}</label>
                             <input type="text" class="form-control" id="company" name="company">
                         </div>
                         <div class="form-group text-left">
-                            <label for="service">Select Service</label>
+                            <label for="service">{% trans "Select Service" %}</label>
                             <select class="form-control" id="service" name="service" required>
-                                <option value="Automation">Automation</option>
-                                <option value="Data Visualization">Data Visualization</option>
-                                <option value="Project Management">Project Management</option>
-                                <option value="Training">Training</option>
+                                <option value="Automation">{% trans "Automation" %}</option>
+                                <option value="Data Visualization">{% trans "Data Visualization" %}</option>
+                                <option value="Project Management">{% trans "Project Management" %}</option>
+                                <option value="Training">{% trans "Training" %}</option>
                             </select>
                         </div>
                         <div class="form-group text-left">
-                            <label for="message">Message</label>
+                            <label for="message">{% trans "Message" %}</label>
                             <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block">Send Request</button>
+                        <button type="submit" class="btn btn-primary btn-block">{% trans "Send Request" %}</button>
                     </form>
                 </div>
             </div>

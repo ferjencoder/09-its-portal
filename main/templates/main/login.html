@@ -1,10 +1,13 @@
+<!--main/login.html-->
+
 {% extends 'main/base_generic.html' %}
+{% load i18n %}
 
 {% block content %}
 <div class="container mt-5">
     <div class="text-center">
-        <h1 class="display-4">Login</h1>
-        <p class="lead">Please login to access your account.</p>
+        <h1 class="display-4">{% trans "Login" %}</h1>
+        <p class="lead">{% trans "Please login to access your account." %}</p>
         <hr class="my-5">
     </div>
     <div class="row justify-content-center mt-4">
@@ -14,14 +17,14 @@
                     <form method="post" action="{% url 'login' %}">
                         {% csrf_token %}
                         <div class="form-group text-left">
-                            <label for="username">Username</label>
+                            <label for="username">{% trans "Username" %}</label>
                             <input type="text" class="form-control" id="username" name="username" required>
                         </div>
                         <div class="form-group text-left">
-                            <label for="password">Password</label>
+                            <label for="password">{% trans "Password" %}</label>
                             <input type="password" class="form-control" id="password" name="password" required>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                        <button type="submit" class="btn btn-primary btn-block">{% trans "Login" %}</button>
                     </form>
                 </div>
             </div>

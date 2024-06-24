@@ -1,7 +1,8 @@
 //its_portal/static/assets/js/scripts.js
 
-document.addEventListener('DOMContentLoaded',function() {
+document.addEventListener('DOMContentLoaded', function () {
     const darkModeIcon = document.querySelector('#dark-mode-icon');
+    const dropdownMenus = document.querySelectorAll('.dropdown-menu');
 
     // Verifica si hay un tema guardado en el local al cargar el sitio
     const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : null;
@@ -9,6 +10,9 @@ document.addEventListener('DOMContentLoaded',function() {
     if (currentTheme) {
         document.body.classList.add(currentTheme);
         darkModeIcon.className = currentTheme === 'dark-mode' ? 'fas fa-sun' : 'fas fa-moon';
+        dropdownMenus.forEach(menu => {
+            menu.classList.toggle('dropdown-menu-dark', currentTheme === 'dark-mode');
+        });
     }
 
     // Cambiar el tema cuando se activa/desactiva el switch
@@ -17,17 +21,23 @@ document.addEventListener('DOMContentLoaded',function() {
             document.body.classList.remove('dark-mode');
             localStorage.setItem('theme', 'light-mode');
             darkModeIcon.className = 'fas fa-moon';
+            dropdownMenus.forEach(menu => {
+                menu.classList.remove('dropdown-menu-dark');
+            });
         } else {
             document.body.classList.add('dark-mode');
             localStorage.setItem('theme', 'dark-mode');
             darkModeIcon.className = 'fas fa-sun';
+            dropdownMenus.forEach(menu => {
+                menu.classList.add('dropdown-menu-dark');
+            });
         }
     });
 });
 
 // Togglea la sidebar del dashboard
-$(document).ready(function() {
-    $('#menu-toggle').click(function() {
+$(document).ready(function () {
+    $('#menu-toggle').click(function () {
         $('#wrapper').toggleClass('toggled');
         const icon = $('#menu-toggle i');
         const sidebarIcon = $('#sidebar-toggle-icon');

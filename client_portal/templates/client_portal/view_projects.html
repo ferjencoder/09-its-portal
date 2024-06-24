@@ -1,13 +1,16 @@
+<!--client_portal/view_projects.html-->
+
 {% extends "main/base_sidebar.html" %}
+{% load i18n %}
 
 {% block content %}
 <div class="container mt-5">
     <div class="text-center">
-        <h1 class="display-4">Your Projects</h1>
+        <h1 class="display-4">{% trans "Your Projects" %}</h1>
         <hr class="my-5">
     </div>
 
-    <h5>Projects</h5>
+    <h5>{% trans "Projects" %}</h5>
     <ul>
       {% for project in projects %}
         <li>{{ project.name }} - {{ project.status }}</li>
@@ -15,3 +18,4 @@
     </ul>
 </div>
 {% endblock %}
+

@@ -1,3 +1,5 @@
+# client_portal/apps.py
+
 from django.apps import AppConfig
 
 

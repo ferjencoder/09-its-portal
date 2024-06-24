@@ -1,60 +1,66 @@
-/*its_portal/sidebar_styles.css*/
+/* static/css/sidebar_syltes.css */
 
-/* Css para los wrappers y la sidebar */
 #wrapper, #sidebar-wrapper {
     min-height: 100vh;
 }
 
 #sidebar-wrapper {
-    width: 200px;
+    width: 280px;
     background: #202327;
     color: #fff;
     transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
 }
 
-.sidebar-heading img {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
+.sidebar-heading {
+    width: 100%;
+    padding: 1rem;
 }
 
-.list-group-item {
-    transition: color 0.3s ease, background-color 0.3s ease;
+.nav-pills .nav-link {
     color: #e0e0e0;
-    border-bottom: 1px solid #e0e0e0;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    width: 100%;
+    padding: 0.75rem 1rem;
 }
 
-.list-group-item:hover, .list-group-item.active {
+.nav-pills .nav-link:hover, .nav-pills .nav-link.active {
     color: #fff;
     background-color: #3a3a3a;
-    border-color: #b34040;
 }
 
-.list-group-item i {
-    margin-right: 10px;
-    color: #e0e0e0; /* Change icon color to match button */
+.dropdown-menu {
+    background-color: #333;
+    border: none;
 }
 
-/* Toggling sidebar visibility */
-#wrapper.toggled #sidebar-wrapper {
-    margin-left: -200px;
+.dropdown-item:hover, .dropdown-item:focus {
+    background-color: #444;
+    color: #fff;
 }
 
-#wrapper #page-content-wrapper {
-    width: calc(100% - 200px);
+.text-bg-dark .dropdown-menu-dark .dropdown-item.text-danger {
+    color: #e74c3c;
+}
+
+.text-bg-dark .dropdown-menu-dark .dropdown-item.text-danger:hover {
+    background-color: #c0392b;
+    color: #fff;
+}
+
+#page-content-wrapper {
+    width: calc(100% - 280px);
     transition: all 0.3s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: -280px;
 }
 
 #wrapper.toggled #page-content-wrapper {
     width: 100%;
-}
-
-.bi {
-    color: #e0e0e0; /* Change icon color to match button */
-}
-
-.list-group-item:focus {
-    outline: 2px solid #fff; /* Change focus outline to white */
 }
 
 @media (max-width: 768px) {
@@ -68,14 +74,3 @@
         width: 100%;
     }
 }
-
-.card {
-    border: none;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-}
-
-.badge-primary {
-    background-color: #007bff;
-    color: white;
-}
-

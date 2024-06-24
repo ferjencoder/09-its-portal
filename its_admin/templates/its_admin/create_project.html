@@ -1,18 +1,20 @@
 <!-- its_admin/create_project.html -->
- 
-{% extends "main/base_sidebar.html" %}
 
+{% extends "main/base_sidebar.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Create Project - ITS Portal" %}{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
     <div class="text-center">
-        <h1 class="display-4">Create Project</h1>
+        <h1 class="display-4">{% trans "Create Project" %}</h1>
         <hr class="my-5">
     </div>
     <form method="post">
       {% csrf_token %}
       {{ form.as_p }}
-      <button type="submit" class="btn btn-primary">Save</button>
+      <button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
     </form>
 </div>
 {% endblock %}

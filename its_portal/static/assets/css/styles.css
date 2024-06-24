@@ -132,7 +132,11 @@ nav {
     z-index: 3;
 }
 
-/*SIDEBAR*/
+.navbar-nav{
+  align-items: center;
+}
+
+/*SIDEBAR
 #wrapper {
     min-height: 100vh;
     display: flex;
@@ -149,7 +153,7 @@ nav {
     padding: 0.875rem 1.25rem;
     font-size: 1.2rem;
     font-weight: bold;
-}
+}*/
 
 /* Light theme */
 .bi {

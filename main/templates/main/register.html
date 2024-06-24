@@ -1,10 +1,13 @@
+<!--main/register.html-->
+
 {% extends 'main/base_generic.html' %}
+{% load i18n %}
 
 {% block content %}
 <div class="container mt-5">
     <div class="text-center">
-        <h1 class="display-4">Register</h1>
-        <p class="lead">Create an account to access our services.</p>
+        <h1 class="display-4">{% trans "Register" %}</h1>
+        <p class="lead">{% trans "Create an account to access our services." %}</p>
         <hr class="my-5">
     </div>
     <div class="row justify-content-center mt-4">
@@ -16,7 +19,7 @@
                         <div class="form-group text-left">
                             {{ form.as_p }}
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block">Register</button>
+                        <button type="submit" class="btn btn-primary btn-block">{% trans "Register" %}</button>
                     </form>
                 </div>
             </div>
@@ -24,4 +27,3 @@
     </div>
 </div>
 {% endblock %}
-

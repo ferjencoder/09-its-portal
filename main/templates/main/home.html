@@ -1,18 +1,20 @@
+<!--main/home.html-->
+
 {% extends "main/base_generic.html" %}
+{% load i18n %}
 
 {% block content %}
     <div class="video-background">
         <video playsinline autoplay muted loop id="bgVideo">
             <source src="https://res.cloudinary.com/ferjen/video/upload/v1718067506/ITS/3248997-uhd_3840_2160_25fps_qoujnx.mp4" type="video/mp4">
-            Your browser does not support HTML5 video.
+            {% trans "Your browser does not support HTML5 video." %}
         </video>
     </div>
     <div class="jumbotron mt-4">
-        <h1 class="display-4">Welcome to ITS Portal</h1>
-        <p class="lead">We offer a variety of services to help your business succeed.</p>
+        <h1 class="display-4">{% trans "Welcome to ITS Portal" %}</h1>
+        <p class="lead">{% trans "We offer a variety of services to help your business succeed." %}</p>
         <hr class="my-4">
-        <p>Explore our services to learn more.</p>
-        <a class="btn btn-primary btn-lg" href="{% url 'main:services' %}" role="button">Learn more</a>
+        <p>{% trans "Explore our services to learn more." %}</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'main:services' %}" role="button">{% trans "Learn more" %}</a>
     </div>
 {% endblock %}
-

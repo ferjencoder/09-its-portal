@@ -36,7 +36,7 @@ def view_projects(request):
 
 @login_required
 def profile(request):
-    return render(request, "client_portal/client_profile.html")
+    return render(request, "client_portal/profile.html")
 
 
 @login_required
@@ -46,7 +46,7 @@ def edit_profile(request):
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
-            return redirect("client_portal:client_profile")
+            return redirect("client_portal:profile")
     else:
         form = ProfileForm(instance=profile)
     return render(request, "client_portal/edit_profile.html", {"form": form})

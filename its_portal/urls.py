@@ -1,6 +1,7 @@
 # its_portal/urls.py
 
 from django.conf import settings
+from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
 from django.urls import path, include
 from django.contrib import admin
@@ -8,8 +9,9 @@ from main import views as main_views
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path("", include("main.urls")),
     path("admin/", admin.site.urls),
+    path("set_language/", include("django.conf.urls.i18n")),
+    path("", include("main.urls")),
     path("its_admin/", include("its_admin.urls")),
     path("messages/", include("messages_app.urls")),
     path("forum/", include("forum_app.urls")),

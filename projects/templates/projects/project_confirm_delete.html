@@ -1,11 +1,18 @@
+<!-- projects/project_confirm_delete.html -->
+
 {% extends "main/base_sidebar.html" %}
+{% load i18n %}
 
 {% block content %}
-  <h2>Delete Project</h2>
-  <p>Are you sure you want to delete the project "{{ object }}"?</p>
-  <form method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">Delete</button>
-    <a href="{% url 'project_list' %}" class="btn btn-secondary">Cancel</a>
-  </form>
+  <div class="container mt-5">
+    <div class="text-center">
+        <h2>{% trans "Delete Project" %}</h2>
+        <p>{% trans "Are you sure you want to delete the project" %} "{{ object }}"?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
+            <a href="{% url 'project_list' %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+        </form>
+    </div>
+  </div>
 {% endblock %}

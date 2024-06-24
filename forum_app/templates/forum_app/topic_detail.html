@@ -1,12 +1,17 @@
+<!-- forum_app/topic_detail.html -->
+
 {% extends 'main/base.html' %}
+{% load i18n %}
 
 {% load static %}
+
+{% block title %}{{ topic.title }} - ITS Portal{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
     <div class="text-center">
         <h1 class="display-4">{{ topic.title }}</h1>
-        <p class="lead">By {{ topic.author }} on {{ topic.created_at }}</p>
+        <p class="lead">{% trans "By" %} {{ topic.author }} {% trans "on" %} {{ topic.created_at }}</p>
         <hr class="my-5">
     </div>
 
@@ -17,14 +22,14 @@
     </ul>
 
     <hr class="my-5">
-    <h2>Post a Reply</h2>
+    <h2>{% trans "Post a Reply" %}</h2>
     <form method="post" action="{% url 'forum_app:create_forum_post' %}" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">
-            <label for="id_content">Content:</label>
+            <label for="id_content">{% trans "Content:" %}</label>
             <textarea id="id_content" name="content" class="form-control" rows="5" required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Post Reply</button>
+        <button type="submit" class="btn btn-primary">{% trans "Post Reply" %}</button>
         <input type="hidden" name="topic" value="{{ topic.id }}">
     </form>
 </div>
