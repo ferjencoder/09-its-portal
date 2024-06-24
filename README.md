@@ -3,6 +3,20 @@
 ITS Portal es una aplicación web desarrollada como proyecto final para el curso de Python de Coderhouse.
 Esta aplicación está diseñada para facilitar la gestión de proyectos, comunicaciones y foros para distintos tipos de usuarios: administradores, empleados y clientes.
 
+## Índice
+- [Tecnologías Utilizadas](#tecnologías-utilizadas)
+- [Funcionalidades de la Aplicación](#funcionalidades-de-la-aplicación)
+  - [Administrador](#administrador)
+  - [Empleado](#empleado)
+  - [Cliente](#cliente)
+- [Instalación](#instalación)
+  - [Requisitos Previos](#requisitos-previos)
+  - [Pasos para la Instalación](#pasos-para-la-instalación)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Contribuir](#contribuir)
+- [Licencia](#licencia)
+- [Contacto](#contacto)
+
 ## Tecnologías Utilizadas
 
 - **Python**: Lenguaje principal utilizado para la lógica del backend.
@@ -190,6 +204,16 @@ its-portal/
 └── Pipfile
 ```
 
+## Pendientes
+README.md: versión inglés también
+Video: versión esp e inglés
+Tests: testear mejor el foro
+Refactorizar: quizás modularizar los links de la sidebar y otros que pueda optimizar.
+Repensar: uso de jquery, es poco pero...
+User experience: mejorar la cantidad de clicks y que el tablero tenga toda la info.
+Look and feel: el dark-mode para los group-items por ej.
+
+
 ## Contribuir
 Si deseas contribuir a este proyecto, por favor sigue los siguientes pasos:
 
@@ -208,5 +232,4 @@ Si tienes alguna pregunta o comentario sobre el proyecto, no dudes en contactarm
 Nombre: Fernanda Jensen
 Email: ferjen.coder@gmail.com
 
-> .[!IMPORTANT].
-> ¡Gracias por visitar el proyecto y espero tus comentarios y contribuciones!
+¡Gracias por visitar el proyecto y espero tus comentarios y contribuciones!

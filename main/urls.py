@@ -7,7 +7,7 @@ app_name = "main"
 
 urlpatterns = [
     path("", views.home, name="home"),
-    path("set_language/", views.set_language, name="set_language"),
+    path("set_language/", include("django.conf.urls.i18n")),
     path("about/", views.about, name="about"),
     path("contact/", views.contact, name="contact"),
     path("services/", views.services, name="services"),

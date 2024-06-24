@@ -1,3 +1,5 @@
+<!--main/base_generic.html-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
     {% load custom_tags %}
-    
     {% load i18n %}
     <link rel="shortcut icon" href="https://res.cloudinary.com/ferjen/image/upload/v1719162111/icons/favicon__16x16_yxgdex.png" type="image/x-icon">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -34,15 +35,22 @@
                         <li class="nav-item px-2">
                             <i id="dark-mode-icon" class="fas fa-moon" style="cursor: pointer;"></i>
                         </li>
+                        
+                        <!-- Language Dropdown -->
                         <li class="nav-item px-2 dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-globe"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="languageDropdown">
-                                <a class="dropdown-item" href="{% url 'set_language' %}?language=en">{% trans "English" %}</a>
-                                <a class="dropdown-item" href="{% url 'set_language' %}?language=es">{% trans "Spanish" %}</a>
+                                <form action="{% url 'set_language' %}" method="post">
+                                    {% csrf_token %}
+                                    <input name="next" type="hidden" value="{{ request.path }}">
+                                    <button class="dropdown-item" type="submit" name="language" value="en">{% trans "English" %}</button>
+                                    <button class="dropdown-item" type="submit" name="language" value="es">{% trans "Spanish" %}</button>
+                                </form>
                             </div>
                         </li>
+
                         {% if user.is_authenticated %}
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">

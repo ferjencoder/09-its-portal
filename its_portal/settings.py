@@ -5,7 +5,6 @@ import environ
 import os
 from django.utils.translation import gettext_lazy as _
 
-
 # Initialize environment variables
 env = environ.Env(
     DJANGO_SECRET_KEY=(str, ""),
@@ -132,7 +131,7 @@ USE_L10N = True
 USE_TZ = True
 
 LOCALE_PATHS = [
-    BASE_DIR / "locale",
+    os.path.join(BASE_DIR, "locale"),
 ]
 
 STATIC_URL = "/static/"
