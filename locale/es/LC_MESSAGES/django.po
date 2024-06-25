@@ -368,7 +368,7 @@ msgstr ""
 #: .\main\templates\main\about.html:23 .\main\templates\main\base.html:28
 #: .\main\templates\main\base_generic.html:27
 msgid "About Us"
-msgstr "Acerca de Nosotros"
+msgstr "Acerca de ITS"
 
 #: .\main\templates\main\about.html:28
 msgid "Our Expertise"

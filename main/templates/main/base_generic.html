@@ -57,7 +57,7 @@
                                     {% if user.profile.profile_picture %}
                                         <img src="{{ user.profile.profile_picture.url }}" alt="{% trans 'Profile Image' %}" style="width: 30px; height: 30px; border-radius: 50%;">
                                     {% else %}
-                                        <img src="https://res.cloudinary.com/ferjen/image/upload/v1718991742/avatars/red_cuddly_iqxage.png" alt="{% trans 'Default Avatar' %}" style="width: 30px; height: 30px; border-radius: 50%;">
+                                        <img src="{% static 'assets/images/default_avatar.png' %}" alt="{% trans 'Default Avatar' %}" style="width: 30px; height: 30px; border-radius: 50%;">
                                     {% endif %}
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">

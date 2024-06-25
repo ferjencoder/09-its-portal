@@ -1,7 +1,10 @@
-<!--main/profile.html-->
+<!-- main/profile.html -->
 
-{% extends "main/base_sidebar.html" %}
+{% extends 'main/base_sidebar.html' %}
 {% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Profile - ITS Portal" %}{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
@@ -9,20 +12,31 @@
         <h1 class="display-4">{% trans "Profile" %}</h1>
         <hr class="my-5">
     </div>
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="profile_picture">{% trans "Profile Picture" %}</label>
-                    <input type="file" name="profile_picture" id="profile_picture" class="form-control">
+
+    <div class="card mb-5">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3>{{ user.username }}</h3>
+            <a href="{% url 'main:edit_profile' %}" class="btn btn-primary">{% trans "Edit Profile" %}</a>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    {% if profile.profile_picture %}
+                        <img src="{{ profile.profile_picture.url }}" class="img-fluid rounded-circle mb-3" alt="{% trans 'Profile Picture' %}">
+                    {% else %}
+                        <img src="{% static 'assets/images/default_avatar.png' %}" class="img-fluid rounded-circle mb-3" alt="{% trans 'Default Avatar' %}">
+                    {% endif %}
                 </div>
-                <div class="form-group">
-                    <label for="bio">{% trans "Bio" %}</label>
-                    <textarea name="bio" id="bio" rows="5" class="form-control">{{ form.bio.value }}</textarea>
+                <div class="col-md-8">
+                    <p><strong>{% trans "Email:" %}</strong> {{ user.email }}</p>
+                    <p><strong>{% trans "First Name:" %}</strong> {{ user.first_name }}</p>
+                    <p><strong>{% trans "Last Name:" %}</strong> {{ user.last_name }}</p>
+                    <p><strong>{% trans "Role:" %}</strong> {{ profile.role }}</p>
+                    <p><strong>{% trans "Bio:" %}</strong> {{ profile.bio }}</p>
+                    <p><strong>{% trans "Location:" %}</strong> {{ profile.location }}</p>
+                    <p><strong>{% trans "Birth Date:" %}</strong> {{ profile.birth_date }}</p>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block mt-4">{% trans "Update Profile" %}</button>
-            </form>
+            </div>
         </div>
     </div>
 </div>

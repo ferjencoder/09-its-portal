@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const darkModeIcon = document.querySelector('#dark-mode-icon');
     const dropdownMenus = document.querySelectorAll('.dropdown-menu');
 
-    // Verifica si hay un tema guardado en el local al cargar el sitio
     const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : null;
 
     if (currentTheme) {
@@ -15,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Cambiar el tema cuando se activa/desactiva el switch
     darkModeIcon.addEventListener('click', function () {
         if (document.body.classList.contains('dark-mode')) {
             document.body.classList.remove('dark-mode');
@@ -33,9 +31,28 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     });
+
+    const predefinedImages = document.querySelectorAll('.predefined-image');
+    const selectImageButton = document.getElementById('selectImage');
+    let selectedImage = null;
+
+    predefinedImages.forEach(image => {
+        image.addEventListener('click', function () {
+            predefinedImages.forEach(img => img.classList.remove('selected'));
+            this.classList.add('selected');
+            selectedImage = this.getAttribute('data-image-src');
+        });
+    });
+
+    selectImageButton.addEventListener('click', function () {
+        if (selectedImage) {
+            const profileImageInput = document.getElementById('id_profile_picture');
+            profileImageInput.value = selectedImage;
+            $('#imageModal').modal('hide');
+        }
+    });
 });
 
-// Togglea la sidebar del dashboard
 $(document).ready(function () {
     $('#menu-toggle').click(function () {
         $('#wrapper').toggleClass('toggled');

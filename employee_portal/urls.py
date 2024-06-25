@@ -13,4 +13,5 @@ urlpatterns = [
     path("create_blog_post/", views.create_blog_post, name="create_blog_post"),
     path("profile/", views.profile, name="profile"),
     path("profile/edit/", views.edit_profile, name="edit_employee_profile"),
+    path("forum_dashboard/", views.forum_dashboard, name="forum_dashboard"),
 ]

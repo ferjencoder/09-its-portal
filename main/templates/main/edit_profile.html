@@ -1,0 +1,107 @@
+<!-- main/edit_profile.html -->
+
+{% extends 'main/base_sidebar.html' %}
+{% load i18n %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}{% trans "Edit Profile - ITS Portal" %}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center">
+        <h1 class="display-4">{% trans "Edit Profile" %}</h1>
+        <hr class="my-5">
+    </div>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="card mb-5">
+            <div class="card-body">
+                <div class="row">
+                    <!-- Left panel -->
+                    <div class="col-md-6 mb-3 text-center">
+                        {% if profile.profile_picture %}
+                            <img src="{{ profile.profile_picture.url }}" class="img-fluid rounded-circle mb-3" alt="{% trans 'Profile Picture' %}">
+                        {% else %}
+                            <img src="{% static 'assets/images/default_avatar.png' %}" class="img-fluid rounded-circle mb-3" alt="{% trans 'Default Avatar' %}">
+                        {% endif %}
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#imageModal">
+                            {% trans "Edit Avatar" %}
+                        </button>
+                        <div class="form-group mt-3">
+                            <label for="id_username">{% trans "Username" %}</label>
+                            <input type="text" class="form-control" id="id_username" value="{{ user.username }}" disabled>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="id_first_name">{% trans "First Name" %}</label>
+                            <input type="text" class="form-control" id="id_first_name" value="{{ user.first_name }}" disabled>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="id_last_name">{% trans "Last Name" %}</label>
+                            <input type="text" class="form-control" id="id_last_name" value="{{ user.last_name }}" disabled>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="id_email">{% trans "Email" %}</label>
+                            <input type="email" class="form-control" id="id_email" value="{{ user.email }}" disabled>
+                        </div>
+                    </div>
+
+                    <!-- Right panel -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            {{ profile_form.location|add_class:"form-control mb-3" }}
+                        </div>
+                        <div class="form-group mb-3">
+                            {{ profile_form.birth_date|add_class:"form-control mb-3" }}
+                        </div>
+                        <div class="form-group mb-3">
+                            {{ profile_form.bio|add_class:"form-control mb-3" }}
+                        </div>
+                        <div class="form-group mb-3">
+                            {{ user_form.password1|add_class:"form-control mb-3" }}
+                        </div>
+                        <div class="form-group mb-3">
+                            {{ user_form.password2|add_class:"form-control mb-3" }}
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block mt-4">{% trans "Save Changes" %}</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Modal for selecting profile image -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">{% trans "Select a Profile Image" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    {% for image in predefined_images %}
+                        <div class="col-md-3 mb-3">
+                            <img src="{% static image %}" alt="Avatar" class="img-thumbnail predefined-image" data-image-src="{% static image %}">
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <label for="id_profile_picture">{% trans "Upload Profile Picture" %}</label>
+                        {{ profile_form.profile_picture }}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
+                <button type="button" class="btn btn-primary" id="selectImage">{% trans "Save changes" %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'assets/js/scripts.js' %}"></script>
+{% endblock %}

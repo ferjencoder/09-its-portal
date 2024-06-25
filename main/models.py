@@ -12,9 +12,7 @@ class Profile(models.Model):
         ("admin", "Admin"),
     )
 
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE, related_name="profile_main"
-    )
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     role = models.CharField(max_length=20, choices=USER_ROLES, default="user")
     bio = models.TextField(blank=True, null=True)
     location = models.CharField(max_length=100, blank=True, null=True)
@@ -23,7 +21,7 @@ class Profile(models.Model):
         upload_to="profile_images/",
         blank=True,
         null=True,
-        default="https://res.cloudinary.com/ferjen/image/upload/v1718991742/avatars/red_cuddly_iqxage.png",
+        default="profile_images/default_avatar.png",
     )
 
     def __str__(self):

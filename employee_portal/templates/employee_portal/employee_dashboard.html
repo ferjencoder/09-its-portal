@@ -3,9 +3,15 @@
 {% extends "main/base_sidebar.html" %}
 {% load i18n %}
 
-{% block title %}Employee Dashboard - ITS Portal{% endblock %}
-
 {% block content %}
-<!-- Employee dashboard content here -->
+<div class="container mt-5">
+    <h1>{% trans "Employee Dashboard" %}</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <a href="{% url 'employee_portal:forum_dashboard' %}" class="btn btn-primary btn-block">{% trans "Access Forum" %}</a>
+        </div>
+        <!-- Other dashboard items -->
+    </div>
+</div>
 {% endblock %}
 

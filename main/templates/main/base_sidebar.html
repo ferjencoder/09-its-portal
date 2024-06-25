@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
     {% load custom_tags %}
-    
     {% load i18n %}
     <link rel="shortcut icon" href="https://res.cloudinary.com/ferjen/image/upload/v1719162111/icons/favicon__16x16_yxgdex.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
@@ -22,98 +21,97 @@
         <!-- Sidebar -->
         <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" id="sidebar-wrapper" style="width: 280px;">
             <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-                <span class="fs-4">ITS Portal</span>
+                <span class="fs-4">{% trans "ITS Portal" %}</span>
             </a>
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
                     <a href="{% url 'main:home' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
-                        <i class="bi-house-door me-2"></i> Home
+                        <i class="bi-house-door me-2"></i> {% trans "Home" %}
                     </a>
                 </li>
                 {% if user.is_authenticated %}
                     {% if user|has_group:"admin" %}
                         <li>
                             <a href="{% url 'its_admin:admin_dashboard' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'admin_dashboard' %}active{% endif %}">
-                                <i class="bi-speedometer me-2"></i> Dashboard
+                                <i class="bi-speedometer me-2"></i> {% trans "Dashboard" %}
                             </a>
                         </li>
                         <li>
                             <a href="{% url 'its_admin:assignment_list' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'assignment_list' %}active{% endif %}">
-                                <i class="bi-list-check me-2"></i> Assignments
+                                <i class="bi-list-check me-2"></i> {% trans "Assignments" %}
                             </a>
                         </li>
                         <li>
                             <a href="{% url 'its_admin:create_assignment' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'create_assignment' %}active{% endif %}">
-                                <i class="bi-plus-circle me-2"></i> New Assignment
+                                <i class="bi-plus-circle me-2"></i> {% trans "New Assignment" %}
                             </a>
                         </li>
                         <li>
                             <a href="{% url 'its_admin:project_list' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'project_list' %}active{% endif %}">
-                                <i class="bi-briefcase me-2"></i> Projects
+                                <i class="bi-briefcase me-2"></i> {% trans "Projects" %}
                             </a>
                         </li>
                         <li>
                             <a href="{% url 'its_admin:create_project' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'create_project' %}active{% endif %}">
-                                <i class="bi-plus-circle me-2"></i> New Project
+                                <i class="bi-plus-circle me-2"></i> {% trans "New Project" %}
                             </a>
                         </li>
                         <li>
                             <a href="{% url 'messages_app:messages_view' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'messages_view' %}active{% endif %}">
-                                <i class="bi-envelope me-2"></i> Messages
+                                <i class="bi-envelope me-2"></i> {% trans "Messages" %}
                             </a>
                         </li>
                         <li>
                             <a href="{% url 'forum_app:forum' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'forum' %}active{% endif %}">
-                                <i class="bi-chat-left-text me-2"></i> Forum
+                                <i class="bi-chat-left-text me-2"></i> {% trans "Forum" %}
                             </a>
                         </li>
                         <li>
                             <a href="{% url 'blog:blog_list' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'blog_list' %}active{% endif %}">
-                                <i class="bi-pencil me-2"></i> Blog
+                                <i class="bi-pencil me-2"></i> {% trans "Blog" %}
                             </a>
                         </li>
                     {% elif user|has_group:"employee" %}
                         <li>
                             <a href="{% url 'employee_portal:employee_dashboard' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'employee_dashboard' %}active{% endif %}">
-                                <i class="bi-speedometer me-2"></i> Dashboard
+                                <i class="bi-speedometer me-2"></i> {% trans "Dashboard" %}
                             </a>
                         </li>
                         <li>
                             <a href="{% url 'projects:view_projects' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'view_projects' %}active{% endif %}">
-                                <i class="bi-briefcase me-2"></i> Projects
+                                <i class="bi-briefcase me-2"></i> {% trans "Projects" %}
                             </a>
                         </li>
                         <li>
                             <a href="{% url 'messages_app:messages_view' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'messages_view' %}active{% endif %}">
-                                <i class="bi-envelope me-2"></i> Messages
+                                <i class="bi-envelope me-2"></i> {% trans "Messages" %}
                             </a>
                         </li>
                         <li>
                             <a href="{% url 'forum_app:forum' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'forum' %}active{% endif %}">
-                                <i class="bi-chat-left-text me-2"></i> Forum
+                                <i class="bi-chat-left-text me-2"></i> {% trans "Forum" %}
                             </a>
                         </li>
                     {% elif user|has_group:"client" %}
                         <li>
                             <a href="{% url 'client_portal:client_dashboard' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'client_dashboard' %}active{% endif %}">
-                                <i class="bi-speedometer me-2"></i> Dashboard
+                                <i class="bi-speedometer me-2"></i> {% trans "Dashboard" %}
                             </a>
                         </li>
                         <li>
                             <a href="{% url 'client_portal:view_projects' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'view_projects' %}active{% endif %}">
-                                <i class="bi-briefcase me-2"></i> Projects
+                                <i class="bi-briefcase me-2"></i> {% trans "Projects" %}
                             </a>
                         </li>
                         <li>
                             <a href="{% url 'messages_app:messages_view' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'messages_view' %}active{% endif %}">
-                                <i class="bi-envelope me-2"></i> Messages
+                                <i class="bi-envelope me-2"></i> {% trans "Messages" %}
                             </a>
                         </li>
                         <li>
                             <a href="{% url 'forum_app:forum' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'forum' %}active{% endif %}">
-                                <i class="bi-chat-left-text me-2"></i> Forum
+                                <i class="bi-chat-left-text me-2"></i> {% trans "Forum" %}
                             </a>
                         </li>
                     {% endif %}
@@ -125,13 +123,13 @@
                     {% if user.profile.profile_picture %}
                         <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}" width="32" height="32" class="rounded-circle me-2">
                     {% else %}
-                        <img src="https://res.cloudinary.com/ferjen/image/upload/v1718991742/avatars/red_cuddly_iqxage.png" alt="Default Avatar" width="32" height="32" class="rounded-circle me-2">
+                        <img src="{% static 'assets/images/default_avatar.png' %}" alt="{% trans 'Default Avatar' %}" width="32" height="32" class="rounded-circle me-2">
                     {% endif %}
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="avatarDropdown">
-                    <li><a class="dropdown-item" href="{% url 'main:profile' %}">Profile</a></li>
+                    <li><a class="dropdown-item" href="{% url 'main:profile' %}">{% trans "Profile" %}</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger" href="{% url 'main:logout' %}">Logout</a></li>
+                    <li><a class="dropdown-item text-danger" href="{% url 'main:logout' %}">{% trans "Logout" %}</a></li>
                 </ul>
             </div>
         </div>

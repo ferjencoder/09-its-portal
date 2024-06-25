@@ -1,0 +1,29 @@
+<!-- employee_portal/forum_dashboard.html -->
+{% extends "main/base_sidebar.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>{% trans "Forum Dashboard" %}</h1>
+    <div class="row">
+        <div class="col-md-8">
+            <h2>{% trans "Forum Topics" %}</h2>
+            <ul class="list-group">
+                {% for topic in topics %}
+                <li class="list-group-item">
+                    <a href="{% url 'forum_app:topic_detail' topic.id %}">{{ topic.title }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-4">
+            <h2>{% trans "Employees in Forum" %}</h2>
+            <ul class="list-group">
+                {% for employee in employees %}
+                <li class="list-group-item">{{ employee.username }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

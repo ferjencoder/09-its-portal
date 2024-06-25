@@ -1,0 +1,23 @@
+<!-- forum_app/post_detail.html -->
+
+{% extends "main/base_sidebar.html" %}
+{% load i18n %}
+
+{% block title %}{{ post.title }} - {% trans "Forum - ITS Portal" %}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="text-center">
+        <h1 class="display-4">{{ post.title }}</h1>
+        <hr class="my-5">
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">{{ post.author }}</h5>
+            <p class="card-text">{{ post.content }}</p>
+            <small class="text-muted">{{ post.created_at|naturaltime }}</small>
+        </div>
+    </div>
+</div>
+{% endblock %}

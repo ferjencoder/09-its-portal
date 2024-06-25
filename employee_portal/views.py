@@ -1,13 +1,14 @@
 # employee_portal/views.py
 
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from projects.models import Project
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect, get_object_or_404
+from forum_app.models import ForumPost, ForumTopic
+from .forms import BlogPostForm, ProfileForm
+from blog.models import BlogPost
 from main.models import Profile
 from messages_app.models import Message
-from forum_app.models import ForumPost
-from blog.models import BlogPost
-from .forms import BlogPostForm, ProfileForm
+from projects.models import Project
 
 
 @login_required
@@ -68,3 +69,14 @@ def edit_profile(request):
     else:
         form = ProfileForm(instance=profile)
     return render(request, "employee_portal/edit_profile.html", {"form": form})
+
+
+@login_required
+def forum_dashboard(request):
+    topics = ForumTopic.objects.all()
+    employees = User.objects.filter(groups__name="employee")
+    return render(
+        request,
+        "employee_portal/forum_dashboard.html",
+        {"topics": topics, "employees": employees},
+    )

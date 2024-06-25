@@ -1,19 +1,20 @@
 # main/views.py
 
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import Group
-from django.contrib import messages
-from .forms import RegisterForm, ProfileForm
-from .models import Profile
+
+from .forms import RegisterForm, ProfileForm, UserRegistrationForm
 from .utils import get_profile
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import Group
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
 from django.utils import translation
+from django.views.decorators.csrf import csrf_protect
 from forum_app.models import ForumTopic
 from messages_app.models import Message
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_protect
+import os
 
 
 def csrf_failure(request, reason=""):
@@ -88,6 +89,35 @@ def profile(request):
     else:
         form = ProfileForm(instance=profile)
     return render(request, "main/profile.html", {"form": form})
+
+
+@login_required
+def edit_profile(request):
+    profile = get_profile(request.user)
+    predefined_images = [
+        f"assets/images/avatars/{image}"
+        for image in os.listdir("its_portal/static/assets/images/avatars")
+    ]
+    if request.method == "POST":
+        user_form = UserRegistrationForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, "Your profile has been updated!")
+            return redirect("main:profile")
+    else:
+        user_form = UserRegistrationForm(instance=request.user)
+        profile_form = ProfileForm(instance=profile)
+    return render(
+        request,
+        "main/edit_profile.html",
+        {
+            "user_form": user_form,
+            "profile_form": profile_form,
+            "predefined_images": predefined_images,
+        },
+    )
 
 
 @login_required

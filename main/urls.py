@@ -13,6 +13,7 @@ urlpatterns = [
     path("services/", views.services, name="services"),
     path("register/", views.register, name="register"),
     path("profile/", views.profile, name="profile"),
+    path("edit_profile/", views.edit_profile, name="edit_profile"),
     path("request_quote/", views.request_quote, name="request_quote"),
     path("dashboard/", views.dashboard, name="dashboard"),
     path("forum/", include("forum_app.urls", namespace="forum_app")),

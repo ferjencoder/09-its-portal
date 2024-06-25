@@ -5,9 +5,11 @@ from django.contrib.auth.decorators import login_required
 from projects.models import Project
 from main.models import Profile
 from blog.models import BlogPost
+from django.contrib import messages
 from messages_app.models import Message
 from forum_app.models import ForumPost
-from .forms import ProfileForm
+from main.forms import UserRegistrationForm, ProfileForm
+from main.utils import get_profile
 
 
 @login_required
@@ -36,20 +38,29 @@ def view_projects(request):
 
 @login_required
 def profile(request):
-    return render(request, "client_portal/profile.html")
+    profile = get_profile(request.user)
+    return render(request, "client_portal/profile.html", {"profile": profile})
 
 
 @login_required
 def edit_profile(request):
-    profile = get_object_or_404(Profile, user=request.user)
+    profile = get_profile(request.user)
     if request.method == "POST":
-        form = ProfileForm(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
-            form.save()
+        user_form = UserRegistrationForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, "Your profile has been updated!")
             return redirect("client_portal:profile")
     else:
-        form = ProfileForm(instance=profile)
-    return render(request, "client_portal/edit_profile.html", {"form": form})
+        user_form = UserRegistrationForm(instance=request.user)
+        profile_form = ProfileForm(instance=profile)
+    return render(
+        request,
+        "client_portal/edit_profile.html",
+        {"user_form": user_form, "profile_form": profile_form},
+    )
 
 
 @login_required

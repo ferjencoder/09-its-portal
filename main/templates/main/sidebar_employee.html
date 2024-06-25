@@ -1,0 +1,26 @@
+<!-- main/sidebar_employee.html -->
+ 
+{% extends 'main/base_sidebar.html' %}
+
+{% block sidebar_links %}
+<li>
+    <a href="{% url 'employee_portal:employee_dashboard' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'employee_dashboard' %}active{% endif %}">
+        <i class="bi-speedometer me-2"></i> {% trans "Dashboard" %}
+    </a>
+</li>
+<li>
+    <a href="{% url 'projects:view_projects' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'view_projects' %}active{% endif %}">
+        <i class="bi-briefcase me-2"></i> {% trans "Projects" %}
+    </a>
+</li>
+<li>
+    <a href="{% url 'messages_app:messages_view' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'messages_view' %}active{% endif %}">
+        <i class="bi-envelope me-2"></i> {% trans "Messages" %}
+    </a>
+</li>
+<li>
+    <a href="{% url 'forum_app:forum' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'forum' %}active{% endif %}">
+        <i class="bi-chat-left-text me-2"></i> {% trans "Forum" %}
+    </a>
+</li>
+{% endblock %}

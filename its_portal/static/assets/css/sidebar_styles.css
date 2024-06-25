@@ -50,6 +50,11 @@
     color: #fff;
 }
 
+.selected {
+    border: 2px solid #007bff;
+}
+
+
 #page-content-wrapper {
     width: calc(100% - 280px);
     transition: all 0.3s ease;
