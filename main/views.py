@@ -1,19 +1,19 @@
 # main/views.py
 
 
-from .forms import RegisterForm, ProfileForm, UserRegistrationForm
-from .utils import get_profile
+from django.utils import translation
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Group
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from django.utils import translation
-from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.forms import AuthenticationForm
+from .forms import RegisterForm, ProfileForm, UserRegistrationForm
+from .utils import get_profile
 from forum_app.models import ForumTopic
 from messages_app.models import Message
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_protect
 import os
 
 

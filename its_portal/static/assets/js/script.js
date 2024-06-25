@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let selectedImage = null;
 
     predefinedImages.forEach(image => {
+        image.style.cursor = 'pointer';
         image.addEventListener('click', function () {
             predefinedImages.forEach(img => img.classList.remove('selected'));
             this.classList.add('selected');
@@ -46,8 +47,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     selectImageButton.addEventListener('click', function () {
         if (selectedImage) {
-            const profileImageInput = document.getElementById('id_profile_picture');
-            profileImageInput.value = selectedImage;
+            const predefinedImageSelect = document.getElementById('id_profile_picture');
+            predefinedImageSelect.value = selectedImage;
+            const imgPreview = document.querySelector('.rounded-circle');
+            imgPreview.src = selectedImage;
             $('#imageModal').modal('hide');
         }
     });
