@@ -2,32 +2,142 @@
 
 {% extends "main/base_sidebar.html" %}
 {% load i18n %}
+{% load static %}
 
 {% block content %}
-<div class="container mt-5">
+<link rel="stylesheet" href="{% static 'assets/css/messages_styles.css' %}">
+<div class="container-fluid mt-1">
     <div class="text-center">
-        <h1 class="display-4">{% trans "Send Message" %}</h1>
+        <h1 class="display-4">{% trans "Messages" %}</h1>
         <hr class="my-5">
     </div>
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <form method="post">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="recipient">{% trans "Recipient" %}</label>
-                    <select name="recipient" id="recipient" class="form-control" required>
-                        {% for user in users %}
-                            <option value="{{ user.id }}">{{ user.username }}</option>
-                        {% endfor %}
-                    </select>
+    <div class="row">
+        <!-- Sidebar for conversations -->
+        <div class="col-md-4 col-lg-3 px-0 bg-light" id="sidebar">
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action py-3 px-4" data-bs-toggle="modal" data-bs-target="#newConversationModal">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-plus-circle me-3" style="font-size: 1.5rem;"></i>
+                        <div class="d-flex flex-column">
+                            <span class="fw-bold">{% trans "New conversation" %}</span>
+                        </div>
+                    </div>
+                </a>
+                {% for conversation in conversations %}
+                <a href="{% url 'messages_app:messages_view' recipient_id=conversation.id %}" class="list-group-item list-group-item-action py-3 px-4 conversation-link">
+                    <div class="d-flex align-items-center">
+                        <img src="{{ conversation.avatar }}" alt="{{ conversation.name }}" class="rounded-circle me-3" width="40">
+                        <div class="d-flex flex-column">
+                            <span class="fw-bold">{{ conversation.name }}</span>
+                            <span class="text-muted">
+                                {% if conversation.last_message.sender == user %}
+                                    You: {{ conversation.last_message.content|truncatewords:5 }}
+                                {% else %}
+                                    {{ conversation.last_message.content|truncatewords:5 }}
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- Main area for messages -->
+        <div class="col-md-8 col-lg-9 px-0">
+            <div class="d-flex flex-column h-100">
+                <div class="border-bottom px-4 py-3">
+                    <h4 id="recipient-name">{{ recipient.username if recipient else 'Select a conversation' }}</h4>
                 </div>
-                <div class="form-group">
-                    <label for="content">{% trans "Message" %}</label>
-                    <textarea name="content" id="content" rows="5" class="form-control" required></textarea>
+                <div class="flex-grow-1 px-4 py-3" id="messages">
+                    {% for message in messages %}
+                    <div class="d-flex {% if message.sender == user %}justify-content-end{% else %}justify-content-start{% endif %} mb-4">
+                        <div class="p-3 rounded {% if message.sender == user %}bg-primary text-white{% else %}bg-light{% endif %}">
+                            {{ message.content }}
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
-                <button type="submit" class="btn btn-primary btn-block mt-4">{% trans "Send" %}</button>
-            </form>
+                {% if recipient %}
+                <div class="border-top px-4 py-3">
+                    <form id="message-form" method="post" class="d-flex" data-recipient-id="{{ recipient.id }}">
+                        {% csrf_token %}
+                        <input type="text" name="content" class="form-control me-2" placeholder="Type a message" required>
+                        <button type="submit" class="btn btn-primary">{% trans "Send" %}</button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
+
+<!-- Modal for new conversation -->
+<div class="modal fade" id="newConversationModal" tabindex="-1" aria-labelledby="newConversationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newConversationModalLabel">{% trans "New Conversation" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group list-group-flush">
+                    {% for user in users %}
+                    <a href="#" class="list-group-item list-group-item-action py-3 px-4 select-recipient" data-recipient-id="{{ user.id }}" data-recipient-username="{{ user.username }}">
+                        <div class="d-flex align-items-center">
+                            <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}" class="rounded-circle me-3" width="40">
+                            <div class="d-flex flex-column">
+                                <span class="fw-bold">{{ user.username }}</span>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const recipientLinks = document.querySelectorAll('.select-recipient');
+    recipientLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const recipientId = this.getAttribute('data-recipient-id');
+            const recipientUsername = this.getAttribute('data-recipient-username');
+            document.getElementById('recipient-name').textContent = recipientUsername;
+            document.getElementById('message-form').setAttribute('data-recipient-id', recipientId);
+            $('#newConversationModal').modal('hide');
+        });
+    });
+
+    const messageForm = document.getElementById('message-form');
+    if (messageForm) {
+        messageForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const recipientId = this.getAttribute('data-recipient-id');
+            const content = this.querySelector('[name="content"]').value;
+            const csrfToken = this.querySelector('[name="csrfmiddlewaretoken"]').value;
+
+            fetch(`/messages/send/${recipientId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({ content })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const messageContainer = document.getElementById('messages');
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('d-flex', 'justify-content-end', 'mb-4');
+                messageDiv.innerHTML = `<div class="p-3 rounded bg-primary text-white">${data.content}</div>`;
+                messageContainer.appendChild(messageDiv);
+                messageForm.reset();
+            });
+        });
+    }
+});
+</script>
 {% endblock %}

@@ -2,35 +2,105 @@
 
 {% extends "main/base_sidebar.html" %}
 {% load i18n %}
+{% load static %}
+{% load humanize %}
 
 {% block content %}
-<div class="container mt-5">
+<link rel="stylesheet" href="{% static 'assets/css/messages_styles.css' %}">
+<div class="container-fluid mt-1">
     <div class="text-center">
         <h1 class="display-4">{% trans "Messages" %}</h1>
         <hr class="my-5">
     </div>
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h3>{% trans "Received Messages" %}</h3>
-            <ul class="list-group mb-4">
-                {% for message in messages_received %}
-                    <li class="list-group-item">
-                        <strong>{% trans "From:" %}</strong> {{ message.sender.username }}<br>
-                        <strong>{% trans "Message:" %}</strong> {{ message.content }}<br>
-                        <strong>{% trans "Date:" %}</strong> {{ message.timestamp }}
-                    </li>
+    <div class="row">
+        <!-- Sidebar for conversations -->
+        <div class="col-md-4 col-lg-3 px-0 bg-light" id="sidebar">
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action py-3 px-4" data-bs-toggle="modal" data-bs-target="#newConversationModal">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-plus-circle me-3" style="font-size: 1.5rem;"></i>
+                        <div class="d-flex flex-column">
+                            <span class="fw-bold">{% trans "New conversation" %}</span>
+                        </div>
+                    </div>
+                </a>
+                {% for conversation in conversations %}
+                <a href="{% url 'messages_app:messages_view' recipient_id=conversation.id %}" class="list-group-item list-group-item-action py-3 px-4">
+                    <div class="d-flex align-items-center">
+                        <img src="{{ conversation.avatar }}" alt="{{ conversation.name }}" class="rounded-circle me-3" width="40">
+                        <div class="d-flex flex-column">
+                            <span class="fw-bold">{{ conversation.name }}</span>
+                            <span class="text-muted">
+                                {% if conversation.last_message.sender == user %}
+                                    You: {{ conversation.last_message.content|truncatewords:5 }}
+                                {% else %}
+                                    {{ conversation.last_message.content|truncatewords:5 }}
+                                {% endif %}
+                            </span>
+                            <span class="small text-muted">{{ conversation.last_message_time|naturaltime }}</span>
+                        </div>
+                    </div>
+                </a>
                 {% endfor %}
-            </ul>
-            <h3>{% trans "Sent Messages" %}</h3>
-            <ul class="list-group">
-                {% for message in messages_sent %}
-                    <li class="list-group-item">
-                        <strong>{% trans "To:" %}</strong> {{ message.recipient.username }}<br>
-                        <strong>{% trans "Message:" %}</strong> {{ message.content }}<br>
-                        <strong>{% trans "Date:" %}</strong> {{ message.timestamp }}
-                    </li>
-                {% endfor %}
-            </ul>
+            </div>
+        </div>
+        <!-- Main area for messages -->
+        <div class="col-md-8 col-lg-9 px-0">
+            <div class="d-flex flex-column h-100">
+                <div class="d-flex align-items-center border-bottom px-4 py-3">
+                    {% if recipient %}
+                        <img src="{{ recipient.profile.profile_picture.url }}" alt="{{ recipient.username }}" class="rounded-circle me-3" width="40">
+                        <h4>{{ recipient.username }}</h4>
+                    {% else %}
+                        <h4>{% trans "Chat" %}</h4>
+                    {% endif %}
+                </div>
+                <div class="flex-grow-1 px-4 py-3" id="messages">
+                    {% for message in messages %}
+                    <div class="d-flex {% if message.sender == user %}justify-content-end{% else %}justify-content-start{% endif %} mb-4">
+                        <div class="p-3 rounded {% if message.sender == user %}bg-primary text-white{% else %}bg-light{% endif %}">
+                            {{ message.content }}
+                            <div class="small text-muted mt-1">{{ message.created_at|naturaltime }}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if recipient %}
+                <div class="border-top px-4 py-3">
+                    <form method="post" action="{% url 'messages_app:send_message' recipient.id %}" class="d-flex">
+                        {% csrf_token %}
+                        <input type="text" name="content" class="form-control me-2" placeholder="Type a message" required>
+                        <button type="submit" class="btn btn-primary">{% trans "Send" %}</button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for new conversation -->
+<div class="modal fade" id="newConversationModal" tabindex="-1" aria-labelledby="newConversationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newConversationModalLabel">{% trans "New Conversation" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group list-group-flush">
+                    {% for user in users %}
+                    <a href="{% url 'messages_app:messages_view' recipient_id=user.id %}" class="list-group-item list-group-item-action py-3 px-4">
+                        <div class="d-flex align-items-center">
+                            <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}" class="rounded-circle me-3" width="40">
+                            <div class="d-flex flex-column">
+                                <span class="fw-bold">{{ user.username }}</span>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
 </div>
