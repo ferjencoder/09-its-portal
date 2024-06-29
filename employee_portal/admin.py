@@ -1,3 +1,5 @@
+# employee_portal/admin.py
+
 from django.contrib import admin
 from .models import ForumTopic, ForumPost, BlogPost, Message
 from projects.models import Project

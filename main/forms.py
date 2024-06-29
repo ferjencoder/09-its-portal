@@ -2,9 +2,12 @@
 
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import (
+    UserCreationForm,
+    UserChangeForm,
+    PasswordChangeForm,
+)
 from .models import Profile
-import os
 
 
 class UserRegistrationForm(forms.ModelForm):
@@ -23,25 +26,9 @@ class UserRegistrationForm(forms.ModelForm):
 
 
 class ProfileForm(forms.ModelForm):
-    avatars_path = "its_portal/static/assets/images/avatars"
-    predefined_image = forms.ChoiceField(
-        choices=[
-            (f"assets/images/avatars/{image}", image)
-            for image in os.listdir(avatars_path)
-        ],
-        required=False,
-        label="Predefined Image",
-    )
-
     class Meta:
         model = Profile
-        fields = [
-            "bio",
-            "location",
-            "birth_date",
-            "profile_picture",
-            "predefined_image",
-        ]
+        fields = ["bio", "location", "birth_date", "profile_picture"]
         widgets = {
             "bio": forms.Textarea(attrs={"class": "form-control", "rows": 5}),
             "location": forms.TextInput(attrs={"class": "form-control"}),
@@ -50,15 +37,6 @@ class ProfileForm(forms.ModelForm):
             ),
             "profile_picture": forms.FileInput(attrs={"class": "form-control"}),
         }
-
-    def save(self, commit=True):
-        profile = super(ProfileForm, self).save(commit=False)
-        predefined_image = self.cleaned_data.get("predefined_image")
-        if predefined_image:
-            profile.profile_picture = predefined_image
-        if commit:
-            profile.save()
-        return profile
 
 
 class RegisterForm(UserCreationForm):
@@ -77,4 +55,15 @@ class RegisterForm(UserCreationForm):
         user.email = self.cleaned_data["email"]
         if commit:
             user.save()
+            Profile.objects.get_or_create(
+                user=user, defaults={"role": self.cleaned_data["role"]}
+            )
         return user
+
+
+class UserEditForm(UserChangeForm):
+    password = None
+
+    class Meta:
+        model = User
+        fields = ("first_name", "last_name", "email")

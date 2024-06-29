@@ -20,4 +20,5 @@ urlpatterns = [
     path("messages/", include("messages_app.urls", namespace="messages_app")),
     path("login/", views.login_view, name="login"),
     path("logout/", views.logout_view, name="logout"),
+    path("test_media_static/", views.test_media_static, name="test_media_static"),
 ]

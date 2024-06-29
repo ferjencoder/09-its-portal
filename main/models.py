@@ -12,7 +12,9 @@ class Profile(models.Model):
         ("admin", "Admin"),
     )
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="profile", unique=True
+    )
     role = models.CharField(max_length=20, choices=USER_ROLES, default="user")
     bio = models.TextField(blank=True, null=True)
     location = models.CharField(max_length=100, blank=True, null=True)

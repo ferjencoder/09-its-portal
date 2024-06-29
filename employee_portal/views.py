@@ -4,9 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from forum_app.models import ForumPost, ForumTopic
-from .forms import BlogPostForm, ProfileForm
+from .forms import BlogPostForm
 from blog.models import BlogPost
-from main.models import Profile
 from messages_app.models import Message
 from projects.models import Project
 
@@ -51,24 +50,6 @@ def create_blog_post(request):
     else:
         form = BlogPostForm()
     return render(request, "employee_portal/create_blog_post.html", {"form": form})
-
-
-@login_required
-def profile(request):
-    return render(request, "employee_portal/profile.html")
-
-
-@login_required
-def edit_profile(request):
-    profile = get_object_or_404(Profile, user=request.user)
-    if request.method == "POST":
-        form = ProfileForm(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
-            form.save()
-            return redirect("employee_portal:profile")
-    else:
-        form = ProfileForm(instance=profile)
-    return render(request, "employee_portal/edit_profile.html", {"form": form})
 
 
 @login_required

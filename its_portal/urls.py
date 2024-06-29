@@ -1,10 +1,10 @@
 # its_portal/urls.py
 
 from django.conf import settings
-from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls.static import static
-from django.urls import path, include
+from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
+from django.urls import path, include
 from main import views as main_views
 from django.contrib.auth import views as auth_views
 

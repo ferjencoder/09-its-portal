@@ -3,7 +3,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from projects.models import Project
-from main.models import Profile
 from blog.models import BlogPost
 from django.contrib import messages
 from messages_app.models import Message

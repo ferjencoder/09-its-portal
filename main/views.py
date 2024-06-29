@@ -1,24 +1,44 @@
 # main/views.py
 
-
+from django.conf import settings
+from django.core.files import File
 from django.utils import translation
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.models import Group
-from django.contrib.auth.forms import AuthenticationForm
-from .forms import RegisterForm, ProfileForm, UserRegistrationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from .forms import RegisterForm, ProfileForm, UserRegistrationForm, UserEditForm
+from .models import Profile
 from .utils import get_profile
 from forum_app.models import ForumTopic
 from messages_app.models import Message
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_protect
 import os
+import shutil
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def csrf_failure(request, reason=""):
     return HttpResponse("CSRF verification failed. Reason: %s" % reason)
+
+
+@login_required
+def some_view(request):
+    user_role = request.user.groups.first().name
+
+    if user_role == "admin":
+        return render(request, "main/sidebar_admin.html")
+    elif user_role == "employee":
+        return render(request, "main/sidebar_employee.html")
+    elif user_role == "client":
+        return render(request, "main/sidebar_client.html")
+    else:
+        return render(request, "main/sidebar_generic.html")
 
 
 def set_language(request):
@@ -53,19 +73,31 @@ def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
             role = form.cleaned_data.get("role")
+
             if role == "client":
                 group = Group.objects.get(name="client")
             elif role == "employee":
                 group = Group.objects.get(name="employee")
             elif role == "admin":
                 group = Group.objects.get(name="admin")
-            else:
-                group = Group.objects.get(name="user")
+
+            user.save()
             user.groups.add(group)
+
+            profile, created = Profile.objects.get_or_create(
+                user=user, defaults={"role": role}
+            )
+            if not created:
+                profile.role = role
+                profile.save()
+
             login(request, user)
+            messages.success(request, "Registration successful.")
             return redirect("main:home")
+        else:
+            messages.error(request, "Unsuccessful registration. Invalid information.")
     else:
         form = RegisterForm()
     return render(request, "main/register.html", {"form": form})
@@ -94,27 +126,87 @@ def profile(request):
 @login_required
 def edit_profile(request):
     profile = get_profile(request.user)
+
     predefined_images = [
         f"assets/images/avatars/{image}"
-        for image in os.listdir("its_portal/static/assets/images/avatars")
+        for image in os.listdir(
+            os.path.join(settings.BASE_DIR, "its_portal/static/assets/images/avatars")
+        )
     ]
+
     if request.method == "POST":
-        user_form = UserRegistrationForm(request.POST, instance=request.user)
+        user_form = UserEditForm(request.POST, instance=request.user)
         profile_form = ProfileForm(request.POST, request.FILES, instance=profile)
+        password_form = PasswordChangeForm(user=request.user, data=request.POST)
+        predefined_image = request.POST.get("predefined_image")
+
+        logger.debug(f"POST data: {request.POST}")
+        logger.debug(f"Predefined image: {predefined_image}")
+
         if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
+            user = user_form.save()
+
+            if password_form.is_valid():
+                user.set_password(password_form.cleaned_data["new_password1"])
+                user.save()
+                update_session_auth_hash(
+                    request, user
+                )  # Keep the user logged in after password change
+
+            profile = profile_form.save(commit=False)
+
+            if predefined_image:
+                predefined_image_path = os.path.join(
+                    settings.BASE_DIR,
+                    "its_portal/static/assets/images/avatars",
+                    os.path.basename(predefined_image),
+                )
+                media_path = os.path.join(
+                    settings.MEDIA_ROOT,
+                    "profile_images",
+                    os.path.basename(predefined_image),
+                )
+                os.makedirs(
+                    os.path.dirname(media_path), exist_ok=True
+                )  # Ensure the directory exists
+                if os.path.exists(predefined_image_path):
+                    try:
+                        shutil.copy(predefined_image_path, media_path)
+                        profile.profile_picture = os.path.join(
+                            "profile_images", os.path.basename(predefined_image)
+                        )
+                        logger.debug(
+                            f"Profile picture set to: {profile.profile_picture}"
+                        )
+                    except FileNotFoundError as e:
+                        logger.error(f"Error copying predefined image: {e}")
+                        messages.error(request, f"Error copying predefined image: {e}")
+                else:
+                    logger.error(f"Predefined image not found: {predefined_image_path}")
+                    messages.error(
+                        request, f"Predefined image not found: {predefined_image_path}"
+                    )
+
+            profile.save()
             messages.success(request, "Your profile has been updated!")
             return redirect("main:profile")
+        else:
+            logger.debug(
+                f"Form errors: {user_form.errors}, {profile_form.errors}, {password_form.errors}"
+            )
+            messages.error(request, "Please correct the errors below.")
     else:
-        user_form = UserRegistrationForm(instance=request.user)
+        user_form = UserEditForm(instance=request.user)
         profile_form = ProfileForm(instance=profile)
+        password_form = PasswordChangeForm(user=request.user)
+
     return render(
         request,
         "main/edit_profile.html",
         {
             "user_form": user_form,
             "profile_form": profile_form,
+            "password_form": password_form,
             "predefined_images": predefined_images,
         },
     )
@@ -160,3 +252,15 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("main:home")
+
+
+# TEST
+def test_media_static(request):
+    return render(
+        request,
+        "main/test_media_static.html",
+        {
+            "media_url": settings.MEDIA_URL,
+            "static_url": settings.STATIC_URL,
+        },
+    )

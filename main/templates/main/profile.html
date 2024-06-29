@@ -7,7 +7,7 @@
 {% block title %}{% trans "Profile - ITS Portal" %}{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
+<div class="container-big mt-5">
     <div class="text-center">
         <h1 class="display-4">{% trans "Profile" %}</h1>
         <hr class="my-5">
@@ -21,8 +21,8 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4 text-center">
-                    {% if profile.profile_picture %}
-                        <img src="{{ profile.profile_picture.url }}" class="img-fluid rounded-circle mb-3" alt="{% trans 'Profile Picture' %}">
+                    {% if user.profile.profile_picture %}
+                        <img src="{{ user.profile.profile_picture.url }}" class="img-fluid rounded-circle mb-3" alt="{% trans 'Profile Picture' %}">
                     {% else %}
                         <img src="{% static 'assets/images/default_avatar.png' %}" class="img-fluid rounded-circle mb-3" alt="{% trans 'Default Avatar' %}">
                     {% endif %}
@@ -31,10 +31,10 @@
                     <p><strong>{% trans "Email:" %}</strong> {{ user.email }}</p>
                     <p><strong>{% trans "First Name:" %}</strong> {{ user.first_name }}</p>
                     <p><strong>{% trans "Last Name:" %}</strong> {{ user.last_name }}</p>
-                    <p><strong>{% trans "Role:" %}</strong> {{ profile.role }}</p>
-                    <p><strong>{% trans "Bio:" %}</strong> {{ profile.bio }}</p>
-                    <p><strong>{% trans "Location:" %}</strong> {{ profile.location }}</p>
-                    <p><strong>{% trans "Birth Date:" %}</strong> {{ profile.birth_date }}</p>
+                    <p><strong>{% trans "Role:" %}</strong> {{ user.profile.role }}</p>
+                    <p><strong>{% trans "Bio:" %}</strong> {{ user.profile.bio }}</p>
+                    <p><strong>{% trans "Location:" %}</strong> {{ user.profile.location }}</p>
+                    <p><strong>{% trans "Birth Date:" %}</strong> {{ user.profile.birth_date }}</p>
                 </div>
             </div>
         </div>

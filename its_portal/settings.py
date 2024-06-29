@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.humanize",
     "django_extensions",
-    "main.apps.MainConfig",
+    "main",
     "blog",
     "client_portal",
     "employee_portal",
@@ -136,10 +136,18 @@ LOCALE_PATHS = [
 ]
 
 STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
 STATICFILES_DIRS = [BASE_DIR / "its_portal/static"]
 
+SESSION_COOKIE_NAME = "sessionid_frontend"
+CSRF_COOKIE_NAME = "csrftoken_frontend"
+
+ADMIN_SESSION_COOKIE_NAME = "sessionid_admin"
+ADMIN_CSRF_COOKIE_NAME = "csrftoken_admin"
+
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -148,7 +156,13 @@ CSRF_TRUSTED_ORIGINS = [
     "https://127.0.0.1:8000",
 ]
 
+CSRF_COOKIE_SECURE = False
 CSRF_FAILURE_VIEW = "main.views.csrf_failure"
+
+LOGIN_URL = "main:login"
+LOGIN_REDIRECT_URL = "main:profile"
+LOGOUT_REDIRECT_URL = "main:home"
+
 
 LOGGING = {
     "version": 1,
