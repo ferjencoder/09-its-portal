@@ -30,7 +30,6 @@ def csrf_failure(request, reason=""):
 @login_required
 def some_view(request):
     user_role = request.user.groups.first().name
-
     if user_role == "admin":
         return render(request, "main/sidebar_admin.html")
     elif user_role == "employee":
@@ -75,24 +74,20 @@ def register(request):
         if form.is_valid():
             user = form.save(commit=False)
             role = form.cleaned_data.get("role")
-
             if role == "client":
                 group = Group.objects.get(name="client")
             elif role == "employee":
                 group = Group.objects.get(name="employee")
             elif role == "admin":
                 group = Group.objects.get(name="admin")
-
             user.save()
             user.groups.add(group)
-
             profile, created = Profile.objects.get_or_create(
                 user=user, defaults={"role": role}
             )
             if not created:
                 profile.role = role
                 profile.save()
-
             login(request, user)
             messages.success(request, "Registration successful.")
             return redirect("main:home")
@@ -137,68 +132,70 @@ def edit_profile(request):
     if request.method == "POST":
         user_form = UserEditForm(request.POST, instance=request.user)
         profile_form = ProfileForm(request.POST, request.FILES, instance=profile)
-        password_form = PasswordChangeForm(user=request.user, data=request.POST)
         predefined_image = request.POST.get("predefined_image")
+        current_password = request.POST.get("current_password")
+        confirm_current_password = request.POST.get("confirm_current_password")
 
         logger.debug(f"POST data: {request.POST}")
         logger.debug(f"Predefined image: {predefined_image}")
 
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-
-            if password_form.is_valid():
-                user.set_password(password_form.cleaned_data["new_password1"])
-                user.save()
-                update_session_auth_hash(
-                    request, user
-                )  # Keep the user logged in after password change
-
-            profile = profile_form.save(commit=False)
-
-            if predefined_image:
-                predefined_image_path = os.path.join(
-                    settings.BASE_DIR,
-                    "its_portal/static/assets/images/avatars",
-                    os.path.basename(predefined_image),
-                )
-                media_path = os.path.join(
-                    settings.MEDIA_ROOT,
-                    "profile_images",
-                    os.path.basename(predefined_image),
-                )
-                os.makedirs(
-                    os.path.dirname(media_path), exist_ok=True
-                )  # Ensure the directory exists
-                if os.path.exists(predefined_image_path):
-                    try:
-                        shutil.copy(predefined_image_path, media_path)
-                        profile.profile_picture = os.path.join(
-                            "profile_images", os.path.basename(predefined_image)
-                        )
-                        logger.debug(
-                            f"Profile picture set to: {profile.profile_picture}"
-                        )
-                    except FileNotFoundError as e:
-                        logger.error(f"Error copying predefined image: {e}")
-                        messages.error(request, f"Error copying predefined image: {e}")
-                else:
-                    logger.error(f"Predefined image not found: {predefined_image_path}")
-                    messages.error(
-                        request, f"Predefined image not found: {predefined_image_path}"
-                    )
-
-            profile.save()
-            messages.success(request, "Your profile has been updated!")
-            return redirect("main:profile")
+        if current_password != confirm_current_password:
+            messages.error(request, "Current passwords do not match.")
+        elif not request.user.check_password(current_password):
+            messages.error(request, "Current password is incorrect.")
         else:
-            logger.debug(
-                f"Form errors: {user_form.errors}, {profile_form.errors}, {password_form.errors}"
-            )
-            messages.error(request, "Please correct the errors below.")
+            if user_form.is_valid() and profile_form.is_valid():
+                user = user_form.save()
+
+                profile = profile_form.save(commit=False)
+
+                if predefined_image:
+                    predefined_image_path = os.path.join(
+                        settings.BASE_DIR,
+                        "its_portal/static/assets/images/avatars",
+                        os.path.basename(predefined_image),
+                    )
+                    media_path = os.path.join(
+                        settings.MEDIA_ROOT,
+                        "profile_images",
+                        os.path.basename(predefined_image),
+                    )
+                    os.makedirs(
+                        os.path.dirname(media_path), exist_ok=True
+                    )  # Ensure the directory exists
+                    if os.path.exists(predefined_image_path):
+                        try:
+                            shutil.copy(predefined_image_path, media_path)
+                            profile.profile_picture = os.path.join(
+                                "profile_images", os.path.basename(predefined_image)
+                            )
+                            logger.debug(
+                                f"Profile picture set to: {profile.profile_picture}"
+                            )
+                        except FileNotFoundError as e:
+                            logger.error(f"Error copying predefined image: {e}")
+                            messages.error(
+                                request, f"Error copying predefined image: {e}"
+                            )
+                    else:
+                        logger.error(
+                            f"Predefined image not found: {predefined_image_path}"
+                        )
+                        messages.error(
+                            request,
+                            f"Predefined image not found: {predefined_image_path}",
+                        )
+
+                profile.save()
+                messages.success(request, "Your profile has been updated!")
+                return redirect("main:profile")
+            else:
+                logger.debug(f"Form errors: {user_form.errors}, {profile_form.errors}")
+                messages.error(request, "Please correct the errors below.")
+
     else:
         user_form = UserEditForm(instance=request.user)
         profile_form = ProfileForm(instance=profile)
-        password_form = PasswordChangeForm(user=request.user)
 
     return render(
         request,
@@ -206,7 +203,6 @@ def edit_profile(request):
         {
             "user_form": user_form,
             "profile_form": profile_form,
-            "password_form": password_form,
             "predefined_images": predefined_images,
         },
     )

@@ -30,7 +30,7 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = ["bio", "location", "birth_date", "profile_picture"]
         widgets = {
-            "bio": forms.Textarea(attrs={"class": "form-control", "rows": 5}),
+            "bio": forms.Textarea(attrs={"class": "form-control", "rows": 4}),
             "location": forms.TextInput(attrs={"class": "form-control"}),
             "birth_date": forms.DateInput(
                 attrs={"class": "form-control", "type": "date"}
