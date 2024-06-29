@@ -1,36 +1,29 @@
-//its_portal/static/assets/js/dark_mode.js
-    
-document.addEventListener('DOMContentLoaded',function() {
+// its_portal/static/assets/js/dark_mode.js
+
+document.addEventListener('DOMContentLoaded', function() {
     const darkModeIcon = document.querySelector('#dark-mode-icon');
-    const dropdownMenus = document.querySelectorAll('.dropdown-menu');
+    const body = document.body;
+    const navbar = document.querySelector('.navbar');
+    const dropdowns = document.querySelectorAll('.dropdown');
+
+    function applyTheme(theme) {
+        body.classList.toggle('dark-mode', theme === 'dark-mode');
+        darkModeIcon.className = theme === 'dark-mode' ? 'fas fa-sun' : 'fas fa-moon';
+        dropdowns.forEach(dropdown => {
+            dropdown.setAttribute('data-bs-theme', theme === 'dark-mode' ? 'dark' : 'light');
+        });
+    }
+
+    const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light-mode';
+    applyTheme(currentTheme);
 
     if (darkModeIcon) {
-        const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : null;
-
-        if (currentTheme) {
-            document.body.classList.add(currentTheme);
-            darkModeIcon.className = currentTheme === 'dark-mode' ? 'fas fa-sun' : 'fas fa-moon';
-            dropdownMenus.forEach(menu => {
-                menu.classList.toggle('dropdown-menu-dark', currentTheme === 'dark-mode');
-            });
-        }
-
         darkModeIcon.addEventListener('click', function () {
-            if (document.body.classList.contains('dark-mode')) {
-                document.body.classList.remove('dark-mode');
-                localStorage.setItem('theme', 'light-mode');
-                darkModeIcon.className = 'fas fa-moon';
-                dropdownMenus.forEach(menu => {
-                    menu.classList.remove('dropdown-menu-dark');
-                });
-            } else {
-                document.body.classList.add('dark-mode');
-                localStorage.setItem('theme', 'dark-mode');
-                darkModeIcon.className = 'fas fa-sun';
-                dropdownMenus.forEach(menu => {
-                    menu.classList.add('dropdown-menu-dark');
-                });
-            }
+            const newTheme = body.classList.contains('dark-mode') ? 'light-mode' : 'dark-mode';
+            localStorage.setItem('theme', newTheme);
+            applyTheme(newTheme);
         });
     }
 });
+
+

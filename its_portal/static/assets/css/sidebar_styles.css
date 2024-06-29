@@ -54,6 +54,13 @@
     border: 2px solid #007bff;
 }
 
+.bi-arrow-bar-left {
+    color: #343a40;
+}
+
+body.dark-mode .bi-arrow-bar-left {
+    color: #f8f9fa; /* or your desired dark mode color */
+}
 
 #page-content-wrapper {
     width: calc(100% - 280px);
