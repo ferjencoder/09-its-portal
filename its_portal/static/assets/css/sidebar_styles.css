@@ -1,4 +1,4 @@
-/* static/css/sidebar_syltes.css */
+/* static/css/sidebar_styles.css */
 
 #wrapper, #sidebar-wrapper {
     min-height: 100vh;
@@ -59,7 +59,11 @@
 }
 
 body.dark-mode .bi-arrow-bar-left {
-    color: #f8f9fa; /* or your desired dark mode color */
+    color: #f8f9fa;
+}
+
+.dropdown-toggle{
+    color: white;
 }
 
 #page-content-wrapper {
@@ -85,4 +89,53 @@ body.dark-mode .bi-arrow-bar-left {
     #wrapper #page-content-wrapper {
         width: 100%;
     }
+}
+
+/* Dark mode for modal */
+.modal-content {
+    background-color: #f8f9fa;
+}
+
+body.dark-mode .modal-content {
+    background-color: #333;
+    color: #f8f9fa;
+}
+
+body.dark-mode .modal-header {
+    border-bottom: 1px solid #444;
+}
+
+body.dark-mode .modal-body {
+    border-top: 1px solid #444;
+}
+
+/* Custom scrollbar styles */
+.modal-body ul.list-group::-webkit-scrollbar {
+    width: 0.5em;
+}
+
+.modal-body ul.list-group::-webkit-scrollbar-track {
+    background: #f8f9fa;
+}
+
+body.dark-mode .modal-body ul.list-group::-webkit-scrollbar-track {
+    background: #333;
+}
+
+.modal-body ul.list-group::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: rgb(190, 190, 190);
+}
+
+.modal-body ul.list-group::-webkit-scrollbar-thumb:hover {
+    border-radius: 4px;
+    background: rgb(109, 109, 109);
+}
+
+body.dark-mode .modal-body ul.list-group::-webkit-scrollbar-thumb {
+    background: rgb(63, 63, 63);
+}
+
+body.dark-mode .modal-body ul.list-group::-webkit-scrollbar-thumb:hover {
+    background: rgb(190, 190, 190);
 }

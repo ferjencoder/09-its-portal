@@ -2,10 +2,12 @@
 
 {% extends "main/base_sidebar.html" %}
 {% load i18n %}
+{% load static %}
 
 {% block title %}Your Dashboard - ITS Portal{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'assets/css/custom_styles.css' %}">
 <div class="container mt-5">
     <div class="text-center">
         <h1 class="display-4">{% trans "Your Dashboard" %}</h1>

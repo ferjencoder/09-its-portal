@@ -240,6 +240,10 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 return redirect("main:home")
+            else:
+                form.add_error(None, "Invalid username or password")
+        else:
+            form.add_error(None, "Invalid username or password")
     else:
         form = AuthenticationForm()
     return render(request, "main/login.html", {"form": form})

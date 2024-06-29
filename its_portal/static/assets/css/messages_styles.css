@@ -1,24 +1,60 @@
 /* static/css/messages_styles.css */
 
 #sidebar {
-    height: calc(100vh - 320px);
+    height: 90%;
+    width: calc(25% + 50px);
     overflow-y: auto;
     border-right: 1px solid #dee2e6;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    transition: background-color 0.3s;
 }
 
-#messages {
-    flex-grow: 1;
-    overflow-y: auto;
-    height: calc(100vh - 450px);
+body.dark-mode #sidebar {
+    color: #dee2e6;
+    background-color: #333;
+    border-right: 1px solid #222;
+}
+
+.list-group {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+body.dark-mode .list-group {
+    color: #dee2e6;
+    background-color: #444;
+}
+
+body.dark-mode .text-muted {
+    color: #d3d6da !important;
 }
 
 .list-group-item {
     cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    border: 0.5px solid #8d8d8d;
 }
 
 .list-group-item-action:hover,
 .list-group-item-action:focus {
-    background-color: #f8f9fa;
+    background-color: #e9ecef;
+}
+
+body.dark-mode .list-group-item-action:hover,
+body.dark-mode .list-group-item-action:focus {
+    background-color: #444;
+}
+
+body.dark-mode .list-group-item {
+    background-color: #333;
+    color: #f8f9fa;
+}
+
+body.dark-mode .list-group-item-action {
+    background-color: #333;
+    color: #f8f9fa;
 }
 
 .p-3 {
@@ -33,6 +69,10 @@
     background-color: #f8f9fa !important;
 }
 
+body.dark-mode .bg-light {
+    background-color: #8d8d8d !important;
+}
+
 .border-bottom {
     border-bottom: 1px solid #dee2e6;
 }
@@ -41,7 +81,134 @@
     border-top: 1px solid #dee2e6;
 }
 
+body.dark-mode .border-bottom,
+body.dark-mode .border-top {
+    border-color: #444;
+}
+
 .bi,
 .fas {
     color: #343a40;
+}
+
+body.dark-mode .bi,
+body.dark-mode .fas {
+    color: #f8f9fa;
+}
+
+/* Styles for input fields */
+input.form-control {
+    background-color: #f8f9fa;
+    color: #000;
+    border: 1px solid #ced4da;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode input.form-control {
+    background-color: #444;
+    color: #f8f9fa;
+    border: 1px solid #666;
+}
+
+body.dark-mode input.form-control::placeholder {
+    color: #cccccc;
+}
+
+#main-area {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 15px;
+    margin-left: 5px;
+    height: 90%;
+    width: calc(75% - 55px);
+    overflow-y: auto;
+}
+
+body.dark-mode #main-area {
+    background-color: #444;
+}
+
+/* Message box styles */
+.message-box {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    display: inline-block;
+    max-width: 75%;
+}
+
+.message-box.bg-primary {
+    background-color: #007bff;
+    color: white;
+    border-radius: 30px 30px 0 30px;
+}
+
+.message-box.bg-light {
+    background-color: #f8f9fa;
+    color: black;
+    border-radius: 0px 30px 30px 30px;
+}
+
+body.dark-mode .message-box.bg-light {
+    background-color: #8d8d8d;
+    color: white;
+}
+
+/* New Conversation styles */
+a.list-group-item.list-group-item-action.bg-success {
+    background-color: #28a745 !important;
+    color: #fff;
+}
+
+body.dark-mode a.list-group-item.list-group-item-action.bg-success {
+    background-color: #218838 !important;
+    color: #fff;
+}
+
+/* Modal styles */
+.modal-content {
+    background-color: #f8f9fa;
+}
+
+body.dark-mode .modal-content {
+    background-color: #333;
+    color: #f8f9fa;
+}
+
+body.dark-mode .modal-header {
+    border-bottom: 1px solid #444;
+}
+
+body.dark-mode .modal-body {
+    border-top: 1px solid #444;
+}
+
+/* Custom scrollbar styles */
+.modal-body ul.list-group::-webkit-scrollbar {
+    width: 0.5em;
+}
+
+.modal-body ul.list-group::-webkit-scrollbar-track {
+    background: #f8f9fa;
+}
+
+body.dark-mode .modal-body ul.list-group::-webkit-scrollbar-track {
+    background: #333;
+}
+
+.modal-body ul.list-group::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: rgb(190, 190, 190);
+}
+
+.modal-body ul.list-group::-webkit-scrollbar-thumb:hover {
+    border-radius: 4px;
+    background: rgb(63, 63, 63);
+}
+
+body.dark-mode .modal-body ul.list-group::-webkit-scrollbar-thumb {
+    background: rgb(63, 63, 63);
+}
+
+body.dark-mode .modal-body ul.list-group::-webkit-scrollbar-thumb:hover {
+    background: rgb(190, 190, 190);
 }

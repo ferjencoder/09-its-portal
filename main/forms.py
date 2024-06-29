@@ -2,11 +2,7 @@
 
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import (
-    UserCreationForm,
-    UserChangeForm,
-    PasswordChangeForm,
-)
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import Profile
 
 
@@ -16,13 +12,21 @@ class UserRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ("username", "first_name", "last_name", "email")
+        fields = ("first_name", "last_name", "username", "email")
 
     def clean_password2(self):
         cd = self.cleaned_data
         if cd["password1"] != cd["password2"]:
             raise forms.ValidationError("Passwords don't match.")
+        if len(cd["password1"]) < 8:
+            raise forms.ValidationError("Password must be at least 8 characters long.")
         return cd["password2"]
+
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError("Username already exists.")
+        return username
 
 
 class ProfileForm(forms.ModelForm):
@@ -48,7 +52,15 @@ class RegisterForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ["username", "email", "password1", "password2", "role"]
+        fields = [
+            "first_name",
+            "last_name",
+            "username",
+            "email",
+            "password1",
+            "password2",
+            "role",
+        ]
 
     def save(self, commit=True):
         user = super().save(commit=False)

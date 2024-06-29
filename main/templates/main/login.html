@@ -2,6 +2,8 @@
 
 {% extends 'main/base_generic.html' %}
 {% load i18n %}
+{% load static %}
+{% load custom_filters %}
 
 {% block content %}
 <div class="container mt-5">
@@ -11,24 +13,39 @@
         <hr class="my-5">
     </div>
     <div class="row justify-content-center mt-4">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <form method="post" action="{% url 'main:login' %}">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-5">
+                    <form method="post" action="{% url 'main:login' %}" novalidate class="needs-validation">
                         {% csrf_token %}
-                        <div class="form-group text-left">
-                            <label for="username">{% trans "Username" %}</label>
-                            <input type="text" class="form-control" id="username" name="username" required>
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+                        <div class="form-group text-start m-4">
+                            <label for="username" class="form-label">{% trans "Username" %}</label>
+                            {{ form.username|add_class:"form-control" }}
+                            <div class="invalid-feedback">
+                                {% trans "Please enter your username." %}
+                            </div>
                         </div>
-                        <div class="form-group text-left">
-                            <label for="password">{% trans "Password" %}</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
+                        <div class="form-group text-start m-4">
+                            <label for="password" class="form-label">{% trans "Password" %}</label>
+                            {{ form.password|add_class:"form-control" }}
+                            <div class="invalid-feedback">
+                                {% trans "Please enter your password." %}
+                            </div>
+                            <div class="caps-lock-warning text-danger mt-2" style="display: none;">
+                                {% trans "CAPS LOCK is on." %}
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block">{% trans "Login" %}</button>
+                        <button type="submit" class="btn btn-primary btn-block mt-4">{% trans "Login" %}</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script src="{% static 'assets/js/form_validation.js' %}"></script>
 {% endblock %}

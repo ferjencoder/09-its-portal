@@ -15,6 +15,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/sidebar_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/scrollbar.css' %}">
     <title>{% block title %}ITS Portal{% endblock %}</title>
 </head>
 <body>
@@ -38,11 +39,11 @@
                     {% endblock %}
                 {% endif %}
             </ul>
-            <div class="dropdown">
+            <div class="dropdown"  title="{{ user.username }}">
                 <hr>
                 <a href="#" class="d-flex align-items-center justify-content-center text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                     {% if user.profile.profile_picture %}
-                        <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}" width="32" height="32" class="rounded-circle me-2" title="{{ user.username }}">
+                        <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}" width="32" height="32" class="rounded-circle me-2">
                     {% else %}
                         <img src="{% static 'assets/images/default_avatar.png' %}" alt="{% trans 'Default Avatar' %}" width="32" height="32" class="rounded-circle me-2">
                     {% endif %}

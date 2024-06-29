@@ -9,6 +9,7 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'assets/css/styles.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/scrollbar.css' %}">
 
 <div class="container-big mt-1">
     <div class="text-center">
@@ -22,7 +23,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12 mb-2 text-center">
-                       {% if user.profile.profile_picture %}
+                        {% if user.profile.profile_picture %}
                             <img src="{{ user.profile.profile_picture.url }}" class="img-fluid rounded-circle mb-3 profile-image" style="width: 100px; height: 100px;" alt="{% trans 'Profile Picture' %}">
                         {% else %}
                             <img src="{% static 'assets/images/default_avatar.png' %}" class="img-fluid rounded-circle mb-3 profile-image" style="width: 100px; height: 100px;" alt="{% trans 'Default Avatar' %}">
@@ -93,11 +94,11 @@
                 <h5 class="modal-title" id="imageModalLabel">{% trans "Select a Profile Image" %}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
                 <div class="row">
                     {% for image in predefined_images %}
-                        <div class="col-md-3 mb-3">
-                            <img id="predefined-image-{{ forloop.counter }}" src="{% static image %}" alt="Avatar" class="img-thumbnail predefined-image" data-image-src="{% static image %}" style="cursor: pointer;">
+                        <div class="col-md-2 mb-3">
+                            <img id="predefined-image-{{ forloop.counter }}" src="{% static image %}" alt="Avatar" class="img-thumbnail predefined-image" data-image-src="{% static image %}" style="width: 100%; height: 100%; cursor: pointer;">
                         </div>
                     {% endfor %}
                 </div>
@@ -119,3 +120,4 @@
 <script src="{% static 'assets/js/dark_mode.js' %}"></script>
 <script src="{% static 'assets/js/edit_profile.js' %}"></script>
 {% endblock %}
+

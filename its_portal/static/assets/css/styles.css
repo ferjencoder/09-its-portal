@@ -1,3 +1,5 @@
+/* static/css/styles.css */
+
 *,
 ::after,
 ::before {
@@ -306,6 +308,19 @@ body.dark-mode .jumbotron {
   color: red;
 }
 
+.alert {
+    margin-bottom: 1rem;
+    padding: 0.75rem 1.25rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
 /*transiciones*/
 .fade-out {
   animation: fadeOut 0.5s;
@@ -339,4 +354,35 @@ body.dark-mode .jumbotron {
   to {
     opacity: 1;
   }
+}
+
+/* Custom scrollbar styles */
+.modal-body ul.list-group::-webkit-scrollbar {
+    width: 0.5em;
+}
+
+.modal-body ul.list-group::-webkit-scrollbar-track {
+    background: #f8f9fa;
+}
+
+body.dark-mode .modal-body ul.list-group::-webkit-scrollbar-track {
+    background: #333;
+}
+
+.modal-body ul.list-group::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: rgb(190, 190, 190);
+}
+
+.modal-body ul.list-group::-webkit-scrollbar-thumb:hover {
+    border-radius: 4px;
+    background: rgb(63, 63, 63);
+}
+
+body.dark-mode .modal-body ul.list-group::-webkit-scrollbar-thumb {
+    background: rgb(63, 63, 63);
+}
+
+body.dark-mode .modal-body ul.list-group::-webkit-scrollbar-thumb:hover {
+    background: rgb(190, 190, 190);
 }
