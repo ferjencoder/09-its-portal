@@ -11,8 +11,8 @@
 }
 
 body.dark-mode .card {
-  background-color: #333;
-  color: #e0e0e0;
+    background-color: #333;
+    color: #e0e0e0;
 }
 
 body.dark-mode #sidebar {
@@ -69,7 +69,7 @@ body.dark-mode .list-group-item-action {
     margin-left: 5px;
     height: 85%;
     width: calc(75% - 55px);
-    overflow-y: hidden;
+    overflow-y: auto;
 }
 
 body.dark-mode #main-area-recent-posts {
