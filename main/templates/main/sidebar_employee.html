@@ -23,4 +23,10 @@
             <i class="bi-chat-left-text me-2"></i> {% trans "Forum" %}
         </a>
     </li>
+    <li>
+        <a href="{% url 'blog:employee_blog_list' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'employee_blog_list' %}active{% endif %}">
+            <i class="bi-journal me-2"></i> {% trans "Blog" %}
+        </a>
+    </li>
 {% endblock %}
+

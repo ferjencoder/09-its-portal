@@ -16,23 +16,23 @@
                 <div class="card-body">
                     <form method="post" action="#">
                         {% csrf_token %}
-                        <div class="form-group text-left">
+                        <div class="form-group text-start mb-3">
                             <label for="name">{% trans "Full Name" %}</label>
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
-                        <div class="form-group text-left">
+                        <div class="form-group text-start mb-3">
                             <label for="email">{% trans "Email Address" %}</label>
                             <input type="email" class="form-control" id="email" name="email" required>
                         </div>
-                        <div class="form-group text-left">
+                        <div class="form-group text-start mb-3">
                             <label for="phone">{% trans "Phone Number" %}</label>
                             <input type="tel" class="form-control" id="phone" name="phone">
                         </div>
-                        <div class="form-group text-left">
+                        <div class="form-group text-start mb-3">
                             <label for="company">{% trans "Company Name" %}</label>
                             <input type="text" class="form-control" id="company" name="company">
                         </div>
-                        <div class="form-group text-left">
+                        <div class="form-group text-start mb-3">
                             <label for="service">{% trans "Select Service" %}</label>
                             <select class="form-control" id="service" name="service" required>
                                 <option value="Automation">{% trans "Automation" %}</option>
@@ -41,7 +41,7 @@
                                 <option value="Training">{% trans "Training" %}</option>
                             </select>
                         </div>
-                        <div class="form-group text-left">
+                        <div class="form-group text-start mb-3">
                             <label for="message">{% trans "Message" %}</label>
                             <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
                         </div>

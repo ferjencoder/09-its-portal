@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.humanize",
     "django_extensions",
+    "django_ckeditor_5",
     "main",
     "blog",
     "client_portal",
@@ -148,6 +149,23 @@ ADMIN_CSRF_COOKIE_NAME = "csrftoken_admin"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
+CKEDITOR_5_CONFIGS = {
+    "default": {
+        "toolbar": [
+            {"name": "basicstyles", "items": ["Bold", "Italic", "Underline"]},
+            {"name": "paragraph", "items": ["NumberedList", "BulletedList"]},
+            {"name": "insert", "items": ["Image", "Table"]},
+            {"name": "styles", "items": ["Styles", "Format"]},
+            {"name": "colors", "items": ["TextColor", "BGColor"]},
+            {"name": "tools", "items": ["Maximize"]},
+        ],
+        "height": 300,
+        "width": "100%",
+    }
+}
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

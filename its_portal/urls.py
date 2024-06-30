@@ -15,6 +15,7 @@ urlpatterns = [
 
 urlpatterns += i18n_patterns(
     path("", include("main.urls")),
+    path("ckeditor5/", include("django_ckeditor_5.urls")),
     path("its_admin/", include("its_admin.urls")),
     path("messages/", include("messages_app.urls")),
     path("forum/", include("forum_app.urls")),

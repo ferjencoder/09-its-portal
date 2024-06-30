@@ -1,6 +1,6 @@
 /* static/css/custom_styles.css */
 
-/* Custom Styles for Employee Dashboard & Register */
+/* Custom Styles for Employee Dashboard & Register & Blog */
 
 /* Dark Mode for List Group Items */
 body.dark-mode .list-group-item {
@@ -75,4 +75,60 @@ textarea.is-invalid ~ .invalid-feedback {
 .btn-block {
     display: block;
     width: 100%;
+}
+
+/* Custom styles for blog_list */
+.card-img-top {
+    object-fit: cover;
+    object-position: top;
+    height: 350px; 
+}
+
+.blog-card-body {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+body.dark-mode .blog-card-body {
+    background-color: #333;
+    color: #e0e0e0;
+}
+
+body.dark-mode .form-control {
+    background-color: #555;
+    color: #fff;
+}
+
+body.dark-mode .form-control::placeholder {
+    color: #bbb;
+}
+
+body.dark-mode .btn-primary {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+/* CKEditor dark mode styles */
+body.dark-mode .ck-editor__editable {
+    background-color: #333;
+    color: #e0e0e0;
+}
+
+body.dark-mode .ck.ck-toolbar {
+    background-color: #555;
+    border-color: #444;
+}
+
+body.dark-mode .ck.ck-button__label {
+    color: #fff;
+}
+
+body.dark-mode .ck.ck-button.ck-on .ck-button__label {
+    color: #000;
+}
+
+/* Dark mode for textarea */
+body.dark-mode .dark-textarea {
+    background-color: #333;
+    color: #e0e0e0;
 }

@@ -13,19 +13,30 @@ document.addEventListener('DOMContentLoaded', function() {
         dropdowns.forEach(dropdown => {
             dropdown.setAttribute('data-bs-theme', theme === 'dark-mode' ? 'dark' : 'light');
         });
+
+        // Reinicializar el ckeditor con el theme correcto
+        const editorElement = document.querySelector('#id_body');
+        if (editorElement) {
+            const editorInstance = ClassicEditor.instances.id_body;
+            if (editorInstance) {
+                editorInstance.destroy().then(() => {
+                    initializeEditor(theme);
+                }).catch(error => {
+                    console.error(error);
+                });
+            }
+        }
     }
 
-    const currentTheme = localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light-mode';
+    const currentTheme = localStorage.getItem('theme') || 'light-mode';
     applyTheme(currentTheme);
 
     if (darkModeIcon) {
-        darkModeIcon.addEventListener('click', function () {
+        darkModeIcon.addEventListener('click', function() {
             const newTheme = body.classList.contains('dark-mode') ? 'light-mode' : 'dark-mode';
             localStorage.setItem('theme', newTheme);
             applyTheme(newTheme);
         });
     }
 });
-
-
 
