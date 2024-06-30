@@ -3,6 +3,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.urls import reverse
 from django.core.paginator import Paginator
 from .models import ForumPost, ForumTopic
 from .forms import ForumPostForm, ForumTopicForm
@@ -12,9 +13,6 @@ from .forms import ForumPostForm, ForumTopicForm
 def forum(request):
     topics = ForumTopic.objects.all()
     post_list = ForumPost.objects.all().order_by("-created_at")
-    paginator = Paginator(post_list, 10)
-    page_number = request.GET.get("page")
-    posts = paginator.get_page(page_number)
     recent_topics = ForumTopic.objects.order_by("-created_at")[:10]
     recent_posts = ForumPost.objects.order_by("-created_at")[:10]
 
@@ -25,26 +23,20 @@ def forum(request):
                     "id": post.id,
                     "title": post.title,
                     "content": post.content,
-                    "comment_count": post.comment_count,
+                    "comment_count": post.comments.count(),
                     "like_count": post.like_count,
                     "view_count": post.view_count,
-                    "created_at": post.created_at,
+                    "created_at": post.created_at.strftime("%Y-%m-%d %H:%M:%S"),
                     "profile_picture": (
                         post.author.profile.profile_picture.url
                         if post.author.profile.profile_picture
                         else None
                     ),
+                    "url": reverse("forum_app:post_detail", args=[post.id]),
+                    "reply_url": reverse("forum_app:create_post", args=[post.topic.id]),
                 }
-                for post in posts
-            ],
-            "has_previous": posts.has_previous(),
-            "has_next": posts.has_next(),
-            "previous_page_number": (
-                posts.previous_page_number() if posts.has_previous() else None
-            ),
-            "next_page_number": posts.next_page_number() if posts.has_next() else None,
-            "page_number": posts.number,
-            "num_pages": posts.paginator.num_pages,
+                for post in recent_posts
+            ]
         }
         return JsonResponse(post_data)
 
@@ -53,7 +45,6 @@ def forum(request):
         "forum_app/forum.html",
         {
             "topics": topics,
-            "posts": posts,
             "recent_topics": recent_topics,
             "recent_posts": recent_posts,
         },

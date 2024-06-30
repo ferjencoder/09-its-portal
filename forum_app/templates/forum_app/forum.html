@@ -8,168 +8,104 @@
 {% block title %}{% trans "Forum - ITS Portal" %}{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
+<link rel="stylesheet" href="{% static 'assets/css/forum_styles.css' %}">
+<div class="container-fluid mt-1">
     <div class="text-center">
         <h1 class="display-4">{% trans "Forum" %}</h1>
         <hr class="my-5">
     </div>
 
-    <!-- Search Bar -->
-    <div class="row mb-3">
-        <div class="col-md-12">
-            <form method="get" action="{% url 'forum_app:forum' %}" class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="{% trans 'Search' %}" aria-label="Search" name="search">
-                <button class="btn btn-outline-success" type="submit">{% trans 'Search' %}</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Pagination underneath the search bar -->
-    <nav aria-label="{% trans 'Page navigation example' %}" class="mb-4" id="pagination-top">
-        <!-- Pagination will be injected here by JavaScript -->
-    </nav>
-
-    <div class="row">
-        <!-- Recent Posts -->
-        <div class="col-md-9">
-            <div class="card mb-3">
-                <div class="card-header">
-                    <h4>{% trans "Recent Posts" %}</h4>
-                </div>
-                <div class="list-group list-group-flush" id="recent-posts-list">
-                    {% for post in recent_posts %}
-                        <div class="list-group-item">
-                            <div class="d-flex align-items-start">
-                                {% if post.author.profile.profile_picture %}
-                                    <img src="{{ post.author.profile.profile_picture.url }}" alt="{% trans 'Avatar' %}" class="rounded-circle me-3" width="40" height="40">
-                                {% else %}
-                                    <img src="{% static 'assets/images/default_avatar.png' %}" alt="{% trans 'Default Avatar' %}" class="rounded-circle me-3" width="40" height="40">
-                                {% endif %}
-                                <div class="flex-fill">
-                                    <a href="{% url 'forum_app:post_detail' post.id %}">{{ post.title }}</a>
-                                    <p class="mb-0">{{ post.content|truncatewords:15 }}</p>
-                                    <small class="text-muted">{{ post.created_at|naturaltime }}</small>
-                                </div>
-                                <a href="{% url 'forum_app:create_post' post.topic.id %}" class="btn btn-outline-primary ms-3">{% trans "Reply" %}</a>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div id="post-list">
-                {% for post in posts %}
-                    <div class="card mb-3">
-                        <div class="card-body d-flex">
-                            {% if post.author.profile.profile_picture %}
-                                <img src="{{ post.author.profile.profile_picture.url }}" alt="{% trans 'Avatar' %}" class="rounded-circle me-3" width="60" height="60">
-                            {% else %}
-                                <img src="{% static 'assets/images/default_avatar.png' %}" alt="{% trans 'Default Avatar' %}" class="rounded-circle me-3" width="60" height="60">
-                            {% endif %}
-                            <div class="flex-fill">
-                                <h5 class="card-title"><a href="{% url 'forum_app:post_detail' post.id %}">{{ post.title }}</a></h5>
-                                <p class="card-text">{{ post.content|truncatewords:30 }}</p>
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <i class="fas fa-comments"></i> {{ post.comment_count }}
-                                        <i class="fas fa-thumbs-up ms-3"></i> {{ post.like_count }}
-                                        <i class="fas fa-eye ms-3"></i> {{ post.view_count }}
-                                    </div>
-                                    <div>
-                                        <small class="text-muted">{{ post.created_at|naturaltime }}</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
+    <div class="row" style="height: calc(100vh - 150px);">
         <!-- Topics Sidebar -->
-        <div class="col-md-3">
-            <div class="mb-3 text-end">
-                <a href="{% url 'forum_app:create_topic' %}" class="btn btn-success w-100">{% trans "Create New Topic" %}</a>
+        <div class="col-md-3" style="overflow-y: auto;">
+            <!-- Search Bar -->
+            <div class="mb-3">
+                <form method="get" action="{% url 'forum_app:forum' %}" class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="{% trans 'Search Topics' %}" aria-label="Search" name="search">
+                    <button class="btn btn-success" type="submit">{% trans 'Search' %}</button>
+                </form>
             </div>
+            <!-- Create New Topic Button -->
+            <div class="mb-3 text-end">
+                <a href="#" class="btn btn-success w-100" data-bs-toggle="modal" data-bs-target="#newTopicModal">
+                    <i class="bi bi-plus-circle me-2"></i>{% trans "Create New Topic" %}
+                </a>
+            </div>
+            <!-- Recent Topics -->
             <div class="card mb-3">
                 <div class="card-header">
                     <h4>{% trans "Recent Topics" %}</h4>
                 </div>
-                <ul class="list-group list-group-flush">
+                <ul class="list-group list-group-flush" id="recent-topics-list">
                     {% for topic in recent_topics %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-4">
                             <a href="{% url 'forum_app:topic_detail' topic.id %}">{{ topic.title }}</a>
                             <div>
                                 <span class="badge bg-primary float-end">{{ topic.post_count }}</span>
-                                <a href="{% url 'forum_app:create_post' topic.id %}" class="btn btn-outline-primary ms-2 btn-sm">{% trans "Post" %}</a>
+                                <a href="{% url 'forum_app:create_post' topic.id %}" class="btn btn-primary ms-2 btn-sm">{% trans "Post" %}</a>
                             </div>
                         </li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
-    </div>
-
-    <!-- Pagination at the bottom -->
-    <nav aria-label="{% trans 'Page navigation example' %}" class="mt-4" id="pagination-bottom">
-        <!-- Pagination will be injected here by JavaScript -->
-    </nav>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    function loadPosts(page) {
-        fetch(`{% url 'forum_app:forum' %}?page=${page}`)
-            .then(response => response.json())
-            .then(data => {
-                const postList = document.getElementById('post-list');
-                postList.innerHTML = data.posts.map(post => `
-                    <div class="card mb-3">
-                        <div class="card-body d-flex">
-                            ${post.profile_picture ? `<img src="${post.profile_picture}" alt="Avatar" class="rounded-circle me-3" width="60" height="60">` : `<img src="{% static 'assets/images/default_avatar.png' %}" alt="Default Avatar" class="rounded-circle me-3" width="60" height="60">`}
-                            <div class="flex-fill">
-                                <h5 class="card-title"><a href="/forum/post/${post.id}/">${post.title}</a></h5>
-                                <p class="card-text">${post.content}</p>
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <i class="fas fa-comments"></i> ${post.comment_count}
-                                        <i class="fas fa-thumbs-up ms-3"></i> ${post.like_count}
-                                        <i class="fas fa-eye ms-3"></i> ${post.view_count}
+        <!-- Recent Posts -->
+        <div class="col-md-9" style="overflow-y: auto;">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h4>{% trans "Recent Posts" %}</h4>
+                </div>
+                <div">
+                    <div class="list-group list-group-flush" id="recent-posts-list">
+                        {% for post in recent_posts %}
+                            <div class="list-group-item">
+                                <div class="d-flex align-items-start">
+                                    {% if post.author.profile.profile_picture %}
+                                        <img src="{{ post.author.profile.profile_picture.url }}" alt="{% trans 'Avatar' %}" class="rounded-circle me-3" width="40" height="40">
+                                    {% else %}
+                                        <img src="{% static 'assets/images/default_avatar.png' %}" alt="{% trans 'Default Avatar' %}" class="rounded-circle me-3" width="40" height="40">
+                                    {% endif %}
+                                    <div class="flex-fill">
+                                        <a href="{% url 'forum_app:post_detail' post.id %}">{{ post.title }}</a>
+                                        <p class="mb-0">{{ post.content|truncatewords:15 }}</p>
+                                        <small class="text-muted">{{ post.created_at|naturaltime }}</small>
                                     </div>
-                                    <div>
-                                        <small class="text-muted">${post.created_at}</small>
-                                    </div>
+                                    <a href="{% url 'forum_app:create_post' post.topic.id %}" class="btn btn-primary ms-3">{% trans "Reply" %}</a>
                                 </div>
                             </div>
-                        </div>
+                        {% endfor %}
                     </div>
-                `).join('');
+                </div>
+            </div>
+        </div>
+    </div>
 
-                const paginationTop = document.getElementById('pagination-top');
-                const paginationBottom = document.getElementById('pagination-bottom');
-                const paginationHtml = `
-                    <ul class="pagination justify-content-center">
-                        ${data.has_previous ? `<li class="page-item"><a class="page-link" href="#" data-page="1">&laquo;</a></li><li class="page-item"><a class="page-link" href="#" data-page="${data.previous_page_number}">&lsaquo;</a></li>` : ''}
-                        ${Array.from({ length: data.num_pages }, (_, i) => i + 1).map(pageNumber => `
-                            <li class="page-item ${pageNumber === data.page_number ? 'active' : ''}"><a class="page-link" href="#" data-page="${pageNumber}">${pageNumber}</a></li>
-                        `).join('')}
-                        ${data.has_next ? `<li class="page-item"><a class="page-link" href="#" data-page="${data.next_page_number}">&rsaquo;</a></li><li class="page-item"><a class="page-link" href="#" data-page="${data.num_pages}">&raquo;</a></li>` : ''}
-                    </ul>
-                `;
+    <!-- Modal for new topic -->
+    <div class="modal fade" id="newTopicModal" tabindex="-1" aria-labelledby="newTopicModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newTopicModalLabel">{% trans "Create New Topic" %}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'forum_app:create_topic' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_title">{% trans "Title" %}</label>
+                            <input type="text" class="form-control" id="id_title" name="title" required>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="id_content">{% trans "Content" %}</label>
+                            <textarea class="form-control" id="id_content" name="content" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success mt-3">{% trans "Create" %}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-                paginationTop.innerHTML = paginationHtml;
-                paginationBottom.innerHTML = paginationHtml;
-
-                document.querySelectorAll('.page-link').forEach(link => {
-                    link.addEventListener('click', function(event) {
-                        event.preventDefault();
-                        const page = this.getAttribute('data-page');
-                        loadPosts(page);
-                    });
-                });
-            });
-    }
-
-    loadPosts(1);
-});
-</script>
-
+<script src="{% static 'assets/js/forum.js' %}"></script>
 {% endblock %}

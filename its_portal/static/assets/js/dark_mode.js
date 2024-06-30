@@ -3,12 +3,13 @@
 document.addEventListener('DOMContentLoaded', function() {
     const darkModeIcon = document.querySelector('#dark-mode-icon');
     const body = document.body;
-    const navbar = document.querySelector('.navbar');
     const dropdowns = document.querySelectorAll('.dropdown');
 
     function applyTheme(theme) {
         body.classList.toggle('dark-mode', theme === 'dark-mode');
-        darkModeIcon.className = theme === 'dark-mode' ? 'fas fa-sun' : 'fas fa-moon';
+        if (darkModeIcon) {
+            darkModeIcon.className = theme === 'dark-mode' ? 'fas fa-sun' : 'fas fa-moon';
+        }
         dropdowns.forEach(dropdown => {
             dropdown.setAttribute('data-bs-theme', theme === 'dark-mode' ? 'dark' : 'light');
         });
@@ -25,5 +26,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
 
 

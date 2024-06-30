@@ -2,7 +2,7 @@
 
 /* Custom Scrollbar Styles */
 ::-webkit-scrollbar {
-    width: 0.5em;
+    width: 0.7em; /* Increased width for better visibility */
 }
 
 ::-webkit-scrollbar-track {
@@ -29,5 +29,37 @@ body.dark-mode ::-webkit-scrollbar-thumb {
 }
 
 body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: #666;
+}
+
+/* Scrollbar styles specifically for modals */
+.modal-body ul.list-group::-webkit-scrollbar {
+    width: 0.7em; /* Increased width for better visibility */
+}
+
+.modal-body ul.list-group::-webkit-scrollbar-track {
+    background: #f8f9fa;
+    transition: background 0.3s;
+}
+
+body.dark-mode .modal-body ul.list-group::-webkit-scrollbar-track {
+    background: #333;
+}
+
+.modal-body ul.list-group::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: #007bff;
+    transition: background 0.3s;
+}
+
+.modal-body ul.list-group::-webkit-scrollbar-thumb:hover {
+    background: #0056b3;
+}
+
+body.dark-mode .modal-body ul.list-group::-webkit-scrollbar-thumb {
+    background: #444;
+}
+
+body.dark-mode .modal-body ul.list-group::-webkit-scrollbar-thumb:hover {
     background: #666;
 }

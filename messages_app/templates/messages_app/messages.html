@@ -70,7 +70,7 @@
                     <form method="post" action="{% url 'messages_app:send_message' recipient.id %}" class="d-flex">
                         {% csrf_token %}
                         <input type="text" name="content" class="form-control me-2" placeholder="Type a message" required>
-                        <button type="submit" class="btn btn-primary">{% trans "Send" %}</button>
+                        <button type="submit" class="btn btn-success">{% trans "Send" %}</button>
                     </form>
                 </div>
                 {% endif %}
