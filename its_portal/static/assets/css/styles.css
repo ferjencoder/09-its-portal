@@ -120,7 +120,7 @@ nav {
   width: 0%;
   height: 2px;
   border-radius: 3px;
-  background-color: #343a40;
+  background-color: red;
   z-index: 1;
   transition: width 0.5s;
 }
@@ -446,4 +446,32 @@ body.dark-mode .list-group-item .btn-outline-primary {
 body.dark-mode .list-group-item .btn-outline-primary:hover {
   background-color: #007bff;
   color: #fff;
+}
+
+/* Custom styles for the request quote form */
+body.dark-mode .form-control {
+    background-color: #444;
+    color: #e0e0e0;
+    border: 1px solid #666;
+}
+
+body.dark-mode .form-control::placeholder {
+    color: #bbb;
+}
+
+body.dark-mode select.form-control {
+    background-color: #444;
+    color: #e0e0e0;
+    border: 1px solid #666;
+}
+
+body.dark-mode textarea.form-control {
+    background-color: #444;
+    color: #e0e0e0;
+    border: 1px solid #666;
+}
+
+body.dark-mode .btn-primary {
+    background-color: #0069d9;
+    border-color: #0062cc;
 }
