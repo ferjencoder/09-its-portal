@@ -90,7 +90,12 @@ def create_post(request, topic_id):
             return redirect("forum_app:topic_detail", topic_id=topic.id)
     else:
         form = ForumPostForm()
-    return render(request, "forum_app/create_post.html", {"form": form, "topic": topic})
+    topic_posts = ForumPost.objects.filter(topic=topic).order_by("-created_at")
+    return render(
+        request,
+        "forum_app/create_post.html",
+        {"form": form, "topic_posts": topic_posts, "topic": topic},
+    )
 
 
 @login_required

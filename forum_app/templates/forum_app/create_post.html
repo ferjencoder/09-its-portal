@@ -1,21 +1,64 @@
 <!-- forum_app/create_post.html -->
 
+<!-- forum_app/create_post.html -->
+
 {% extends "main/base_sidebar.html" %}
 {% load i18n %}
+{% load humanize %}
+{% load static %}
 
 {% block title %}{% trans "Create Post - ITS Portal" %}{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
+<link rel="stylesheet" href="{% static 'assets/css/forum_styles.css' %}">
+<div class="container mt-1">
     <div class="text-center">
         <h1 class="display-4">{% trans "Create a New Post" %}</h1>
         <hr class="my-5">
     </div>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
-    </form>
+    <div class="row justify-content-center">
+        <!-- Posts for the Topic -->
+        <div class="col-md-10">
+            <div class="card mb-3" id="topic-posts">
+                <div class="card-header">
+                    <h4>{% trans "Posts in this Topic" %}</h4>
+                </div>
+                <div class="list-group list-group-flush" style="max-height: 300px; overflow-y: auto;">
+                    {% for post in topic_posts %}
+                        <div class="list-group-item">
+                            <div class="d-flex align-items-start">
+                                {% if post.author.profile.profile_picture %}
+                                    <img src="{{ post.author.profile.profile_picture.url }}" alt="{% trans 'Avatar' %}" class="rounded-circle me-3" width="40" height="40">
+                                {% else %}
+                                    <img src="{% static 'assets/images/default_avatar.png' %}" alt="{% trans 'Default Avatar' %}" class="rounded-circle me-3" width="40" height="40">
+                                {% endif %}
+                                <div class="flex-fill text-start">
+                                    <h5>{{ post.author }}</h5>
+                                    <p class="mb-0">{{ post.content|linebreaks }}</p>
+                                    <small class="text-muted">{{ post.created_at|naturaltime }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!-- Post Form -->
+        <div class="col-md-10">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h4>{% trans "Create a New Post" %}</h4>
+                </div>
+                <div class="card-body text-start">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
