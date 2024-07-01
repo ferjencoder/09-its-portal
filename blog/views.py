@@ -86,5 +86,7 @@ def upload_image(request):
         file_path = os.path.join("blog_images", uploaded_file.name)
         saved_path = default_storage.save(file_path, ContentFile(uploaded_file.read()))
         file_url = default_storage.url(saved_path)
+        print(f"File uploaded successfully: {file_url}")
         return JsonResponse({"url": file_url})
+    print("Upload failed")
     return JsonResponse({"error": {"message": "Upload failed"}})

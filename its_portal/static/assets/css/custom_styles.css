@@ -156,3 +156,10 @@ body.dark-mode .text-muted {
     color: #e0e0e0;
 }
 
+body.dark-mode .errorlist{
+    color: #444;
+}
+
+.errorlist{
+    color: white;
+}

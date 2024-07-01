@@ -11,7 +11,11 @@ def add_class(field, css_class):
     if isinstance(field, BoundField):
         existing_classes = field.field.widget.attrs.get("class", "")
         new_classes = f"{existing_classes} {css_class}".strip()
-        return field.as_widget(attrs={"class": new_classes})
+        attrs = {"class": new_classes}
+        # Preserve the existing id attribute
+        if "id" in field.field.widget.attrs:
+            attrs["id"] = field.field.widget.attrs["id"]
+        return field.as_widget(attrs=attrs)
     return field
 
 

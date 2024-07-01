@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.humanize",
     "django_extensions",
     "django_ckeditor_5",
+    # "ckeditor_uploader",
     "main",
     "blog",
     "client_portal",

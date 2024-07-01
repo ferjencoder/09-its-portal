@@ -1,9 +1,45 @@
 // its_portal/static/assets/js/ckeditor_init.js
 
+import {
+    ClassicEditor,
+    Essentials,
+    Bold,
+    Italic,
+    Paragraph,
+    SimpleUploadAdapter,
+    Heading,
+    Link,
+    Image,
+    ImageUpload,
+    BlockQuote,
+    List,
+    Indent
+} from 'ckeditor5';
+
 document.addEventListener("DOMContentLoaded", function() {
     function initializeEditor(theme) {
+        const editorElement = document.querySelector('#id_body');
+        if (!editorElement) return;
+
+        const currentLanguage = document.documentElement.lang || 'en'; //por la selección del idioma
+        const uploadUrl = `/${currentLanguage}/blog/upload-image/`;
+
         ClassicEditor
-            .create(document.querySelector('#id_body'), {
+            .create(editorElement, {
+                plugins: [
+                    Essentials,
+                    Bold,
+                    Italic,
+                    Paragraph,
+                    SimpleUploadAdapter,
+                    Heading,
+                    Link,
+                    Image,
+                    ImageUpload,
+                    BlockQuote,
+                    List,
+                    Indent
+                ],
                 toolbar: {
                     items: [
                         'undo', 'redo',
@@ -12,42 +48,41 @@ document.addEventListener("DOMContentLoaded", function() {
                         '|',
                         'bold', 'italic',
                         '|',
-                        'link', 'uploadImage', 'blockQuote',
+                        'link', 'uploadImage', 'imageUpload', 'blockQuote',
                         '|',
                         'bulletedList', 'numberedList', 'outdent', 'indent'
                     ]
                 },
-                image: {
-                    toolbar: [
-                        'imageTextAlternative', 'imageStyle:side'
-                    ]
-                },
                 simpleUpload: {
-                    uploadUrl: '/blog/upload-image/',
+                    uploadUrl: uploadUrl,
                     withCredentials: false,
                     headers: {
                         'X-CSRFToken': getCsrfToken()
                     }
                 },
-                table: {
-                    contentToolbar: [
-                        'tableColumn', 'tableRow', 'mergeTableCells'
-                    ]
-                },
                 height: 600,
                 width: '100%',
                 theme: theme === 'dark-mode' ? 'dark' : 'default'
+            })
+            .then(editor => {
+                console.log('Editor initialized:', editor);
+
+                // Asegura que el textagre no está hidden
+                const textarea = document.querySelector('textarea[name="body"]');
+                if (textarea) {
+                    textarea.style.display = 'block'; // Asegurarse que no está hidden
+                    textarea.required = false; // Sacar el required en el hidden
+                }
             })
             .catch(error => {
                 console.error('CKEditor error:', error);
             });
 
-        // Class para el textarea del blog
-        const textArea = document.querySelector('#id_body');
+        // Clase de textarea para el blog
         if (theme === 'dark-mode') {
-            textArea.classList.add('dark-textarea');
+            editorElement.classList.add('dark-textarea');
         } else {
-            textArea.classList.remove('dark-textarea');
+            editorElement.classList.remove('dark-textarea');
         }
     }
 
