@@ -2,29 +2,36 @@
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.exceptions import PermissionDenied
 from .models import Project
 from .forms import ProjectForm, ProjectStatusForm
+from blog.models import BlogPost
 from django.views.generic import DeleteView
 
 
+def is_admin(user):
+    return user.is_superuser
+
+
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def admin_blog_list(request):
+    blog_posts = BlogPost.objects.all().order_by("-created_at")
+    return render(request, "blog/admin_blog_list.html", {"blog_posts": blog_posts})
+
+
+@login_required
 def project_list(request):
-    projects = Project.objects.all()
+    if request.user.is_superuser:
+        projects = Project.objects.all()
+    else:
+        projects = Project.objects.filter(client=request.user)
     return render(request, "projects/project_list.html", {"projects": projects})
 
 
 @login_required
-def view_projects(request):
-    projects = Project.objects.all()
-    return render(request, "projects/view_projects.html", {"projects": projects})
-
-
-@login_required
-def view_project(request, project_id):
-    project = get_object_or_404(Project, pk=project_id)
-    return render(request, "projects/view_project.html", {"project": project})
-
-
+@user_passes_test(is_admin)
 def create_project(request):
     if request.method == "POST":
         form = ProjectForm(request.POST)
@@ -38,6 +45,7 @@ def create_project(request):
 
 
 @login_required
+@user_passes_test(is_admin)
 def update_project_status(request, project_id):
     project = get_object_or_404(Project, id=project_id)
     if request.method == "POST":
@@ -54,16 +62,33 @@ def update_project_status(request, project_id):
     )
 
 
-class ProjectDeleteView(DeleteView):
-    model = Project
-    template_name = "projects/project_confirm_delete.html"
-    success_url = reverse_lazy("projects:project_list")
-
-
 @login_required
-def delete_project(request, pk):
-    project = get_object_or_404(Project, pk=pk)
+@user_passes_test(is_admin)
+def delete_project(request, project_id):
+    project = get_object_or_404(Project, pk=project_id)
     if request.method == "POST":
         project.delete()
         return redirect("projects:project_list")
     return render(request, "projects/project_confirm_delete.html", {"project": project})
+
+
+@login_required
+def view_projects(request):
+    if request.user.is_superuser:
+        projects = Project.objects.all()
+    else:
+        projects = Project.objects.filter(client=request.user)
+    return render(request, "projects/view_projects.html", {"projects": projects})
+
+
+@login_required
+def view_project(request, project_id):
+    project = get_object_or_404(Project, pk=project_id)
+    if (
+        request.user.is_superuser
+        or project.client == request.user
+        or project.assigned_to == request.user
+    ):
+        return render(request, "projects/view_project.html", {"project": project})
+    else:
+        raise PermissionDenied

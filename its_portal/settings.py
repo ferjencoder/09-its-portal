@@ -155,16 +155,44 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_5_CONFIGS = {
     "default": {
         "toolbar": [
-            {"name": "basicstyles", "items": ["Bold", "Italic", "Underline"]},
-            {"name": "paragraph", "items": ["NumberedList", "BulletedList"]},
-            {"name": "insert", "items": ["Image", "Table"]},
-            {"name": "styles", "items": ["Styles", "Format"]},
-            {"name": "colors", "items": ["TextColor", "BGColor"]},
-            {"name": "tools", "items": ["Maximize"]},
+            "heading",
+            "|",
+            "bold",
+            "italic",
+            "underline",
+            "strikethrough",
+            "subscript",
+            "superscript",
+            "|",
+            "link",
+            "blockquote",
+            "code",
+            "codeBlock",
+            "|",
+            "numberedList",
+            "bulletedList",
+            "todoList",
+            "|",
+            "insertImage",
+            "mediaEmbed",
+            "insertTable",
+            "|",
+            "textColor",
+            "bgColor",
+            "|",
+            "alignment",
+            "|",
+            "undo",
+            "redo",
         ],
-        "height": 300,
+        "image": {
+            "toolbar": ["imageTextAlternative", "imageStyle:full", "imageStyle:side"]
+        },
+        "table": {"contentToolbar": ["tableColumn", "tableRow", "mergeTableCells"]},
+        "extraPlugins": "image2,uploadimage",
+        "height": 400,
         "width": "100%",
-    }
+    },
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

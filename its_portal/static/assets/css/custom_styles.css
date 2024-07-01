@@ -85,7 +85,13 @@ textarea.is-invalid ~ .invalid-feedback {
 }
 
 .blog-card-body {
-    max-height: 500px;
+    max-height: 650px;
+    overflow-y: auto;
+}
+
+.blog-card {
+    padding: 1px, 10px;
+    max-height: 650px;
     overflow-y: auto;
 }
 
@@ -114,9 +120,11 @@ body.dark-mode .ck-editor__editable {
     color: #e0e0e0;
 }
 
+
 body.dark-mode .ck.ck-toolbar {
     background-color: #555;
     border-color: #444;
+    color: #e0e0e0;
 }
 
 body.dark-mode .ck.ck-button__label {
@@ -128,7 +136,23 @@ body.dark-mode .ck.ck-button.ck-on .ck-button__label {
 }
 
 /* Dark mode for textarea */
-body.dark-mode .dark-textarea {
-    background-color: #333;
+body.dark-mode .ck.ck-editor__main > .ck-editor__editable {
+    margin-top: 2px;
+    background-color: #444;
+    color: #e0e0e0;
+    border-radius: 5px;
+    border: 1px solid #666;
+}
+body.dark-mode .text-muted {
+    color: #777 !important;
+}
+
+.ck-editor__main{
+    height: 200px;
+}
+
+.ck-editor__editable_inline{
+    height: 200px;
     color: #e0e0e0;
 }
+

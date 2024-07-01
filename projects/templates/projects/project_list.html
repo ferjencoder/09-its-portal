@@ -1,4 +1,5 @@
 <!-- projects/project_list.html -->
+
 {% extends "main/base_sidebar.html" %}
 {% load i18n %}
 
@@ -10,10 +11,16 @@
         <h1 class="display-4">{% trans "Project List" %}</h1>
         <hr class="my-5">
     </div>
+    {% if user.is_superuser %}
+    <div class="text-end mb-3">
+        <a href="{% url 'projects:create_project' %}" class="btn btn-success">{% trans "Create Project" %}</a>
+    </div>
+    {% endif %}
     <div class="row justify-content-center mt-4">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
+                    {% if projects %}
                     <ul class="list-group list-group-flush">
                         {% for project in projects %}
                             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -25,6 +32,9 @@
                             </li>
                         {% endfor %}
                     </ul>
+                    {% else %}
+                    <p class="text-center">{% trans "No projects available." %}</p>
+                    {% endif %}
                 </div>
             </div>
         </div>

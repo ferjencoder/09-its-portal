@@ -11,10 +11,10 @@
         <h1 class="display-4">{% trans "Create Blog Post" %}</h1>
         <hr class="my-5">
     </div>
-    <div class="row justify-content-center mt-4">
+    <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card blog-card-body">
-                <div class="card-body blog-card-body">
+            <div class="card blog-card">
+                <div class="card-body blog-card">
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="form-group text-start mb-3">
@@ -39,7 +39,6 @@
         </div>
     </div>
 </div>
-<!-- CKEditor 5 CDN -->
 <script src="https://cdn.ckeditor.com/ckeditor5/35.3.0/classic/ckeditor.js"></script>
 <script src="{% static 'assets/js/ckeditor_init.js' %}"></script>
 {% endblock %}

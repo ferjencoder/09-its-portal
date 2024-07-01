@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Reinicializar el ckeditor con el theme correcto
         const editorElement = document.querySelector('#id_body');
         if (editorElement) {
-            const editorInstance = ClassicEditor.instances.id_body;
+            const editorInstance = editorElement.ckeditorInstance;
             if (editorInstance) {
                 editorInstance.destroy().then(() => {
                     initializeEditor(theme);
@@ -38,5 +38,13 @@ document.addEventListener('DOMContentLoaded', function() {
             applyTheme(newTheme);
         });
     }
+
+    // Watch for changes in local storage
+    window.addEventListener('storage', function(event) {
+        if (event.key === 'theme') {
+            applyTheme(event.newValue);
+        }
+    });
 });
+
 

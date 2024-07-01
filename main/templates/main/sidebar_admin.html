@@ -1,5 +1,6 @@
 <!-- main/sidebar_admin.html -->
 
+
 {% load i18n %}
 
 {% block sidebar_links %}
@@ -39,8 +40,9 @@
         </a>
     </li>
     <li>
-        <a href="{% url 'blog:blog_list' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'blog_list' %}active{% endif %}">
+        <a href="{% url 'blog:admin_blog_list' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'admin_blog_list' %}active{% endif %}">
             <i class="bi-pencil me-2"></i> {% trans "Blog" %}
         </a>
     </li>
 {% endblock %}
+
