@@ -5,38 +5,38 @@ import environ
 import os
 from django.utils.translation import gettext_lazy as _
 
-# Initialize environment variables
+# Inicializar variables de entorno
 env = environ.Env(
     DJANGO_SECRET_KEY=(str, ""),
     DJANGO_ENVIRONMENT=(str, "development"),
 )
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Construir rutas dentro del proyecto como esta: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Take environment variables from .env file
+# Tomar variables de entorno del archivo .env
 environ.Env.read_env(env_file=str(BASE_DIR / ".env"))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
+# Configuración de inicio rápido para desarrollo - no apta para producción
+# Ver https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# ADVERTENCIA DE SEGURIDAD: mantén la clave secreta usada en producción en secreto
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 
-# Determine if we are in development or production
+# Determinar si estamos en desarrollo o producción
 ENVIRONMENT = env("DJANGO_ENVIRONMENT", "development")
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# ADVERTENCIA DE SEGURIDAD: no ejecutes con debug activado en producción
 DEBUG = ENVIRONMENT == "development"
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    "yourdomain.com",
-    "www.yourdomain.com",
+    "tudominio.com",
+    "www.tudominio.com",
 ]
 
-# Application definition
+# Definición de la aplicación
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -89,8 +89,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "its_portal.wsgi.application"
 
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+# Base de datos
+# Ver https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
     "default": {
@@ -99,8 +99,8 @@ DATABASES = {
     }
 }
 
-# Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
+# Validación de contraseñas
+# Ver https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -117,8 +117,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
-# https://docs.djangoproject.com/en/3.2/topics/i18n/
+# Internacionalización
+# Ver https://docs.djangoproject.com/en/3.2/topics/i18n/
 
 LANGUAGE_CODE = "en"
 
@@ -210,7 +210,10 @@ LOGIN_URL = "main:login"
 LOGIN_REDIRECT_URL = "main:profile"
 LOGOUT_REDIRECT_URL = "main:home"
 
+# Configuración de almacenamiento de archivos estáticos con cache busting
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
+# Configuración de logging
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -237,11 +240,16 @@ LOGGING = {
     },
 }
 
-# Security settings for production
+# Configuraciones de seguridad para producción
 if ENVIRONMENT == "production":
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
     X_FRAME_OPTIONS = "DENY"
 else:
     SECURE_SSL_REDIRECT = False

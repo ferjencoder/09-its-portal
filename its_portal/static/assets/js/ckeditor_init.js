@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const editorElement = document.querySelector('#id_body');
         if (!editorElement) return;
 
-        const currentLanguage = document.documentElement.lang || 'en'; //por la selección del idioma
+        const currentLanguage = document.documentElement.lang || 'en';
         const uploadUrl = `/${currentLanguage}/blog/upload-image/`;
 
         ClassicEditor
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         '|',
                         'bold', 'italic',
                         '|',
-                        'link', 'uploadImage', 'imageUpload', 'blockQuote',
+                        'link', 'imageUpload', 'blockQuote', 'insertTable', 'mediaEmbed',
                         '|',
                         'bulletedList', 'numberedList', 'outdent', 'indent'
                     ]
@@ -66,19 +66,19 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .then(editor => {
                 console.log('Editor initialized:', editor);
+                window.editorInstance = editor;
 
-                // Asegura que el textagre no está hidden
+                // Hide the original textarea and ensure it's not required
                 const textarea = document.querySelector('textarea[name="body"]');
                 if (textarea) {
-                    textarea.style.display = 'block'; // Asegurarse que no está hidden
-                    textarea.required = false; // Sacar el required en el hidden
+                    textarea.style.display = 'none';  // Hide the textarea
+                    textarea.required = false;        // It should not be required as it's hidden
                 }
             })
             .catch(error => {
                 console.error('CKEditor error:', error);
             });
 
-        // Clase de textarea para el blog
         if (theme === 'dark-mode') {
             editorElement.classList.add('dark-textarea');
         } else {
@@ -91,6 +91,19 @@ document.addEventListener("DOMContentLoaded", function() {
         return csrfToken ? csrfToken.value : '';
     }
 
+    function makeBodyVisible() {
+        const textarea = document.querySelector('textarea[name="body"]');
+        if (textarea) {
+            textarea.value = window.editorInstance.getData();  // Sync CKEditor data to the hidden textarea
+        }
+    }
+
     const currentTheme = document.body.classList.contains('dark-mode') ? 'dark-mode' : 'default';
     initializeEditor(currentTheme);
+
+    // Attach the form submit handler to ensure the textarea gets the CKEditor data
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', makeBodyVisible);
+    }
 });

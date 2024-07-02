@@ -18,15 +18,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 🔍 CAPS LOCK
-    const passwordField = document.getElementById('password');
+    const passwordField = document.getElementById('id_current_password');
     if (passwordField) {
         const capsLockWarning = document.querySelector('.caps-lock-warning');
 
         passwordField.addEventListener('keyup', function(event) {
-            if (event.getModifierState('CapsLock')) {
-                capsLockWarning.style.display = 'block';
-            } else {
-                capsLockWarning.style.display = 'none';
+            if (capsLockWarning) {
+                if (event.getModifierState('CapsLock')) {
+                    capsLockWarning.style.display = 'block';
+                } else {
+                    capsLockWarning.style.display = 'none';
+                }
             }
         });
     }

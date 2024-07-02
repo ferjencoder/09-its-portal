@@ -74,20 +74,15 @@ def register(request):
         if form.is_valid():
             user = form.save(commit=False)
             role = form.cleaned_data.get("role")
-            if role == "client":
-                group = Group.objects.get(name="client")
-            elif role == "employee":
-                group = Group.objects.get(name="employee")
-            elif role == "admin":
-                group = Group.objects.get(name="admin")
             user.save()
-            user.groups.add(group)
             profile, created = Profile.objects.get_or_create(
                 user=user, defaults={"role": role}
             )
             if not created:
                 profile.role = role
                 profile.save()
+            group = Group.objects.get(name=role)
+            user.groups.add(group)
             login(request, user)
             messages.success(request, "Registration successful.")
             return redirect("main:home")
@@ -140,9 +135,9 @@ def edit_profile(request):
         logger.debug(f"Predefined image: {predefined_image}")
 
         if current_password != confirm_current_password:
-            messages.error(request, "Current passwords do not match.")
+            profile_form.add_error(None, "Current passwords do not match.")
         elif not request.user.check_password(current_password):
-            messages.error(request, "Current password is incorrect.")
+            profile_form.add_error(None, "Current password is incorrect.")
         else:
             if user_form.is_valid() and profile_form.is_valid():
                 user = user_form.save()

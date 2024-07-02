@@ -39,7 +39,7 @@ body.dark-mode .badge.bg-primary {
 }
 
 /* Custom Scrollbar Styles */
-.card-body {
+.card-body-scroll-200 {
     max-height: 200px;
     overflow-y: auto;
 }
@@ -84,11 +84,13 @@ textarea.is-invalid ~ .invalid-feedback {
     height: 350px; 
 }
 
+/* Renamed class to be more specific to blog cards */
 .blog-card-body {
     max-height: 650px;
     overflow-y: auto;
 }
 
+/* Renamed class to be more specific to blog cards */
 .blog-card {
     padding: 1px, 10px;
     max-height: 650px;
@@ -96,7 +98,7 @@ textarea.is-invalid ~ .invalid-feedback {
 }
 
 body.dark-mode .blog-card-body {
-    background-color: #333;
+    background-color: #444;
     color: #e0e0e0;
 }
 
@@ -115,21 +117,65 @@ body.dark-mode .btn-primary {
 }
 
 /* CKEditor dark mode styles */
-body.dark-mode .ck-editor__editable {
-    background-color: #333;
+:root {
+    --ck-color-base-border: transparent !important;
+}
+
+body.dark-mode .ck.ck-editor__top {
+    background-color: #666;
+    border-radius: 10px;
     color: #e0e0e0;
 }
 
+body.dark-mode .ck.ck-sticky-panel {
+    background-color: #666;
+    border-radius: 5px;
+    color: #e0e0e0;
+    border: none;
+}
 
 body.dark-mode .ck.ck-toolbar {
-    background-color: #555;
-    border-color: #444;
+    background-color: #666;
+    border-radius: 5px;
+    color: #e0e0e0; 
+    border: none;
+}
+
+body.dark-mode .ck.ck-button__icon {
+    background-color: #666;
     color: #e0e0e0;
 }
 
-body.dark-mode .ck.ck-button__label {
-    color: #fff;
+body.dark-mode .ck.ck-button__icon:hover {
+    background-color: #666;
+    color: #333;
 }
+
+body.dark-mode .ck.ck-button:hover {
+    background-color: #666;
+    color: #e0e0e0;
+}
+
+body.dark-mode .ck.ck-button_with_text {
+    background-color: #666;
+    color: #e0e0e0;
+}
+
+body.dark-mode .ck.ck-dropdown__panel.ck-dropdown__panel_se {
+    background-color: #666;
+    color: #e0e0e0;
+}
+
+body.dark-mode .ck.ck-list__item {
+    background-color: #666;
+    color: #e0e0e0;
+}
+
+body.dark-mode .ck.ck-dropdown__button {
+    background-color: #666;
+    color: #e0e0e0;
+}
+
 
 body.dark-mode .ck.ck-button.ck-on .ck-button__label {
     color: #000;
@@ -143,23 +189,24 @@ body.dark-mode .ck.ck-editor__main > .ck-editor__editable {
     border-radius: 5px;
     border: 1px solid #666;
 }
+
 body.dark-mode .text-muted {
     color: #777 !important;
 }
 
-.ck-editor__main{
+.ck-editor__main {
     height: 200px;
 }
 
-.ck-editor__editable_inline{
+.ck-editor__editable_inline {
     height: 200px;
     color: #e0e0e0;
 }
 
-body.dark-mode .errorlist{
-    color: #444;
+body.dark-mode .errorlist {
+    color: #444; 
 }
 
-.errorlist{
-    color: white;
+.text-test-assignment {
+    color: red;
 }

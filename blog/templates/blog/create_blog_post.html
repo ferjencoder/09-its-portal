@@ -14,7 +14,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card blog-card">
-                <div class="card-body blog-card">
+                <div class="card-body blog-card-body">
                     <form method="post" enctype="multipart/form-data" onsubmit="makeBodyVisible()">
                         {% csrf_token %}
                         <div class="form-group text-start mb-3">
@@ -44,6 +44,7 @@
     </div>
 </div>
 <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.css" />
+<script src="https://cdn.ckeditor.com/ckeditor5/42.0.0/classic/ckeditor.js"></script>
 <script type="importmap">
 {
     "imports": {

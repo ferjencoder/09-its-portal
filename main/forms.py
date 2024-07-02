@@ -1,7 +1,7 @@
 # main/forms.py
 
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import Profile
 
@@ -65,11 +65,12 @@ class RegisterForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data["email"]
+        role = self.cleaned_data["role"]
         if commit:
             user.save()
-            Profile.objects.get_or_create(
-                user=user, defaults={"role": self.cleaned_data["role"]}
-            )
+            group = Group.objects.get(name=role)
+            user.groups.add(group)
+            Profile.objects.get_or_create(user=user, defaults={"role": role})
         return user
 
 
