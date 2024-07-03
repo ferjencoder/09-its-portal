@@ -1,4 +1,4 @@
-<!--main/contact.html-->
+<!-- main/contact.html -->
 
 {% extends 'main/base_generic.html' %}
 {% load i18n %}
@@ -14,7 +14,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <form method="post" action="#">
+                    <form method="post" action="{% url 'main:contact' %}">
                         {% csrf_token %}
                         <div class="form-group text-start mb-3">
                             <label for="name">{% trans "Name" %}</label>
@@ -39,4 +39,17 @@
         </div>
     </div>
 </div>
+
+<!-- JavaScript para la notificación de mensajes -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const messagesContainer = document.getElementById('messages');
+        if (messagesContainer) {
+            const message = messagesContainer.dataset.message;
+            if (message) {
+                alert(message);
+            }
+        }
+    });
+</script>
 {% endblock %}

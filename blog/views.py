@@ -1,18 +1,22 @@
 # blog/views.py
 
 import os
-from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy
-from .models import BlogPost
-from .forms import BlogPostForm
+from django.conf import settings
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import PermissionDenied
-from django.views.generic import DeleteView
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
-from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
+from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import Group
+from .models import BlogPost
+from .forms import BlogPostForm
+
+
+def is_admin(user):
+    return user.groups.filter(name="admin").exists()
 
 
 def blog_list(request):
@@ -45,37 +49,42 @@ def create_blog_post(request):
     return render(request, "blog/create_blog_post.html", {"form": form})
 
 
-def is_admin(user):
-    return user.is_superuser
-
-
 @login_required
+@user_passes_test(is_admin, login_url="main:login")
 def admin_blog_list(request):
     blog_posts = BlogPost.objects.all().order_by("-created_at")
-    return render(request, "blog/admin_blog_list.html", {"blog_posts": blog_posts})
+    return render(request, "blog/admin_blog.html", {"blog_posts": blog_posts})
 
 
 @login_required
-@user_passes_test(is_admin)
 def edit_blog_post(request, id):
     blog_post = get_object_or_404(BlogPost, id=id)
+    if blog_post.author != request.user and not is_admin(request.user):
+        raise PermissionDenied
+
     if request.method == "POST":
         form = BlogPostForm(request.POST, request.FILES, instance=blog_post)
         if form.is_valid():
             form.save()
-            return redirect("blog:admin_blog_list")
+            if is_admin(request.user):
+                return redirect("blog:admin_blog_list")
+            return redirect("blog:employee_blog_list")
     else:
         form = BlogPostForm(instance=blog_post)
     return render(request, "blog/edit_blog_post.html", {"form": form})
 
 
 @login_required
-@user_passes_test(is_admin)
 def delete_blog_post(request, id):
     blog_post = get_object_or_404(BlogPost, id=id)
+    if blog_post.author != request.user and not is_admin(request.user):
+        raise PermissionDenied
+
     if request.method == "POST":
         blog_post.delete()
-        return redirect("blog:admin_blog_list")
+        if is_admin(request.user):
+            return redirect("blog:admin_blog_list")
+        return redirect("blog:employee_blog_list")
     return render(request, "blog/delete_blog_post.html", {"blog_post": blog_post})
 
 

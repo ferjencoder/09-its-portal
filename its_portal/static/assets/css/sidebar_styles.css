@@ -127,3 +127,7 @@ body.dark-mode .modal-header {
 body.dark-mode .modal-body {
     border-top: 1px solid var(--modal-border-dark);
 }
+
+body.dark-mode .text-muted {
+    color: #e0e0e0;
+}
