@@ -56,7 +56,7 @@
                 <div class="card-body" style="max-height: 200px; overflow-y: auto;">
                     <ul class="list-group">
                         {% for message in messages %}
-                            {% url 'messages_app:reply_message' message.id as reply_url %}
+                            {% url 'messages_app:messages_view' message.sender.id as reply_url %}
                             <li class="list-group-item d-flex justify-content-between align-items-center" onclick="window.location.href='{{ reply_url }}'" style="cursor: pointer;">
                                 <span><strong>{{ message.sender.username }}</strong>: {{ message.content|truncatewords:10 }}</span>
                             </li>
@@ -77,8 +77,8 @@
                 <div class="card-body" style="max-height: 200px; overflow-y: auto;">
                     <ul class="list-group">
                         {% for post in forum_posts %}
-                            {% url 'forum_app:reply_post' post.id as reply_post_url %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center" onclick="window.location.href='{{ reply_post_url }}'" style="cursor: pointer;">
+                            {% url 'forum_app:create_post' post.topic.id as create_post_url %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center" onclick="window.location.href='{{ create_post_url }}'" style="cursor: pointer;">
                                 <span><strong>{{ post.topic.title }}</strong>: {{ post.content|truncatewords:10 }}</span>
                             </li>
                         {% endfor %}

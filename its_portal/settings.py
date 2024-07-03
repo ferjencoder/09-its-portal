@@ -175,8 +175,6 @@ CKEDITOR_5_CONFIGS = {
             "todoList",
             "|",
             "insertImage",
-            "mediaEmbed",
-            "insertTable",
             "|",
             "textColor",
             "bgColor",

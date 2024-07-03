@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         '|',
                         'bold', 'italic',
                         '|',
-                        'link', 'imageUpload', 'blockQuote', 'insertTable', 'mediaEmbed',
+                        'link', 'imageUpload', 'blockQuote',
                         '|',
                         'bulletedList', 'numberedList', 'outdent', 'indent'
                     ]
@@ -65,15 +65,20 @@ document.addEventListener("DOMContentLoaded", function() {
                 theme: theme === 'dark-mode' ? 'dark' : 'default'
             })
             .then(editor => {
-                console.log('Editor initialized:', editor);
+                //console.log('Editor initialized:', editor);
                 window.editorInstance = editor;
 
-                // Hide the original textarea and ensure it's not required
+                // Ocultar textarea original
                 const textarea = document.querySelector('textarea[name="body"]');
                 if (textarea) {
-                    textarea.style.display = 'none';  // Hide the textarea
-                    textarea.required = false;        // It should not be required as it's hidden
+                    textarea.style.display = 'none';
+                    textarea.required = false;
                 }
+
+                // Actualizar contador de palabras en cambios
+                editor.model.document.on('change:data', () => {
+                    Countable.once(editorElement, callback());
+                });
             })
             .catch(error => {
                 console.error('CKEditor error:', error);
@@ -94,14 +99,13 @@ document.addEventListener("DOMContentLoaded", function() {
     function makeBodyVisible() {
         const textarea = document.querySelector('textarea[name="body"]');
         if (textarea) {
-            textarea.value = window.editorInstance.getData();  // Sync CKEditor data to the hidden textarea
+            textarea.value = window.editorInstance.getData();
         }
     }
 
     const currentTheme = document.body.classList.contains('dark-mode') ? 'dark-mode' : 'default';
     initializeEditor(currentTheme);
 
-    // Attach the form submit handler to ensure the textarea gets the CKEditor data
     const form = document.querySelector('form');
     if (form) {
         form.addEventListener('submit', makeBodyVisible);
