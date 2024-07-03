@@ -1,0 +1,21 @@
+<!-- messages_app/reply_message.html -->
+
+{% extends "main/base_sidebar.html" %}
+{% load i18n %}
+
+{% block title %}Reply to Message{% endblock %}
+
+{% block content %}
+<div class="container mt-1">
+    <h1 class="display-4">{% trans "Reply to Message" %}</h1>
+    <hr class="my-4">
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="content" class="form-label">{% trans "Your Reply" %}</label>
+            <textarea class="form-control" id="content" name="content" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">{% trans "Send" %}</button>
+    </form>
+</div>
+{% endblock %}

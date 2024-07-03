@@ -94,10 +94,10 @@ body.dark-mode .modal-body ul.list-group::-webkit-scrollbar-thumb:hover {
 #main-area-recent-posts {
     background-color: #ffffff;
     border-radius: 10px;
-    padding: 15px;
-    margin-left: 5px;
+    /*padding: 15px;*/
+    margin-left: 10px;
     height: 85%;
-    width: calc(75% - 55px);
+    width: calc(75% - 65px);
     overflow-y: auto;
 }
 
@@ -161,7 +161,8 @@ body.dark-mode #topic-posts {
 .card {
     background-color: #ffffff;
     border-radius: 10px;
-    padding: 15px;
+    padding-top: 15px;
+    box-shadow: none;
     transition: background-color 0.3s;
 }
 

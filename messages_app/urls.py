@@ -9,4 +9,5 @@ urlpatterns = [
     path("", views.default_messages_view, name="default_messages_view"),
     path("conversation/<int:recipient_id>/", views.messages_view, name="messages_view"),
     path("send/<int:recipient_id>/", views.send_message, name="send_message"),
+    path("reply_message/<int:message_id>/", views.reply_message, name="reply_message"),
 ]

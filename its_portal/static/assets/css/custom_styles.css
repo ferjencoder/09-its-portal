@@ -11,6 +11,9 @@ body.dark-mode .list-group-item {
 .list-group-item {
     text-align: left;
     transition: background-color 0.3s, color 0.3s;
+    box-sizing: border-box;
+    padding: 10px;
+    margin-bottom: 5px;
 }
 
 .list-group-item:hover,
@@ -95,6 +98,19 @@ textarea.is-invalid ~ .invalid-feedback {
     padding: 1px, 10px;
     max-height: 650px;
     overflow-y: auto;
+}
+
+.list-group-item-project {
+    border-radius: 5px;
+    border: 1px solid #666;
+    margin-bottom: 10px; /* Ensures the items are not cut off */
+}
+
+body.dark-mode .list-group-item-project {
+    background-color: #444;
+    color: #e0e0e0;
+    border-radius: 5px;
+    border: 1px solid #666;
 }
 
 body.dark-mode .blog-card-body {

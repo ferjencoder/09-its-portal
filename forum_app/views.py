@@ -102,3 +102,19 @@ def create_post(request, topic_id):
 def post_detail(request, post_id):
     post = get_object_or_404(ForumPost, id=post_id)
     return render(request, "forum_app/post_detail.html", {"post": post})
+
+
+@login_required
+def reply_post(request, post_id):
+    post = get_object_or_404(ForumPost, id=post_id)
+    if request.method == "POST":
+        form = ForumPostForm(request.POST)
+        if form.is_valid():
+            reply = form.save(commit=False)
+            reply.topic = post.topic
+            reply.author = request.user
+            reply.save()
+            return redirect("forum_app:topic_detail", topic_id=post.topic.id)
+    else:
+        form = ForumPostForm()
+    return render(request, "forum_app/reply_post.html", {"form": form, "post": post})

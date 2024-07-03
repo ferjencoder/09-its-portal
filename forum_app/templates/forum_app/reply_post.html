@@ -1,0 +1,18 @@
+<!-- forum_app/reply_post.html -->
+
+{% extends "main/base_sidebar.html" %}
+{% load i18n %}
+
+{% block title %}Reply to Post{% endblock %}
+
+{% block content %}
+<div class="container mt-1">
+    <h1 class="display-4">{% trans "Reply to Post" %}</h1>
+    <hr class="my-4">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">{% trans "Reply" %}</button>
+    </form>
+</div>
+{% endblock %}

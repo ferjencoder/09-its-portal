@@ -132,3 +132,20 @@ def send_message(request, recipient_id):
         )
         return redirect("messages_app:messages_view", recipient_id=recipient_id)
     return redirect("messages_app:default_messages_view")
+
+
+@login_required
+def reply_message(request, message_id):
+    original_message = get_object_or_404(Message, id=message_id)
+    recipient = original_message.sender
+    if request.method == "POST":
+        content = request.POST.get("content")
+        Message.objects.create(
+            sender=request.user, recipient=recipient, content=content
+        )
+        return redirect("messages_app:messages_view", recipient_id=recipient.id)
+    return render(
+        request,
+        "messages_app/reply_message.html",
+        {"original_message": original_message},
+    )

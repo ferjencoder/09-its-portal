@@ -1,23 +1,33 @@
 # its_admin/forms.py
 
 from django import forms
-from .models import Assignment, Project
-
-
-class AssignmentForm(forms.ModelForm):
-    class Meta:
-        model = Assignment
-        fields = ["name", "description", "assigned_to", "project", "due_date"]
-        widgets = {
-            "due_date": forms.DateInput(attrs={"type": "date"}),
-        }
+from .models import Project
+from django.contrib.auth.models import User
 
 
 class ProjectForm(forms.ModelForm):
+    assigned_to_client = forms.ModelChoiceField(
+        queryset=User.objects.filter(groups__name="client"), required=False
+    )
+    assigned_to_employees = forms.ModelMultipleChoiceField(
+        queryset=User.objects.filter(groups__name="employee"),
+        required=False,
+        widget=forms.SelectMultiple,
+    )
+
     class Meta:
         model = Project
-        fields = ["name", "description", "start_date", "end_date"]
+        fields = [
+            "name",
+            "description",
+            "start_date",
+            "end_date",
+            "status",
+            "assigned_to_client",
+            "assigned_to_employees",
+        ]
         widgets = {
+            "description": forms.Textarea(attrs={"rows": 4}),
             "start_date": forms.DateInput(attrs={"type": "date"}),
             "end_date": forms.DateInput(attrs={"type": "date"}),
         }

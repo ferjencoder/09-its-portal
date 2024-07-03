@@ -9,23 +9,8 @@
         </a>
     </li>
     <li>
-        <a href="{% url 'its_admin:assignment_list' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'assignment_list' %}active{% endif %}">
-            <i class="bi-list-check me-2"></i> {% trans "Assignments" %}
-        </a>
-    </li>
-    <li>
-        <a href="{% url 'its_admin:create_assignment' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'create_assignment' %}active{% endif %}">
-            <i class="bi-plus-circle me-2"></i> {% trans "New Assignment" %}
-        </a>
-    </li>
-    <li>
-        <a href="{% url 'its_admin:project_list' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'project_list' %}active{% endif %}">
+        <a href="{% url 'its_admin:view_projects' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'view_projects' %}active{% endif %}">
             <i class="bi-briefcase me-2"></i> {% trans "Projects" %}
-        </a>
-    </li>
-    <li>
-        <a href="{% url 'its_admin:create_project' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'create_project' %}active{% endif %}">
-            <i class="bi-plus-circle me-2"></i> {% trans "New Project" %}
         </a>
     </li>
     <li>
