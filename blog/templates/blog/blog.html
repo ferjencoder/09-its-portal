@@ -8,19 +8,24 @@
 {% block content %}
 <div class="container mt-1">
     <div class="text-center">
+        <!-- Título del blog -->
         <h1 class="display-4">{% trans "Blog" %}</h1>
         <hr class="my-5">
     </div>
 
     {% for post in blog_posts %}
         <div class="card mb-4">
+            <!-- Imagen del post -->
             <img class="card-img-top" src="{{ post.image.url }}" alt="{{ post.title }}">
             <div class="card-body">
+                <!-- Título y subtítulo del post -->
                 <h2 class="card-title">{{ post.title }}</h2>
                 <p class="card-text">{{ post.subtitle }}</p>
+                <!-- Enlace para leer más -->
                 <a href="{% url 'blog:blog_detail' post.id %}" class="btn btn-primary">{% trans "Read More" %} &rarr;</a>
             </div>
             <div class="card-footer text-muted">
+                <!-- Información del pie de la tarjeta -->
                 {% trans "Posted on" %} {{ post.created_at }} {% trans "by" %} {{ post.author.username }}
             </div>
         </div>

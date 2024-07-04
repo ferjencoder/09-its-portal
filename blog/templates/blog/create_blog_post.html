@@ -8,6 +8,7 @@
 {% block content %}
 <div class="container mt-1">
     <div class="text-center">
+        <!-- Título de la página para crear un post -->
         <h1 class="display-4">{% trans "Create Blog Post" %}</h1>
         <hr class="my-5">
     </div>
@@ -15,6 +16,7 @@
         <div class="col-md-8">
             <div class="card blog-card">
                 <div class="card-body blog-card-body">
+                    <!-- Formulario para crear un post -->
                     <form method="post" enctype="multipart/form-data" onsubmit="makeBodyVisible()">
                         {% csrf_token %}
                         <div class="form-group text-start mb-3">

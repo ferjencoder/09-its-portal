@@ -47,15 +47,14 @@ INSTALLED_APPS = [
     "django.contrib.humanize",
     "django_extensions",
     "django_ckeditor_5",
-    # "ckeditor_uploader",
-    "main",
-    "blog",
-    "client_portal",
-    "employee_portal",
-    "forum_app",
-    "its_admin",
-    "messages_app",
-    "projects",
+    "main.apps.MainConfig",
+    "blog.apps.BlogConfig",
+    "client_portal.apps.ClientPortalConfig",
+    "employee_portal.apps.EmployeePortalConfig",
+    "forum_app.apps.ForumAppConfig",
+    "its_admin.apps.ItsAdminConfig",
+    "messages_app.apps.MessagesAppConfig",
+    "projects.apps.ProjectsConfig",
 ]
 
 MIDDLEWARE = [
