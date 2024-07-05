@@ -16,13 +16,10 @@ urlpatterns = [
 urlpatterns += i18n_patterns(
     path("", include("main.urls")),
     path("ckeditor5/", include("django_ckeditor_5.urls")),
-    path("its_admin/", include("its_admin.urls")),
     path("messages/", include("messages_app.urls")),
     path("forum/", include("forum_app.urls")),
-    path("client/", include("client_portal.urls")),
-    path("employee/", include("employee_portal.urls")),
-    path("projects/", include("projects.urls")),
-    path("blog/", include("blog.urls", namespace="blog")),
+    path("projects/", include("projects_app.urls")),
+    path("blog/", include("blog_app.urls", namespace="blog")),
     path(
         "login/",
         auth_views.LoginView.as_view(template_name="main/login.html"),

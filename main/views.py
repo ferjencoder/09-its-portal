@@ -17,8 +17,10 @@ from django.views.decorators.csrf import csrf_protect
 from .forms import RegisterForm, ProfileForm, UserEditForm
 from .models import Profile
 from .utils import get_profile
-from forum_app.models import ForumTopic
+from forum_app.models import ForumTopic, ForumPost
 from messages_app.models import Message
+from projects_app.models import Project
+from blog_app.models import BlogPost
 
 logger = logging.getLogger(__name__)
 
@@ -239,21 +241,32 @@ def edit_profile(request):
 @login_required
 def dashboard(request):
     profile = get_profile(request.user)
+    context = {"profile": profile}
+
     if profile:
         if profile.role == "employee":
             topics = ForumTopic.objects.all()
             messages_list = Message.objects.filter(recipient=request.user)
-            return render(
-                request,
-                "employee_portal/employee_dashboard.html",
-                {"profile": profile, "topics": topics, "messages": messages_list},
-            )
+            context.update({"topics": topics, "messages": messages_list})
+            return render(request, "dashboard/employee_dashboard.html", context)
         elif profile.role == "client":
-            return render(request, "client_portal/client_dashboard.html")
+            return render(request, "dashboard/client_dashboard.html", context)
         elif profile.role == "admin":
-            return render(request, "its_admin/admin_dashboard.html")
+            projects = Project.objects.all()
+            messages_list = Message.objects.all()[:10]
+            forum_posts = ForumPost.objects.select_related("topic").all()[:10]
+            blog_posts = BlogPost.objects.all()[:10]
+            context.update(
+                {
+                    "projects": projects,
+                    "messages": messages_list,
+                    "forum_posts": forum_posts,
+                    "blog_posts": blog_posts,
+                }
+            )
+            return render(request, "dashboard/admin_dashboard.html", context)
         else:
-            return render(request, "main/user_dashboard.html")
+            return render(request, "main/user_dashboard.html", context)
     else:
         return redirect("main:create_profile")
 

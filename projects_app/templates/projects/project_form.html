@@ -1,0 +1,67 @@
+<!-- projects_app/projects/project_form.html -->
+
+{% extends "sidebars/base_sidebar.html" %}
+{% load custom_filters %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Project - ITS Portal" %}{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/custom_styles.css' %}">
+<div class="container mt-1">
+    <div class="text-center">
+        <h1 class="display-4">{% trans "Project" %}</h1>
+        <hr class="my-5">
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-start py-3">
+                    <h4 class="mb-0">{% trans "Project Details" %}</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group text-start mb-3">
+                                    <label for="id_name" class="form-label">{% trans "Project Name" %}</label>
+                                    {{ form.name|add_class:"form-control" }}
+                                </div>
+                                <div class="form-group text-start mb-3">
+                                    <label for="id_description" class="form-label">{% trans "Description" %}</label>
+                                    {{ form.description|add_class:"form-control"|add_attribute:"rows:4" }}
+                                </div>
+                                <div class="form-group text-start mb-3">
+                                    <label for="id_status" class="form-label">{% trans "Status" %}</label>
+                                    {{ form.status|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group text-start mb-3">
+                                    <label for="id_start_date" class="form-label">{% trans "Start Date" %}</label>
+                                    {{ form.start_date|add_class:"form-control" }}
+                                </div>
+                                <div class="form-group text-start mb-3">
+                                    <label for="id_end_date" class="form-label">{% trans "End Date" %}</label>
+                                    {{ form.end_date|add_class:"form-control" }}
+                                </div>
+                                <div class="form-group text-start mb-3">
+                                    <label for="id_assigned_to_client" class="form-label">{% trans "Assigned to Client" %}</label>
+                                    {{ form.assigned_to_client|add_class:"form-control" }}
+                                </div>
+                                <div class="form-group text-start mb-3">
+                                    <label for="id_assigned_to_employees" class="form-label">{% trans "Assigned to Employees" %}</label>
+                                    {{ form.assigned_to_employees|add_class:"form-control" }}
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block mt-4">{% trans "Save" %}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,96 @@
+<!-- main/dashboard/employee_dashboard.html -->
+
+{% extends "sidebars/base_sidebar.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}Employee Dashboard - ITS Portal{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/custom_styles.css' %}">
+<div class="container mt-1">
+    <div class="text-center">
+        <h1 class="display-4">{% trans "Employee Dashboard" %}</h1>
+        <hr class="my-5">
+    </div>
+
+    <div class="row">
+        <!-- Sección de Proyectos -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <a href="{% url 'projects_app:view_projects' %}" class="text-white text-decoration-none">
+                        <h4>{% trans "Your Projects" %}</h4>
+                    </a>
+                </div>
+                <div class="card-body" style="max-height: 200px; overflow-y: auto;">
+                    <ul class="list-group">
+                        {% for project in projects %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span>{{ project.name }}</span>
+                                <span class="badge bg-primary rounded-pill">{{ project.status }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de Mensajes -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <a href="{% url 'messages_app:default_messages_view' %}" class="text-white text-decoration-none">
+                        <h4>{% trans "Messages" %}</h4>
+                    </a>
+                </div>
+                <div class="card-body" style="max-height: 200px; overflow-y: auto;">
+                    <ul class="list-group">
+                        {% for message in messages %}
+                            <li class="list-group-item">
+                                <strong>{{ message.sender.username }}</strong>: {{ message.content|truncatewords:10 }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de Posts en el Foro -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h4>{% trans "Forum Posts" %}</h4>
+                </div>
+                <div class="card-body" style="max-height: 200px; overflow-y: auto;">
+                    <ul class="list-group">
+                        {% for post in forum_posts %}
+                            <li class="list-group-item">
+                                <strong>{{ post.title }}</strong>: {{ post.content|truncatewords:10 }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de Posts en el Blog -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h4>{% trans "Blog Posts" %}</h4>
+                </div>
+                <div class="card-body" style="max-height: 200px; overflow-y: auto;">
+                    <ul class="list-group">
+                        {% for post in blog_posts %}
+                            <li class="list-group-item">
+                                <strong>{{ post.title }}</strong>: {{ post.subtitle|truncatewords:10 }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

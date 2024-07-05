@@ -38,24 +38,24 @@ ALLOWED_HOSTS = [
 
 # Definición de la aplicación
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "django.contrib.humanize",
-    "django_extensions",
-    "django_ckeditor_5",
-    "main.apps.MainConfig",
-    "blog.apps.BlogConfig",
-    "client_portal.apps.ClientPortalConfig",  # Esta aplicación no tiene modelos pero debe estar en INSTALLED_APPS
-    "employee_portal.apps.EmployeePortalConfig",
-    "forum_app.apps.ForumAppConfig",
-    "its_admin.apps.ItsAdminConfig",
-    "messages_app.apps.MessagesAppConfig",
-    "projects.apps.ProjectsConfig",
+    "django.contrib.admin",  # Interfaz administrativa de Django
+    "django.contrib.auth",  # Autenticación y autorización
+    "django.contrib.contenttypes",  # Tipos de contenido
+    "django.contrib.sessions",  # Gestión de sesiones
+    "django.contrib.messages",  # Sistema de mensajes
+    "django.contrib.staticfiles",  # Gestión de archivos estáticos
+    "django.contrib.humanize",  # Plantillas humanizadoras (ej. formatear fechas y números)
+    "django_extensions",  # Extensiones de Django para desarrolladores
+    "django_ckeditor_5",  # Editor WYSIWYG CKEditor
+    "main.apps.MainConfig",  # Aplicación principal
+    "blog_app.apps.BlogConfig",  # Aplicación del blog
+    "forum_app.apps.ForumAppConfig",  # Aplicación del foro
+    "messages_app.apps.MessagesAppConfig",  # Aplicación de mensajes
+    "projects_app.apps.ProjectsConfig",  # Aplicación de proyectos
 ]
+# "client_portal.apps.ClientPortalConfig",  # Portal del cliente
+# "employee_portal.apps.EmployeePortalConfig",  # Portal del empleado
+# "its_admin.apps.ItsAdminConfig",  # Administración interna
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

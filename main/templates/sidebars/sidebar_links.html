@@ -1,0 +1,10 @@
+<!-- main/sidebars/sidebar_links.html -->
+ 
+{% load custom_filters %}
+{% if user|has_group:"admin" %}
+    {% include 'sidebars/sidebar_admin.html' %}
+{% elif user|has_group:"employee" %}
+    {% include 'sidebars/sidebar_employee.html' %}
+{% elif user|has_group:"client" %}
+    {% include 'sidebars/sidebar_client.html' %}
+{% endif %}

@@ -1,0 +1,49 @@
+<!--projects_app/assignments/create_assignment.html-->
+
+{% extends "sidebars/base_sidebar.html" %}
+{% load custom_filters %}
+{% load i18n %}
+
+{% block title %}{% trans "Create Assignment - ITS Portal" %}{% endblock %}
+
+{% block content %}
+<div class="container mt-1">
+    <div class="text-center">
+        <h1 class="display-4">{% trans "Create Assignment" %}</h1>
+        <hr class="my-5">
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group text-start">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% for field in form %}
+                            <div class="form-group text-start">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {% if field.name == 'description' %}
+                                    {{ field|add_class:"form-control"|add_attribute:"rows:5" }}
+                                {% else %}
+                                    {{ field|add_class:"form-control" }}
+                                {% endif %}
+                                {% if field.help_text %}
+                                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                                {% endif %}
+                                {% for error in field.errors %}
+                                    <div class="text-danger">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary btn-block mt-4">{% trans "Create Assignment" %}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
