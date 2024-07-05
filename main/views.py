@@ -5,16 +5,16 @@ import shutil
 import logging
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Group, User
-from django.core.files import File
+from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils import translation
 from django.views.decorators.csrf import csrf_protect
-from .forms import RegisterForm, ProfileForm, UserRegistrationForm, UserEditForm
+from .forms import RegisterForm, ProfileForm, UserEditForm
 from .models import Profile
 from .utils import get_profile
 from forum_app.models import ForumTopic
@@ -149,8 +149,7 @@ def profile(request):
 # Vista para editar el perfil del usuario
 @login_required
 def edit_profile(request):
-    profile = get_profile(request.user)
-
+    profile = Profile.objects.get(user=request.user)
     predefined_images = [
         f"assets/images/avatars/{image}"
         for image in os.listdir(
@@ -161,12 +160,8 @@ def edit_profile(request):
     if request.method == "POST":
         user_form = UserEditForm(request.POST, instance=request.user)
         profile_form = ProfileForm(request.POST, request.FILES, instance=profile)
-        predefined_image = request.POST.get("predefined_image")
         current_password = request.POST.get("current_password")
         confirm_current_password = request.POST.get("confirm_current_password")
-
-        logger.debug(f"POST data: {request.POST}")
-        logger.debug(f"Predefined image: {predefined_image}")
 
         if current_password != confirm_current_password:
             profile_form.add_error(None, "Current passwords do not match.")
@@ -174,11 +169,25 @@ def edit_profile(request):
             profile_form.add_error(None, "Current password is incorrect.")
         else:
             if user_form.is_valid() and profile_form.is_valid():
-                user = user_form.save()
-
+                user_form.save()
                 profile = profile_form.save(commit=False)
 
-                if predefined_image:
+                if request.FILES.get("profile_picture"):
+                    uploaded_file = request.FILES["profile_picture"]
+                    fs = FileSystemStorage(location=settings.MEDIA_ROOT)
+                    filename = fs.save(
+                        os.path.join("profile_images", uploaded_file.name),
+                        uploaded_file,
+                    )
+                    profile.profile_picture = os.path.join(
+                        "profile_images", uploaded_file.name
+                    )
+                    logger.info(
+                        f"Saved file '{filename}' to 'media/profile_images' folder."
+                    )
+
+                elif request.POST.get("predefined_image"):
+                    predefined_image = request.POST["predefined_image"]
                     predefined_image_path = os.path.join(
                         settings.BASE_DIR,
                         "its_portal/static/assets/images/avatars",
@@ -189,27 +198,18 @@ def edit_profile(request):
                         "profile_images",
                         os.path.basename(predefined_image),
                     )
-                    os.makedirs(
-                        os.path.dirname(media_path), exist_ok=True
-                    )  # Asegúrate de que el directorio exista
+                    os.makedirs(os.path.dirname(media_path), exist_ok=True)
                     if os.path.exists(predefined_image_path):
                         try:
                             shutil.copy(predefined_image_path, media_path)
                             profile.profile_picture = os.path.join(
                                 "profile_images", os.path.basename(predefined_image)
                             )
-                            logger.debug(
-                                f"Profile picture set to: {profile.profile_picture}"
-                            )
                         except FileNotFoundError as e:
-                            logger.error(f"Error copying predefined image: {e}")
                             messages.error(
                                 request, f"Error copying predefined image: {e}"
                             )
                     else:
-                        logger.error(
-                            f"Predefined image not found: {predefined_image_path}"
-                        )
                         messages.error(
                             request,
                             f"Predefined image not found: {predefined_image_path}",
@@ -219,9 +219,7 @@ def edit_profile(request):
                 messages.success(request, "Your profile has been updated!")
                 return redirect("main:profile")
             else:
-                logger.debug(f"Form errors: {user_form.errors}, {profile_form.errors}")
                 messages.error(request, "Please correct the errors below.")
-
     else:
         user_form = UserEditForm(instance=request.user)
         profile_form = ProfileForm(instance=profile)

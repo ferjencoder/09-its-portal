@@ -46,7 +46,11 @@ class ProfileForm(forms.ModelForm):
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)
     role = forms.ChoiceField(
-        choices=[("client", "Client"), ("employee", "Employee"), ("admin", "Admin")],
+        choices=[
+            ("client", "Client"),
+            ("employee", "Employee"),
+            ("admin", "Admin"),
+        ],
         required=True,
     )
 
@@ -74,9 +78,7 @@ class RegisterForm(UserCreationForm):
         return user
 
 
-class UserEditForm(UserChangeForm):
-    password = None
-
+class UserEditForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ("first_name", "last_name", "email")
+        fields = ("first_name", "last_name")

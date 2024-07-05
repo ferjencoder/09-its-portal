@@ -33,7 +33,7 @@
                 </div>
                 <hr>
                 <div class="row">
-                    <!-- Left panel -->
+                    <!-- Panel izquierdo -->
                     <div class="col-md-6 mb-3">
                         <div class="form-group mt-2 text-start">
                             <label for="id_username">{% trans "Username" %}</label>
@@ -72,7 +72,7 @@
                         </div>                        
                     </div>
 
-                    <!-- Right panel -->
+                    <!-- Panel derecho -->
                     <div class="col-md-6 mb-3">
                         <div class="form-group mt-2 text-start">
                             <label for="id_birth_date">{% trans "Birth Date" %}</label>
@@ -101,9 +101,9 @@
                             <div class="caps-lock-warning text-danger" style="display: none;">
                                 {% trans "Caps Lock is on!" %}
                             </div>
-                            {% if form.errors.current_password %}
+                            {% if profile_form.non_field_errors %}
                                 <div class="invalid-feedback d-block">
-                                    {{ form.errors.current_password }}
+                                    {{ profile_form.non_field_errors }}
                                 </div>
                             {% endif %}
                         </div>
@@ -121,41 +121,44 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block mt-2">{% trans "Save Changes" %}</button>
+                <!-- Botón para guardar cambios -->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary mt-3">{% trans "Save Changes" %}</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for selecting profile image -->
+        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="imageModalLabel">{% trans "Select a Profile Image" %}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                        <div class="row">
+                            <div class="col-md-12 mb-3 text-start">
+                                <label for="id_profile_picture" class="mb-3">{% trans "Upload Profile Picture" %}</label>
+                                {{ profile_form.profile_picture|add_class:"form-control mb-3" }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            {% for image in predefined_images %}
+                                <div class="col-md-2 mb-3">
+                                    <img id="predefined-image-{{ forloop.counter }}" src="{% static image %}" alt="Avatar" class="img-thumbnail predefined-image" data-image-src="{% static image %}" style="width: 100%; height: 100%; cursor: pointer;">
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
+                        <button type="button" class="btn btn-primary ms-2" id="selectImage">{% trans "Save changes" %}</button>
+                    </div>
+                </div>
             </div>
         </div>
     </form>
-</div>
-
-<!-- Modal for selecting profile image -->
-<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="imageModalLabel">{% trans "Select a Profile Image" %}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-                <div class="row">
-                    <div class="col-md-12 mb-3 text-start">
-                        <label for="id_profile_picture" class="mb-3">{% trans "Upload Profile Picture" %}</label>
-                        {{ profile_form.profile_picture|add_class:"form-control mb-3" }}
-                    </div>
-                </div>
-                <div class="row">
-                    {% for image in predefined_images %}
-                        <div class="col-md-2 mb-3">
-                            <img id="predefined-image-{{ forloop.counter }}" src="{% static image %}" alt="Avatar" class="img-thumbnail predefined-image" data-image-src="{% static image %}" style="width: 100%; height: 100%; cursor: pointer;">
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-block" data-bs-dismiss="modal">{% trans "Close" %}</button>
-                <button type="button" class="btn btn-primary" id="selectImage">{% trans "Save changes" %}</button>
-            </div>
-        </div>
-    </div>
 </div>
 
 <script src="{% static 'assets/js/dark_mode.js' %}"></script>

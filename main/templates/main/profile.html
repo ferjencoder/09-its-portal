@@ -31,7 +31,7 @@
                     <p><strong>{% trans "Email:" %}</strong> {{ user.email }}</p>
                     <p><strong>{% trans "First Name:" %}</strong> {{ user.first_name }}</p>
                     <p><strong>{% trans "Last Name:" %}</strong> {{ user.last_name }}</p>
-                    <p><strong>{% trans "Role:" %}</strong> {{ user.profile.role }}</p>
+                    <p><strong>{% trans "Role:" %}</strong> {{ user.groups.first.name }}</p>
                     <p><strong>{% trans "Bio:" %}</strong> {{ user.profile.bio }}</p>
                     <p><strong>{% trans "Location:" %}</strong> {{ user.profile.location }}</p>
                     <p><strong>{% trans "Birth Date:" %}</strong> {{ user.profile.birth_date }}</p>

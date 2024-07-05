@@ -211,6 +211,32 @@ LOGOUT_REDIRECT_URL = "main:home"
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 # Configuración de logging
+# LOGGING = {
+#    "version": 1,
+#    "disable_existing_loggers": False,
+#    "handlers": {
+#        "console": {
+#            "class": "logging.StreamHandler",
+#        },
+#    },
+#    "root": {
+#        "handlers": ["console"],
+#        "level": "WARNING",
+#    },
+#    "loggers": {
+#        "django": {
+#            "handlers": ["console"],
+#            "level": "WARNING",
+#            "propagate": True,
+#        },
+#        "main": {
+#            "handlers": ["console"],
+#            "level": "WARNING",
+#            "propagate": True,
+#        },
+#    },
+# }
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,

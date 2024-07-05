@@ -1,6 +1,5 @@
 //static/assets/js/form_validation.js
 
-// js 4 disabling form subm 4 invalid fields
 document.addEventListener('DOMContentLoaded', function() {
     'use strict';
 
@@ -17,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // 🔍 CAPS LOCK
+    // Manejo de la advertencia de CAPS LOCK
     const passwordField = document.getElementById('id_current_password');
     if (passwordField) {
         const capsLockWarning = document.querySelector('.caps-lock-warning');
@@ -29,6 +28,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     capsLockWarning.style.display = 'none';
                 }
+            }
+        });
+
+        passwordField.addEventListener('blur', function() {
+            // Mostrar error si la contraseña actual es incorrecta
+            const currentPasswordError = document.querySelector('.invalid-feedback.d-block');
+            if (currentPasswordError && !this.checkValidity()) {
+                currentPasswordError.style.display = 'block';
             }
         });
     }

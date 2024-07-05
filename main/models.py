@@ -2,14 +2,20 @@
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
+
+
+def user_directory_path(instance, filename):
+    # File will be uploaded to MEDIA_ROOT/profile_images/user_<id>/<filename>
+    return f"profile_images/user_{instance.user.id}/{filename}"
 
 
 class Profile(models.Model):
     USER_ROLES = (
-        ("user", "User"),
-        ("employee", "Employee"),
-        ("client", "Client"),
-        ("admin", "Admin"),
+        ("user", _("User")),
+        ("employee", _("Employee")),
+        ("client", _("Client")),
+        ("admin", _("Admin")),
     )
 
     user = models.OneToOneField(
@@ -21,9 +27,9 @@ class Profile(models.Model):
     birth_date = models.DateField(null=True, blank=True)
     profile_picture = models.ImageField(
         upload_to="profile_images/",
+        default="profile_images/default_avatar.png",
         blank=True,
         null=True,
-        default="profile_images/default_avatar.png",
     )
 
     def __str__(self):
