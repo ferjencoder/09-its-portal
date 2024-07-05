@@ -27,7 +27,7 @@ class ProjectForm(forms.ModelForm):
             "assigned_to_employees",
         ]
         widgets = {
-            "description": forms.Textarea(attrs={"rows": 4}),
+            "description": forms.Textarea(attrs={"rows": 7}),
             "start_date": forms.DateInput(attrs={"type": "date"}),
             "end_date": forms.DateInput(attrs={"type": "date"}),
         }
