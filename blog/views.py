@@ -85,6 +85,7 @@ def delete_blog_post(request, id):
         if is_admin(request.user):
             return redirect("blog:admin_blog_list")
         return redirect("blog:employee_blog_list")
+
     return render(request, "blog/delete_blog_post.html", {"blog_post": blog_post})
 
 
@@ -95,7 +96,7 @@ def upload_image(request):
         file_path = os.path.join("blog_images", uploaded_file.name)
         saved_path = default_storage.save(file_path, ContentFile(uploaded_file.read()))
         file_url = default_storage.url(saved_path)
-        print(f"File uploaded successfully: {file_url}")
+        # print(f"File uploaded successfully: {file_url}")
         return JsonResponse({"url": file_url})
-    print("Upload failed")
+    # print("Upload failed")
     return JsonResponse({"error": {"message": "Upload failed"}})

@@ -75,10 +75,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     textarea.required = false;
                 }
 
-                // Actualizar contador de palabras en cambios
-                editor.model.document.on('change:data', () => {
-                    Countable.once(editorElement, callback());
-                });
             })
             .catch(error => {
                 console.error('CKEditor error:', error);

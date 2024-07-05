@@ -39,12 +39,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Watch for changes in local storage
+    // Observar cambios en el local storage
     window.addEventListener('storage', function(event) {
         if (event.key === 'theme') {
             applyTheme(event.newValue);
         }
     });
+
+    // Transiciones de página
+    const links = document.querySelectorAll('a');
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Prevenir comportamiento por defecto del enlace
+            e.preventDefault();
+            // Añadir clase fade-out al body
+            body.classList.add('fade-out');
+            // Esperar la duración de la animación antes de cambiar de página
+            setTimeout(() => {
+                window.location.href = this.href;
+            }, 500);
+        });
+    });
+
+    // Añadir clase fade-in al cargar la página
+    body.classList.add('fade-in');
 });
-
-

@@ -20,9 +20,8 @@
             <!-- Subtítulo del post -->
             <p class="lead">{{ post.subtitle }}</p>
             <!-- Contenido del post -->
-            <div>{{ post.body|linebreaks }}</div>
+            <div>{{ post.body|safe }}</div>
         </div>
     </div>
 </div>
 {% endblock %}
-

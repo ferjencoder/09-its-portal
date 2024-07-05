@@ -1,5 +1,7 @@
 //its_portal/static/assets/js/menu_toggle.js
 
+//sidebar menu toggle - oculta la sidebar
+
 $(document).ready(function () {
     $('#menu-toggle').click(function () {
         $('#wrapper').toggleClass('toggled');
