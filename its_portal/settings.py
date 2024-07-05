@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     "django_ckeditor_5",
     "main.apps.MainConfig",
     "blog.apps.BlogConfig",
-    "client_portal.apps.ClientPortalConfig",
+    "client_portal.apps.ClientPortalConfig",  # Esta aplicación no tiene modelos pero debe estar en INSTALLED_APPS
     "employee_portal.apps.EmployeePortalConfig",
     "forum_app.apps.ForumAppConfig",
     "its_admin.apps.ItsAdminConfig",
@@ -211,32 +211,6 @@ LOGOUT_REDIRECT_URL = "main:home"
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 # Configuración de logging
-# LOGGING = {
-#    "version": 1,
-#    "disable_existing_loggers": False,
-#    "handlers": {
-#        "console": {
-#            "class": "logging.StreamHandler",
-#        },
-#    },
-#    "root": {
-#        "handlers": ["console"],
-#        "level": "WARNING",
-#    },
-#    "loggers": {
-#        "django": {
-#            "handlers": ["console"],
-#            "level": "WARNING",
-#            "propagate": True,
-#        },
-#        "main": {
-#            "handlers": ["console"],
-#            "level": "WARNING",
-#            "propagate": True,
-#        },
-#    },
-# }
-
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
