@@ -4,29 +4,33 @@
 
 {% block sidebar_links %}
     <li class="nav-item my-3">
+        <!-- Enlace al dashboard del empleado -->
         <a href="{% url 'main:dashboard' %}" class="nav-link py-3 border-bottom rounded-0" data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Dashboard' %}">
             <i class="bi-speedometer me-2"></i>
         </a>
     </li>
     <li class="nav-item my-3">
+        <!-- Enlace a la vista de proyectos del empleado -->
         <a href="{% url 'projects_app:view_projects' %}" class="nav-link py-3 border-bottom rounded-0" data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Projects' %}">
             <i class="bi-briefcase me-2"></i>
         </a>
     </li>
     <li class="nav-item my-3">
+        <!-- Enlace a la vista de mensajes -->
         <a href="{% url 'messages_app:default_messages_view' %}" class="nav-link py-3 border-bottom rounded-0" data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Messages' %}">
             <i class="bi-envelope me-2"></i>
         </a>
     </li>
     <li class="nav-item my-3">
+        <!-- Enlace al foro -->
         <a href="{% url 'forum_app:forum' %}" class="nav-link py-3 border-bottom rounded-0" data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Forum' %}">
             <i class="bi-chat-left-text me-2"></i>
         </a>
     </li>
     <li class="nav-item my-3">
-        <a href="{% url 'blog:employee_blog_list' %}" class="nav-link py-3 border-bottom rounded-0" data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Blog' %}">
+        <!-- Enlace a la lista de blogs del empleado -->
+        <a href="{% url 'blog_app:employee_blog_list' %}" class="nav-link py-3 border-bottom rounded-0" data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Blog' %}">
             <i class="bi-journal me-2"></i>
         </a>
     </li>
 {% endblock %}
-

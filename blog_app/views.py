@@ -79,17 +79,39 @@ def blog_detail(request, id):
 # Lista de blogs del empleado logueado con paginación
 @login_required
 def employee_blog_list(request):
-    blog_posts = BlogPost.objects.filter(author=request.user).order_by("-created_at")
+    # Obtener el ID de la categoría seleccionada
+    category_id = request.GET.get("category")
 
+    # Filtrar posts del usuario actual y por categoría si se selecciona una
+    if category_id:
+        blog_posts = BlogPost.objects.filter(
+            author=request.user, category_id=category_id
+        ).order_by("-created_at")
+    else:
+        blog_posts = BlogPost.objects.filter(author=request.user).order_by(
+            "-created_at"
+        )
+
+    # Paginación
     paginator = Paginator(blog_posts, 3)  # Muestra 3 publicaciones por página
-    page = request.GET.get("page")
-    blog_posts = paginator.get_page(page)
+    page_number = request.GET.get("page")
+    blog_posts = paginator.get_page(page_number)
+
+    # Obtener todas las categorías
+    categories = Category.objects.all()
+    selected_category = int(category_id) if category_id else None
 
     if not blog_posts:
         messages.info(request, "No blog posts found.")
 
     return render(
-        request, "blog_app/employee_blog_list.html", {"blog_posts": blog_posts}
+        request,
+        "blog_app/employee_blog.html",
+        {
+            "blog_posts": blog_posts,
+            "categories": categories,
+            "selected_category": selected_category,
+        },
     )
 
 
@@ -147,6 +169,9 @@ def admin_blog_list(request):
 @login_required
 def edit_blog_post(request, id):
     post = get_object_or_404(BlogPost, id=id)
+    if post.author != request.user and not is_admin(request.user):
+        raise PermissionDenied
+
     if request.method == "POST":
         form = BlogPostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
@@ -174,6 +199,7 @@ def delete_blog_post(request, id):
 
     if request.method == "POST":
         blog_post.delete()
+        messages.success(request, "Entrada de blog eliminada exitosamente.")
         if is_admin(request.user):
             return redirect("blog_app:admin_blog_list")
         return redirect("blog_app:employee_blog_list")
@@ -218,3 +244,29 @@ def blog_list_public(request):
             "selected_category": int(category_id) if category_id else None,
         },
     )
+
+
+# Verifica si el usuario pertenece al grupo "admin"
+# is_admin(user)
+# Verifica si el usuario pertenece al grupo "employee"
+# is_employee(user)
+# Crear una nueva categoría (solo admin)
+# create_category(request)
+# Lista de blogs con paginación y filtro por categoría
+# blog_list(request)
+# Detalle de un blog específico
+# blog_detail(request, id)
+# Lista de blogs del empleado logueado con paginación
+# employee_blog_list(request)
+# Crear una nueva entrada de blog
+# create_blog_post(request)
+# Lista de blogs para el admin con paginación y filtro por categoría
+# admin_blog_list(request)
+# Editar una entrada de blog
+# edit_blog_post(request, id)
+# Eliminar una entrada de blog
+# delete_blog_post(request, id)
+# Subir una imagen para el blog
+# upload_image(request)
+# Lista pública de blogs con paginación y filtro por categoría
+# blog_list_public(request)

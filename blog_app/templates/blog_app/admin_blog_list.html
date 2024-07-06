@@ -1,17 +1,26 @@
 <!-- blog_app/admin_blog_list.html -->
 
 {% extends "sidebars/base_sidebar.html" %}
+{% load i18n %}
 
 {% block content %}
-  <h1>Lista de Blogs - Admin</h1>
-  <ul>
-    {% for post in blog_posts %}
-      <li>
-        <a href="{% url 'blog_app:blog_detail' post.id %}">{{ post.title }}</a>
-        - {{ post.author.username }}
-        <a href="{% url 'blog_app:edit_blog_post' post.id %}">Editar</a>
-        <a href="{% url 'blog_app:delete_blog_post' post.id %}">Eliminar</a>
-      </li>
-    {% endfor %}
-  </ul>
+  <h1>{% trans "Blog List - Admin" %}</h1>
+  {% if blog_posts %}
+    <ul>
+      {% for post in blog_posts %}
+        <li>
+          <!-- Enlace al detalle del blog -->
+          <a href="{% url 'blog_app:blog_detail' post.id %}">{{ post.title }}</a>
+          - {{ post.author.username }}
+          <!-- Enlace para editar el blog -->
+          <a href="{% url 'blog_app:edit_blog_post' post.id %}">{% trans "Edit" %}</a>
+          <!-- Enlace para eliminar el blog -->
+          <a href="{% url 'blog_app:delete_blog_post' post.id %}">{% trans "Delete" %}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <!-- Mensaje cuando no hay publicaciones de blog -->
+    <p>{% trans "No blog posts found." %}</p>
+  {% endif %}
 {% endblock %}
