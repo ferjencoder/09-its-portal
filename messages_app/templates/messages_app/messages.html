@@ -60,20 +60,17 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="card-body flex-grow-1 d-flex flex-column p-0">
-                <div class="flex-grow-1 px-4 py-3 overflow-auto" id="messages">
+            <div class="card-body flex-grow-1 d-flex flex-column p-0 overflow-auto" id="messages">
+                <div class="px-4 py-3">
                     {% for message in messages %}
                     <div class="d-flex {% if message.sender == user %}justify-content-end{% else %}justify-content-start{% endif %} mb-4">
                         <div class="p-3 message-box position-relative {% if message.sender == user %}bg-primary text-white{% else %}bg-light{% endif %}">
                             {{ message.content }}
                             <div class="small text-muted mt-1">{{ message.created_at|naturaltime }}</div>
                             {% if message.sender == user %}
-                            <div class="message-actions position-absolute">
-                                <a href="{% url 'messages_app:edit_message' message.id %}" class="badge badge-circle bg-secondary text-decoration-none edit-badge">
+                            <div class="message-actions position-absolute top-0 start-100 translate-middle">
+                                <a href="#" class="badge badge-circle bg-secondary text-decoration-none edit-badge" data-bs-toggle="modal" data-bs-target="#editDeleteModal" data-message-id="{{ message.id }}" data-message-content="{{ message.content }}">
                                     <i class="bi bi-pencil"></i>
-                                </a>
-                                <a href="{% url 'messages_app:delete_message' message.id %}" class="badge badge-circle bg-secondary text-decoration-none delete-badge">
-                                    <i class="bi bi-trash"></i>
                                 </a>
                             </div>
                             {% endif %}
@@ -81,16 +78,16 @@
                     </div>
                     {% endfor %}
                 </div>
-                {% if recipient %}
-                <div class="card-footer">
-                    <form method="post" action="{% url 'messages_app:send_message' recipient.id %}" class="d-flex">
-                        {% csrf_token %}
-                        <input type="text" name="content" class="form-control me-2" placeholder="{% trans 'Type a message' %}" required>
-                        <button type="submit" class="btn btn-success">{% trans "Send" %}</button>
-                    </form>
-                </div>
-                {% endif %}
             </div>
+            {% if recipient %}
+            <div class="card-footer">
+                <form method="post" action="{% url 'messages_app:send_message' recipient.id %}" class="d-flex">
+                    {% csrf_token %}
+                    <input type="text" name="content" class="form-control me-2" placeholder="{% trans 'Type a message' %}" required>
+                    <button type="submit" class="btn btn-success">{% trans "Send" %}</button>
+                </form>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -120,4 +117,53 @@
         </div>
     </div>
 </div>
+
+<!-- Modal para editar o eliminar mensaje -->
+<div class="modal fade" id="editDeleteModal" tabindex="-1" aria-labelledby="editDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editDeleteModalLabel">{% trans "Edit or Delete Message" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editMessageForm" method="post" action="">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="messageContent" class="form-label">{% trans "Edit Message" %}</label>
+                        <textarea class="form-control" id="messageContent" name="content" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">{% trans "Save changes" %}</button>
+                </form>
+                <hr>
+                <p>{% trans "Or delete this message:" %}</p>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">{% trans "Delete" %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para confirmar eliminación de mensaje -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">{% trans "Confirm Deletion" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>{% trans "Are you sure you want to delete this message?" %}</p>
+            </div>
+            <div class="modal-footer">
+                <form id="deleteMessageForm" method="post" action="">
+                    {% csrf_token %}
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Cancel" %}</button>
+                    <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/messages.js' %}"></script>
 {% endblock %}

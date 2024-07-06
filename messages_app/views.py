@@ -12,32 +12,30 @@ from .forms import MessageForm
 
 @login_required
 def default_messages_view(request):
-    # Vista predeterminada de mensajes, muestra todas las conversaciones
     users = User.objects.exclude(id=request.user.id)
     conversations = (
-        Message.objects.filter(sender=request.user)
-        .values("recipient")
+        Message.objects.filter(Q(sender=request.user) | Q(recipient=request.user))
+        .values("recipient", "sender")
         .annotate(last_message_time=Max("created_at"))
-        .union(
-            Message.objects.filter(recipient=request.user)
-            .values("sender")
-            .annotate(last_message_time=Max("created_at"))
-        )
         .order_by("-last_message_time")
     )
 
     conversation_details = []
     for convo in conversations:
+        other_user_id = (
+            convo["recipient"]
+            if convo["sender"] == request.user.id
+            else convo["sender"]
+        )
         last_message = (
             Message.objects.filter(
-                Q(sender=request.user, recipient_id=convo["recipient"])
-                | Q(recipient=request.user, sender_id=convo["recipient"])
+                Q(sender=request.user, recipient_id=other_user_id)
+                | Q(recipient=request.user, sender_id=other_user_id)
             )
             .order_by("-created_at")
             .first()
         )
-
-        recipient_user = User.objects.get(id=convo["recipient"])
+        recipient_user = User.objects.get(id=other_user_id)
         conversation_details.append(
             {
                 "id": recipient_user.id,
@@ -64,7 +62,6 @@ def default_messages_view(request):
 
 @login_required
 def messages_view(request, recipient_id=None):
-    # Vista de los mensajes específicos de una conversación
     users = User.objects.exclude(id=request.user.id)
     recipient = None
     messages = []
@@ -77,29 +74,28 @@ def messages_view(request, recipient_id=None):
         ).order_by("created_at")
 
     conversations = (
-        Message.objects.filter(sender=request.user)
-        .values("recipient")
+        Message.objects.filter(Q(sender=request.user) | Q(recipient=request.user))
+        .values("recipient", "sender")
         .annotate(last_message_time=Max("created_at"))
-        .union(
-            Message.objects.filter(recipient=request.user)
-            .values("sender")
-            .annotate(last_message_time=Max("created_at"))
-        )
         .order_by("-last_message_time")
     )
 
     conversation_details = []
     for convo in conversations:
+        other_user_id = (
+            convo["recipient"]
+            if convo["sender"] == request.user.id
+            else convo["sender"]
+        )
         last_message = (
             Message.objects.filter(
-                Q(sender=request.user, recipient_id=convo["recipient"])
-                | Q(recipient=request.user, sender_id=convo["recipient"])
+                Q(sender=request.user, recipient_id=other_user_id)
+                | Q(recipient=request.user, sender_id=other_user_id)
             )
             .order_by("-created_at")
             .first()
         )
-
-        recipient_user = User.objects.get(id=convo["recipient"])
+        recipient_user = User.objects.get(id=other_user_id)
         conversation_details.append(
             {
                 "id": recipient_user.id,
@@ -128,7 +124,6 @@ def messages_view(request, recipient_id=None):
 
 @login_required
 def send_message(request, recipient_id):
-    # Enviar un nuevo mensaje
     if request.method == "POST":
         content = request.POST.get("content")
         recipient = get_object_or_404(User, id=recipient_id)
@@ -141,7 +136,6 @@ def send_message(request, recipient_id):
 
 @login_required
 def reply_message(request, message_id):
-    # Responder un mensaje específico
     original_message = get_object_or_404(Message, id=message_id)
     recipient = original_message.sender
     if request.method == "POST":
@@ -159,18 +153,19 @@ def reply_message(request, message_id):
 
 @login_required
 def delete_message(request, message_id):
-    # Eliminar un mensaje
     message = get_object_or_404(Message, id=message_id)
+    recipient_id = (
+        message.recipient.id if message.sender == request.user else message.sender.id
+    )
     if message.sender == request.user or message.recipient == request.user:
         message.delete()
-        return redirect("messages_app:default_messages_view")
+        return redirect("messages_app:messages_view", recipient_id=recipient_id)
     else:
         return HttpResponseForbidden("You are not allowed to delete this message.")
 
 
 @login_required
 def edit_message(request, message_id):
-    # Editar un mensaje existente
     message = get_object_or_404(Message, id=message_id, sender=request.user)
     if request.method == "POST":
         form = MessageForm(request.POST, instance=message)

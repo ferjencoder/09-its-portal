@@ -130,7 +130,7 @@ body.dark-mode #main-area {
 
 /* Estilos para la caja de mensajes */
 .message-box {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: relative;
     display: inline-block;
     max-width: 75%;
@@ -158,16 +158,15 @@ body.dark-mode .message-box.bg-light {
 
 /* Estilos para acciones de mensajes */
 .message-actions {
-    top: -20px;
-    right: -5px;
+    position: absolute;
     display: flex;
-    gap: 0.25rem;
-    padding: 0.3rem;
+    gap: 0.5rem;
+    padding: 0.25rem;
 }
 
 .message-actions .badge {
     cursor: pointer;
-    border-radius: 75%;
+    border-radius: 50%;
     padding: 0.5rem;
 }
 
