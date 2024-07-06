@@ -85,6 +85,9 @@ def employee_blog_list(request):
     page = request.GET.get("page")
     blog_posts = paginator.get_page(page)
 
+    if not blog_posts:
+        messages.info(request, "No blog posts found.")
+
     return render(
         request, "blog_app/employee_blog_list.html", {"blog_posts": blog_posts}
     )

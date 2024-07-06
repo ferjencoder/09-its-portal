@@ -114,6 +114,9 @@ class BlogAppTests(TestCase):
         self.assertEqual(BlogPost.objects.count(), 0)
 
     def test_employee_blog_list_view(self):
+        # Eliminar cualquier blog post existente del usuario empleado
+        BlogPost.objects.filter(author=self.employee_user).delete()
+
         # Probar la vista de lista de blogs para empleados
         self.client.login(username="employee", password="employee123")
         response = self.client.get(reverse("blog_app:employee_blog_list"))
