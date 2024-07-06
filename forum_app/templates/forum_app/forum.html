@@ -28,13 +28,13 @@
             <!-- Barra de búsqueda -->
             <div class="row my-4 px-3">
                 <form method="get" action="{% url 'forum_app:forum' %}" class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="{% trans 'Search Topics' %}" aria-label="Search" name="search">
+                    <input class="form-control me-2" type="search" placeholder="{% trans 'Search Topics' %}" aria-label="Search" name="search" value="{{ search_query }}">
                     <button class="btn btn-success" type="submit">{% trans 'Search' %}</button>
                 </form>
             </div>
-            <hr>
+            <!--<hr class="pb-0 mb-0 border-0">-->
             <!-- Temas recientes -->
-            <div class="card mb-3 h-100">
+            <div class="card mb-3 h-100 pt-0">
                 <div class="card-header bg-success">
                     <h4>{% trans "Recent Topics" %}</h4>
                 </div>
@@ -66,7 +66,7 @@
                 <div class="card-header bg-success">
                     <h4>{% trans "Recent Posts" %}</h4>
                 </div>
-                <div class="card-body overflow-auto">
+                <div class="card-body overflow-auto p-2">
                     <div class="list-group list-group-flush" id="recent-posts-list">
                         {% for post in recent_posts %}
                             <div class="list-group-item">
@@ -79,8 +79,8 @@
                                     <div class="flex-fill">
                                         <a href="{% url 'forum_app:post_detail' post.id %}">{{ post.title }}</a>
                                         <p class="mb-0">{{ post.content|truncatewords:15 }}</p>
-                                        <!-- Uso del filtro humanize para mostrar la fecha de manera más amigable -->
-                                        <small class="text-muted">{{ post.created_at|naturaltime }}</small>
+                                        <small class="text-muted">{{ post.topic.title }}</small>
+                                        <small class="text-muted"> - {{ post.created_at|naturaltime }}</small>
                                     </div>
                                     <a href="{% url 'forum_app:reply_post' post.id %}" class="btn btn-primary ms-3">{% trans "Reply" %}</a>
                                 </div>

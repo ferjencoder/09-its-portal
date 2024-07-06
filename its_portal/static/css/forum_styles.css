@@ -30,7 +30,7 @@ body.dark-mode .list-group {
 }
 
 body.dark-mode .text-muted {
-    color: #d3d6da !important;
+    color: #96989b !important;
 }
 
 body.dark-mode .list-group-item {
@@ -85,7 +85,7 @@ body.dark-mode .modal-body ul.list-group::-webkit-scrollbar-thumb:hover {
 
 /* Estilos para la barra lateral */
 #sidebar {
-    height: 75.5%;
+    height: 78%;
     width: calc(25% + 50px);
     border-right: 1px solid #dee2e6;
     border-radius: 10px;

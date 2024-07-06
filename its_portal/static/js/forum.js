@@ -2,15 +2,18 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     // Maneja la eliminación de posts
-    const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-    const deleteForm = document.getElementById('deleteForm');
+    const deleteModalElement = document.getElementById('deleteModal');
+    if (deleteModalElement) {
+        const deleteModal = new bootstrap.Modal(deleteModalElement);
+        const deleteForm = document.getElementById('deleteForm');
 
-    document.querySelectorAll('[data-bs-toggle="modal"]').forEach(button => {
-        button.addEventListener('click', function() {
-            const postId = this.getAttribute('data-post-id');
-            deleteForm.setAttribute('action', deleteForm.getAttribute('action').replace('0', postId));
+        document.querySelectorAll('[data-bs-toggle="modal"]').forEach(button => {
+            button.addEventListener('click', function() {
+                const postId = this.getAttribute('data-post-id');
+                deleteForm.setAttribute('action', deleteForm.getAttribute('action').replace('0', postId));
+            });
         });
-    });
+    }
 
     // Maneja la creación de posts mediante AJAX
     const createPostForm = document.getElementById('createPostForm');

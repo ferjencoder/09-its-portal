@@ -11,10 +11,18 @@ from .forms import ForumPostForm, ForumTopicForm
 
 @login_required
 def forum(request):
-    # Obtener todos los temas y posts del foro
-    topics = ForumTopic.objects.all()
-    post_list = ForumPost.objects.all().order_by("-created_at")
-    recent_topics = ForumTopic.objects.order_by("-created_at")[:10]
+    # Obtener el término de búsqueda, si existe
+    search_query = request.GET.get("search", "")
+
+    # Filtrar los temas recientes basados en el término de búsqueda
+    if search_query:
+        recent_topics = ForumTopic.objects.filter(
+            title__icontains=search_query
+        ).order_by("-created_at")[:10]
+    else:
+        recent_topics = ForumTopic.objects.order_by("-created_at")[:10]
+
+    # Obtener todos los posts recientes
     recent_posts = ForumPost.objects.order_by("-created_at")[:10]
 
     # Comprobar si la solicitud es AJAX para cargar posts recientes
@@ -47,9 +55,9 @@ def forum(request):
         request,
         "forum_app/forum.html",
         {
-            "topics": topics,
             "recent_topics": recent_topics,
             "recent_posts": recent_posts,
+            "search_query": search_query,
         },
     )
 
@@ -131,6 +139,7 @@ def post_detail(request, post_id):
 def reply_post(request, post_id):
     # Responder a un post
     post = get_object_or_404(ForumPost, id=post_id)
+    posts_in_topic = ForumPost.objects.filter(topic=post.topic).order_by("-created_at")
     if request.method == "POST":
         form = ForumPostForm(request.POST)
         if form.is_valid():
@@ -141,4 +150,8 @@ def reply_post(request, post_id):
             return redirect("forum_app:topic_detail", topic_id=post.topic.id)
     else:
         form = ForumPostForm()
-    return render(request, "forum_app/reply_post.html", {"form": form, "post": post})
+    return render(
+        request,
+        "forum_app/reply_post.html",
+        {"form": form, "post": post, "posts_in_topic": posts_in_topic},
+    )
