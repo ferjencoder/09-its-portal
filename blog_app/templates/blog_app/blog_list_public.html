@@ -1,34 +1,85 @@
 <!-- blog/blog_list_public.html -->
 
-{% extends "sidebars/base_sidebar.html" %}
+{% extends "main/base_generic.html" %}
 {% load i18n %}
-{% load static %}
+
+{% block title %}Blog List - ITS Portal{% endblock %}
 
 {% block content %}
 <div class="container mt-1">
     <div class="text-center">
-        <!-- Título de la lista de blogs -->
         <h1 class="display-4">{% trans "Blog List" %}</h1>
         <hr class="my-5">
     </div>
+    <div class="d-flex justify-content-between mb-3">
+        <!-- Filtro de categoría -->
+        <form method="get" class="d-flex">
+            <select name="category" class="form-select me-2" onchange="this.form.submit()">
+                <option class="form-select-option" value="">{% trans "All Categories" %}</option>
+                {% for category in categories %}
+                    <option class="form-select-option" value="{{ category.id }}" {% if selected_category == category.id %}selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
     <div class="row">
-        {% for blog in blog_posts %}
+        {% for post in blog_posts %}
             <div class="col-md-4">
                 <div class="card mb-4">
-                    {% if blog.image %}
-                        <!-- Imagen del blog si existe -->
-                        <img src="{{ blog.image.url }}" class="card-img-top blog-card-img-top" alt="{{ blog.title }}">
+                    {% if post.image %}
+                        <!-- Mostrar la imagen del post si existe -->
+                        <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
                     {% endif %}
                     <div class="card-body">
-                        <!-- Título y subtítulo del blog -->
-                        <h5 class="card-title">{{ blog.title }}</h5>
-                        <p class="card-text">{{ blog.subtitle }}</p>
-                        <!-- Enlace para leer más -->
-                        <a href="{% url 'blog:blog_detail' blog.id %}" class="btn btn-primary">{% trans "Read More" %}</a>
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="card-text">{{ post.subtitle }}</p>
+                        <!-- Enlaces para leer más -->
+                        <a href="{% url 'blog_app:blog_detail' post.id %}" class="btn btn-primary">{% trans "Read More" %}</a>
+                    </div>
+                    <div class="card-footer">
+                        <!-- Mostrar la fecha de creación y el autor del post -->
+                        {% trans "Posted on" %} {{ post.created_at }} {% trans "by" %} {{ post.author.username }}
                     </div>
                 </div>
             </div>
         {% endfor %}
+    </div>
+
+    <!-- Paginación -->
+    <div aria-label="Page navigation example">
+        <ul class="pagination custom-pagination-dark">
+            {% if blog_posts.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ blog_posts.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">{% trans "Previous" %}</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">{% trans "Previous" %}</a>
+                </li>
+            {% endif %}
+
+            {% for num in blog_posts.paginator.page_range %}
+                {% if blog_posts.number == num %}
+                    <li class="page-item active">
+                        <a class="page-link" href="#">{{ num }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}{% if selected_category %}&category={{ selected_category }}{% endif %}">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if blog_posts.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ blog_posts.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">{% trans "Next" %}</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">{% trans "Next" %}</a>
+                </li>
+            {% endif %}
+        </ul>
     </div>
 </div>
 {% endblock %}

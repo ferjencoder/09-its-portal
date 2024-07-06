@@ -1,4 +1,4 @@
-<!-- blog/admin_blog.html -->
+<!-- blog_app/admin_blog.html -->
 
 {% extends "sidebars/base_sidebar.html" %}
 {% load i18n %}
@@ -9,11 +9,24 @@
 <div class="container mt-1">
     <div class="text-center">
         <h1 class="display-4">{% trans "Blog List" %}</h1>
-        <hr class="my-5">
+        <hr class="mt-5 mb-4">
     </div>
-    <div class="text-end mb-3">
-        <!-- Enlace para crear una nueva entrada de blog -->
-        <a href="{% url 'blog:create_blog_post' %}" class="btn btn-success">{% trans "Create New Post" %}</a>
+    <div class="d-flex justify-content-between mb-3">
+        <!-- Filtro de categoría -->
+        <form method="get" class="d-flex">
+            <select name="category" class="form-select me-2" onchange="this.form.submit()">
+                <option class="form-select-option" value="">{% trans "All Categories" %}</option>
+                {% for category in categories %}
+                    <option class="form-select-option" value="{{ category.id }}" {% if selected_category == category.id %}selected{% endif %}>{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </form>
+        <div>
+            <!-- Enlace para crear una nueva entrada de blog -->
+            <a href="{% url 'blog_app:create_blog_post' %}" class="btn btn-success align-self-center">{% trans "Create New Post" %}</a>
+            <!-- Botón para abrir el modal de crear categoría -->
+            <button type="button" class="btn btn-info ms-2" data-bs-toggle="modal" data-bs-target="#createCategoryModal">{% trans "Create New Category" %}</button>
+        </div>
     </div>
     <div class="row">
         {% for post in blog_posts %}
@@ -27,8 +40,8 @@
                         <h5 class="card-title">{{ post.title }}</h5>
                         <p class="card-text">{{ post.subtitle }}</p>
                         <!-- Enlaces para leer más, editar y eliminar la entrada -->
-                        <a href="{% url 'blog:blog_detail' post.id %}" class="btn btn-primary">{% trans "Read More" %}</a>
-                        <a href="{% url 'blog:edit_blog_post' post.id %}" class="btn btn-secondary ms-2">{% trans "Edit" %}</a>
+                        <a href="{% url 'blog_app:blog_detail' post.id %}" class="btn btn-primary">{% trans "Read More" %}</a>
+                        <a href="{% url 'blog_app:edit_blog_post' post.id %}" class="btn btn-secondary ms-2">{% trans "Edit" %}</a>
                         <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#deleteModal" data-post-id="{{ post.id }}">{% trans "Delete" %}</button>
                     </div>
                     <div class="card-footer text-muted">
@@ -38,6 +51,43 @@
                 </div>
             </div>
         {% endfor %}
+    </div>
+
+    <!-- Paginación -->
+    <div aria-label="Page navigation example">
+        <ul class="pagination custom-pagination-dark">
+            {% if blog_posts.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ blog_posts.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">{% trans "Previous" %}</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">{% trans "Previous" %}</a>
+                </li>
+            {% endif %}
+
+            {% for num in blog_posts.paginator.page_range %}
+                {% if blog_posts.number == num %}
+                    <li class="page-item active">
+                        <a class="page-link" href="#">{{ num }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}{% if selected_category %}&category={{ selected_category }}{% endif %}">{{ num }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if blog_posts.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ blog_posts.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">{% trans "Next" %}</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">{% trans "Next" %}</a>
+                </li>
+            {% endif %}
+        </ul>
     </div>
 </div>
 
@@ -63,6 +113,28 @@
     </div>
 </div>
 
+<!-- Modal para crear categoría -->
+<div class="modal fade" id="createCategoryModal" tabindex="-1" aria-labelledby="createCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createCategoryModalLabel">{% trans "Create Category" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createCategoryForm" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="categoryName" class="form-label">{% trans "Category Name" %}</label>
+                        <input type="text" class="form-control" id="categoryName" name="name" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">{% trans "Create" %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
@@ -71,10 +143,33 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('[data-bs-toggle="modal"]').forEach(button => {
         button.addEventListener('click', function() {
             const postId = this.getAttribute('data-post-id');
-            deleteForm.setAttribute('action', `{% url 'blog:delete_blog_post' 0 %}`.replace('0', postId));
+            deleteForm.setAttribute('action', `{% url 'blog_app:delete_blog_post' 0 %}`.replace('0', postId));
         });
+    });
+
+    // Manejar la creación de categorías mediante AJAX
+    const createCategoryForm = document.getElementById('createCategoryForm');
+    createCategoryForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const formData = new FormData(createCategoryForm);
+        fetch('{% url "blog_app:create_category" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token }}',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload(); // Recargar la página para ver la nueva categoría
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
     });
 });
 </script>
 {% endblock %}
-

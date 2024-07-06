@@ -1,18 +1,22 @@
 # blog_app/forms.py
 
 from django import forms
-from blog_app.models import BlogPost
+from .models import BlogPost, Category
 from django_ckeditor_5.widgets import CKEditor5Widget
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ["name"]
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control", "id": "id_name"}),
+        }
 
 
 class BlogPostForm(forms.ModelForm):
     body = forms.CharField(
         widget=CKEditor5Widget(config_name="extends"),
-        # widget=CKEditor5Widget(
-        #    config_name="extends"
-        # ),  # Usando CKEditor para el campo body
-        # o
-        # widget=CKEditor5Widget(config_name="id_body_name"),
         required=False,
     )
 

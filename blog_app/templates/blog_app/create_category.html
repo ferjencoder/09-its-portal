@@ -1,0 +1,24 @@
+<!-- blog_app/create_category.html -->
+
+{% extends "sidebars/base_sidebar.html" %}
+{% load i18n %}
+
+{% block title %}Create Category - ITS Portal{% endblock %}
+
+{% block content %}
+<div class="container mt-1">
+    <div class="text-center">
+        <h1 class="display-4">{% trans "Create Category" %}</h1>
+        <hr class="my-5">
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">{% trans "Create Category" %}</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

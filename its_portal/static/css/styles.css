@@ -491,3 +491,69 @@ body.dark-mode .btn-primary {
   background-color: #0069d9;
   border-color: #0062cc;
 }
+
+/* Estilos personalizados para la paginación en modo oscuro */
+.pagination.custom-pagination-dark .page-link {
+    background-color: #343a40;
+    color: #fff;
+    border: 1px solid #343a40;
+}
+
+.pagination.custom-pagination-dark .page-link:hover {
+    background-color: #495057;
+    color: #fff;
+}
+
+.pagination.custom-pagination-dark .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+/* CSS personalizado para el form select en modo oscuro */
+
+.form-select-option {
+    padding: 10px; /* Espacio interno para las opciones */
+    margin: 5px 0; /* Espacio externo para las opciones */
+}
+
+.form-select {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    max-width: 100%;
+    padding: 0.375rem 3.25rem 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    vertical-align: middle;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    appearance: none;
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+}
+
+.form-select {
+    padding-right: 2.25rem; /* Ajustar para mantener el espacio del indicador */
+}
+
+body.dark-mode .form-select {
+    color: #f8f9fa;
+    background-color: #343a40;
+    border-color: #444;
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='%23f8f9fa' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/></svg>");
+}
+
+body.dark-mode .form-select {
+    background-color: #333;
+    border: 1px solid #444;
+    color: #fff;
+}
+
+body.dark-mode .card-footer{
+    color: #929292;
+}
