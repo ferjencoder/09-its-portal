@@ -96,7 +96,9 @@ def create_blog_post(request):
     if request.method == "POST":
         form = BlogPostForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            blog_post = form.save(commit=False)
+            blog_post.author = request.user  # Settea el autor al usuario logueado
+            blog_post.save()
             messages.success(request, "Entrada de blog creada exitosamente.")
             if is_admin(request.user):
                 return redirect("blog_app:admin_blog_list")
