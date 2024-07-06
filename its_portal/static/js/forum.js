@@ -1,39 +1,53 @@
 //its_portal/static/assets/js/forum.js
 
-//document.addEventListener('DOMContentLoaded', function() {
-//    const forumUrl = document.getElementById('main-area').getAttribute('data-url');
-//
-//    function loadPosts() {
-//        fetch(forumUrl)
-//            .then(response => {
-//                if (!response.ok) {
-//                    throw new Error('Network response was not ok ' + response.statusText);
-//                }
-//                return response.json();
-//            })
-//            .then(data => {
-//                const postList = document.getElementById('recent-posts-list');
-//                postList.innerHTML = data.posts.map(post => `
-//                    <div class="list-group-item">
-//                        <div class="d-flex align-items-start">
-//                            ${post.profile_picture ? `<img src="${post.profile_picture}" alt="Avatar" class="rounded-circle me-3" width="40" height="40">` : `<img src="{% static 'assets/images/default_avatar.png' %}" alt="Default Avatar" class="rounded-circle me-3" width="40" height="40">`}
-//                            <div class="flex-fill">
-//                                <a href="${post.url}">${post.title}</a>
-//                                <p class="mb-0">${post.content}</p>
-//                                <small class="text-muted">${post.created_at}</small>
-//                            </div>
-//                            <a href="${post.reply_url}" class="btn btn-primary ms-3">Reply</a>
-//                        </div>
-//                    </div>
-//                `).join('');
-//            })
-//            .catch(error => {
-//                console.error('There was a problem with the fetch operation:', error);
-//                const postList = document.getElementById('recent-posts-list');
-//                postList.innerHTML = `<div class="alert alert-danger" role="alert">Error loading posts. Please try again later.</div>`;
-//            });
-//    }
-//
-//    loadPosts();
-//});
+document.addEventListener('DOMContentLoaded', function() {
+    // Maneja la eliminación de posts
+    const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    const deleteForm = document.getElementById('deleteForm');
 
+    document.querySelectorAll('[data-bs-toggle="modal"]').forEach(button => {
+        button.addEventListener('click', function() {
+            const postId = this.getAttribute('data-post-id');
+            deleteForm.setAttribute('action', deleteForm.getAttribute('action').replace('0', postId));
+        });
+    });
+
+    // Maneja la creación de posts mediante AJAX
+    const createPostForm = document.getElementById('createPostForm');
+    if (createPostForm) {
+        createPostForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(createPostForm);
+            fetch(createPostForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': createPostForm.querySelector('[name=csrfmiddlewaretoken]').value,
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.id) {
+                    // Actualiza la lista de posts recientes incorporando el nuevo post
+                    const newPostHTML = `
+                        <div class="list-group-item">
+                            <div class="d-flex align-items-start">
+                                <img src="${data.author.profile_picture || '/static/assets/images/default_avatar.png'}" alt="${gettext('Avatar')}" class="rounded-circle me-3" width="40" height="40">
+                                <div class="flex-fill">
+                                    <a href="${data.url}">${data.title}</a>
+                                    <p class="mb-0">${data.content}</p>
+                                    <small class="text-muted">${data.created_at}</small>
+                                </div>
+                                <a href="${data.reply_url}" class="btn btn-primary ms-3">${gettext('Reply')}</a>
+                            </div>
+                        </div>`;
+                    document.getElementById('recent-posts-list').insertAdjacentHTML('afterbegin', newPostHTML);
+                } else {
+                    alert(gettext('Error creating post'));
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    }
+});

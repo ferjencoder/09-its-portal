@@ -12,14 +12,16 @@
         <hr class="my-5">
     </div>
 
+    <!-- Lista de publicaciones del tema -->
     <ul>
-      {% for post in posts %}
-        <li>{{ post.author }}: {{ post.content }}</li>
-      {% endfor %}
+        {% for post in posts %}
+            <li>{{ post.author }}: {{ post.content }}</li>
+        {% endfor %}
     </ul>
 
     <hr class="my-5">
     <h2>{% trans "Post a Reply" %}</h2>
+    <!-- Formulario para crear una nueva publicación -->
     <form method="post" action="{% url 'forum_app:create_post' topic.id %}" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}

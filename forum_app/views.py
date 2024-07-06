@@ -11,11 +11,13 @@ from .forms import ForumPostForm, ForumTopicForm
 
 @login_required
 def forum(request):
+    # Obtener todos los temas y posts del foro
     topics = ForumTopic.objects.all()
     post_list = ForumPost.objects.all().order_by("-created_at")
     recent_topics = ForumTopic.objects.order_by("-created_at")[:10]
     recent_posts = ForumPost.objects.order_by("-created_at")[:10]
 
+    # Comprobar si la solicitud es AJAX para cargar posts recientes
     if request.headers.get("x-requested-with") == "XMLHttpRequest":
         post_data = {
             "posts": [
@@ -40,6 +42,7 @@ def forum(request):
         }
         return JsonResponse(post_data)
 
+    # Renderizar la vista del foro
     return render(
         request,
         "forum_app/forum.html",
@@ -53,6 +56,7 @@ def forum(request):
 
 @login_required
 def topic_detail(request, topic_id):
+    # Obtener detalles del tema y sus posts
     topic = get_object_or_404(ForumTopic, id=topic_id)
     posts = ForumPost.objects.filter(topic=topic).order_by("-created_at")
     form = ForumPostForm()
@@ -87,7 +91,25 @@ def create_post(request, topic_id):
             post.topic = topic
             post.author = request.user
             post.save()
-            return redirect("forum_app:topic_detail", topic_id=topic.id)
+            if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
+                post_data = {
+                    "id": post.id,
+                    "title": post.topic.title,
+                    "content": post.content,
+                    "created_at": post.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+                    "author": {
+                        "profile_picture": (
+                            post.author.profile.profile_picture.url
+                            if post.author.profile.profile_picture
+                            else None
+                        ),
+                    },
+                    "url": reverse("forum_app:post_detail", args=[post.id]),
+                    "reply_url": reverse("forum_app:create_post", args=[post.topic.id]),
+                }
+                return JsonResponse(post_data)
+            else:
+                return redirect("forum_app:topic_detail", topic_id=topic.id)
     else:
         form = ForumPostForm()
     topic_posts = ForumPost.objects.filter(topic=topic).order_by("-created_at")
@@ -100,12 +122,14 @@ def create_post(request, topic_id):
 
 @login_required
 def post_detail(request, post_id):
+    # Obtener detalles del post
     post = get_object_or_404(ForumPost, id=post_id)
     return render(request, "forum_app/post_detail.html", {"post": post})
 
 
 @login_required
 def reply_post(request, post_id):
+    # Responder a un post
     post = get_object_or_404(ForumPost, id=post_id)
     if request.method == "POST":
         form = ForumPostForm(request.POST)

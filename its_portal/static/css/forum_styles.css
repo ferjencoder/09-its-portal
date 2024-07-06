@@ -1,5 +1,6 @@
 /* static/css/forum_styles.css */
 
+/* Variables de tema oscuro */
 :root {
     --sidebar-width: 280px;
     --sidebar-bg: #202327;
@@ -17,6 +18,7 @@
     --modal-border-dark: #444;
 }
 
+/* Estilos para el modo oscuro */
 body.dark-mode .card {
     background-color: #333;
     color: #e0e0e0;
@@ -81,10 +83,10 @@ body.dark-mode .modal-body ul.list-group::-webkit-scrollbar-thumb:hover {
     background: rgb(190, 190, 190);
 }
 
+/* Estilos para la barra lateral */
 #sidebar {
-    height: 85%;
+    height: 75.5%;
     width: calc(25% + 50px);
-    overflow-y: auto;
     border-right: 1px solid #dee2e6;
     border-radius: 10px;
     background-color: #f8f9fa;
@@ -94,13 +96,12 @@ body.dark-mode .modal-body ul.list-group::-webkit-scrollbar-thumb:hover {
 #main-area-recent-posts {
     background-color: #ffffff;
     border-radius: 10px;
-    /*padding: 15px;*/
     margin-left: 10px;
-    height: 85%;
+    height: 99%;
     width: calc(75% - 65px);
-    overflow-y: auto;
 }
 
+/* Estilos para la lista */
 .list-group {
     background-color: #f8f9fa;
     border-radius: 10px;
@@ -128,6 +129,7 @@ a.list-group-item.list-group-item-action.bg-success {
     color: #fff;
 }
 
+/* Estilos para el contenido del modal */
 .modal-content {
     background-color: #f8f9fa;
 }
@@ -158,6 +160,7 @@ body.dark-mode #topic-posts {
     background-color: #333;
 }
 
+/* Estilos para las tarjetas */
 .card {
     background-color: #ffffff;
     border-radius: 10px;
