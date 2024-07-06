@@ -179,3 +179,17 @@ def edit_message(request, message_id):
     return render(
         request, "messages_app/edit_message.html", {"form": form, "message": message}
     )
+
+
+@login_required
+def search_messages(request):
+    query = request.GET.get("q")
+    if query:
+        messages = Message.objects.filter(
+            Q(content__icontains=query)
+            & (Q(sender=request.user) | Q(recipient=request.user))
+        ).order_by("-created_at")
+    else:
+        messages = Message.objects.none()
+
+    return render(request, "messages_app/search_results.html", {"messages": messages})
