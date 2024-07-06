@@ -53,9 +53,9 @@ INSTALLED_APPS = [
     "messages_app.apps.MessagesAppConfig",  # Aplicación de mensajes
     "projects_app.apps.ProjectsConfig",  # Aplicación de proyectos
 ]
-# "client_portal.apps.ClientPortalConfig",  # Portal del cliente
-# "employee_portal.apps.EmployeePortalConfig",  # Portal del empleado
-# "its_admin.apps.ItsAdminConfig",  # Administración interna
+# "client_portal.apps.ClientPortalConfig",  # Portal del cliente / eliminado
+# "employee_portal.apps.EmployeePortalConfig",  # Portal del empleado / eliminado
+# "its_admin.apps.ItsAdminConfig",  # Administración interna / eliminado
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
