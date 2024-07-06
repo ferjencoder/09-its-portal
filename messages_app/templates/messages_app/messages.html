@@ -16,14 +16,17 @@
         <!-- Sidebar de conversaciones -->
         <div class="card flex-shrink-0 me-3" id="sidebar" style="width: 25%;">
             <div class="card-header p-0">
-                <a href="#" class="list-group-item list-group-item-action m-0 p-2 bg-success" data-bs-toggle="modal" data-bs-target="#newConversationModal">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-plus-circle me-3" style="font-size: 1.5rem;"></i>
-                        <div class="d-flex flex-column">
-                            <span class="fw-bold">{% trans "New conversation" %}</span>
-                        </div>
-                    </div>
-                </a>
+                <div class="row my-4 px-3 justify-content-center">
+                    <a href="#" class="btn btn-success w-50" data-bs-toggle="modal" data-bs-target="#newConversationModal">
+                        <i class="bi bi-plus-circle me-2"></i>{% trans "New conversation" %}
+                    </a>
+                </div>
+                <div class="row my-4 px-3">
+                    <form method="get" action="{% url 'messages_app:default_messages_view' %}" class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="{% trans 'Search Conversations' %}" aria-label="Search" name="search" value="{{ search_query }}">
+                        <button class="btn btn-success" type="submit">{% trans 'Search' %}</button>
+                    </form>
+                </div>
             </div>
             <div class="card-body p-0 overflow-auto">
                 <div class="list-group list-group-flush">

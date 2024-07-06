@@ -15,9 +15,11 @@ document.addEventListener("DOMContentLoaded", function() {
         const editActionUrl = `/en/messages/edit/${messageId}/`;
         const deleteActionUrl = `/en/messages/delete/${messageId}/`;
 
+        // Asigna las URLs a los formularios de edicion y eliminacion
         document.getElementById("editMessageForm").setAttribute("action", editActionUrl);
         deleteMessageForm.setAttribute("action", deleteActionUrl);
+
+        // Establece el contenido del mensaje en el textarea
         messageContentTextarea.value = messageContent;
     });
 });
-

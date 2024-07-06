@@ -1,0 +1,38 @@
+<!--messages_app/search_results.html-->
+
+{% extends "sidebars/base_sidebar.html" %}
+{% load i18n %}
+{% load humanize %}
+
+{% block content %}
+<div class="container">
+    <h1 class="display-4">{% trans "Search Results" %}</h1>
+    <hr class="my-5">
+    {% if conversations %}
+        <ul class="list-group">
+            {% for conversation in conversations %}
+                <li class="list-group-item">
+                    <a href="{% url 'messages_app:messages_view' recipient_id=conversation.id %}">
+                        <div class="d-flex align-items-center">
+                            <img src="{{ conversation.avatar }}" alt="{{ conversation.name }}" class="rounded-circle me-3" width="40">
+                            <div class="d-flex flex-column">
+                                <span class="fw-bold">{{ conversation.name }}</span>
+                                <span class="text-muted">
+                                    {% if conversation.last_message.sender == user %}
+                                        {% trans "You" %}: {{ conversation.last_message.content|truncatewords:5 }}
+                                    {% else %}
+                                        {{ conversation.last_message.content|truncatewords:5 }}
+                                    {% endif %}
+                                </span>
+                                <span class="small text-muted">{{ conversation.last_message_time|naturaltime }}</span>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>{% trans "No conversations found." %}</p>
+    {% endif %}
+</div>
+{% endblock %}
