@@ -1,0 +1,17 @@
+<!-- blog_app/admin_blog_list.html -->
+
+{% extends "sidebars/base_sidebar.html" %}
+
+{% block content %}
+  <h1>Lista de Blogs - Admin</h1>
+  <ul>
+    {% for post in blog_posts %}
+      <li>
+        <a href="{% url 'blog_app:blog_detail' post.id %}">{{ post.title }}</a>
+        - {{ post.author.username }}
+        <a href="{% url 'blog_app:edit_blog_post' post.id %}">Editar</a>
+        <a href="{% url 'blog_app:delete_blog_post' post.id %}">Eliminar</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

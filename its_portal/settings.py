@@ -151,10 +151,53 @@ ADMIN_CSRF_COOKIE_NAME = "csrftoken_admin"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+# CKEDITOR_UPLOAD_PATH = "uploads/"
+#
+# CKEDITOR_5_CONFIGS = {
+#    "default": {
+#        "toolbar": [
+#            "heading",
+#            "|",
+#            "bold",
+#            "italic",
+#            "underline",
+#            "strikethrough",
+#            "subscript",
+#            "superscript",
+#            "|",
+#            "link",
+#            "blockquote",
+#            "code",
+#            "codeBlock",
+#            "|",
+#            "numberedList",
+#            "bulletedList",
+#            "todoList",
+#            "|",
+#            "insertImage",
+#            "|",
+#            "textColor",
+#            "bgColor",
+#            "|",
+#            "alignment",
+#            "|",
+#            "undo",
+#            "redo",
+#        ],
+#        "image": {
+#            "toolbar": ["imageTextAlternative", "imageStyle:full", "imageStyle:side"]
+#        },
+#        "table": {"contentToolbar": ["tableColumn", "tableRow", "mergeTableCells"]},
+#        "extraPlugins": "image2,uploadimage",
+#        "height": 400,
+#        "width": "100%",
+#    },
+# }
+
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
 CKEDITOR_5_CONFIGS = {
-    "default": {
+    "extends": {
         "toolbar": [
             "heading",
             "|",
@@ -189,7 +232,7 @@ CKEDITOR_5_CONFIGS = {
         },
         "table": {"contentToolbar": ["tableColumn", "tableRow", "mergeTableCells"]},
         "extraPlugins": "image2,uploadimage",
-        "height": 400,
+        "height": 450,
         "width": "100%",
     },
 }
