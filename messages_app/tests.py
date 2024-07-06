@@ -10,9 +10,13 @@ class MessagesAppTests(TestCase):
 
     # Configuración inicial para utilizar usuarios y mensajes de prueba existentes
     def setUp(self):
-        self.admin1 = User.objects.get(username="admin1")
-        self.employee1 = User.objects.get(username="employee1")
-        self.client1 = User.objects.get(username="client1")
+        self.admin1 = User.objects.create_user(username="admin1", password="admin1pass")
+        self.employee1 = User.objects.create_user(
+            username="employee1", password="employee1pass"
+        )
+        self.client1 = User.objects.create_user(
+            username="client1", password="client1pass"
+        )
 
         self.message1 = Message.objects.create(
             sender=self.admin1,
@@ -75,6 +79,18 @@ class MessagesAppTests(TestCase):
             response.status_code, 302
         )  # Redirección después de la eliminación
         self.assertFalse(Message.objects.filter(id=self.message1.id).exists())
+
+    # Prueba de la edición de un mensaje
+    def test_edit_message(self):
+        self.client.login(username="admin1", password="admin1pass")
+        response = self.client.post(
+            reverse("messages_app:edit_message", args=[self.message1.id]),
+            {"content": "Updated message from admin1"},
+        )
+        self.assertEqual(response.status_code, 302)  # Redirección después de la edición
+        self.assertTrue(
+            Message.objects.filter(content="Updated message from admin1").exists()
+        )
 
     # Prueba de la búsqueda de mensajes
     def test_search_messages(self):
