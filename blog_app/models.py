@@ -4,8 +4,8 @@ import os
 import re
 from django.db import models
 from django.contrib.auth.models import User
-from django_ckeditor_5.fields import CKEditor5Field
 from django.conf import settings
+from django_ckeditor_5.fields import CKEditor5Field
 
 
 class Category(models.Model):
@@ -21,6 +21,7 @@ class BlogPost(models.Model):
     body = CKEditor5Field("Body", config_name="extends")  # Usando CKEditor para el body
     image = models.ImageField(upload_to="blog_images/", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)  # Añadir campo updated_at
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name="posts"
