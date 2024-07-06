@@ -1,11 +1,11 @@
 /* static/css/messages_styles.css */
 
+/* Estilos para la barra lateral */
 #sidebar {
-    height: 90%;
-    width: calc(25% + 50px);
+    height: 100%;
+    width: 25%;
     overflow-y: auto;
     border-right: 1px solid #dee2e6;
-    border-radius: 10px;
     background-color: #f8f9fa;
     transition: background-color 0.3s;
 }
@@ -16,9 +16,9 @@ body.dark-mode #sidebar {
     border-right: 1px solid #222;
 }
 
+/* Estilos para la lista de grupos */
 .list-group {
     background-color: #f8f9fa;
-    border-radius: 10px;
     transition: background-color 0.3s;
 }
 
@@ -31,6 +31,7 @@ body.dark-mode .text-muted {
     color: #d3d6da !important;
 }
 
+/* Estilos para los items de la lista de grupos */
 .list-group-item {
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
@@ -57,6 +58,7 @@ body.dark-mode .list-group-item-action {
     color: #f8f9fa;
 }
 
+/* Ajustes generales para el cuerpo */
 .p-3 {
     max-width: 75%;
 }
@@ -86,6 +88,7 @@ body.dark-mode .border-top {
     border-color: #444;
 }
 
+/* Estilos para iconos */
 .bi,
 .fas {
     color: #343a40;
@@ -96,7 +99,7 @@ body.dark-mode .fas {
     color: #f8f9fa;
 }
 
-/* Styles for input fields */
+/* Estilos para campos de entrada */
 input.form-control {
     background-color: #f8f9fa;
     color: #000;
@@ -114,13 +117,10 @@ body.dark-mode input.form-control::placeholder {
     color: #cccccc;
 }
 
+/* Estilos para el área principal */
 #main-area {
     background-color: #ffffff;
     border-radius: 10px;
-    padding: 15px;
-    margin-left: 5px;
-    height: 90%;
-    width: calc(75% - 55px);
     overflow-y: auto;
 }
 
@@ -128,12 +128,15 @@ body.dark-mode #main-area {
     background-color: #333;
 }
 
-/* Message box styles */
+/* Estilos para la caja de mensajes */
 .message-box {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     position: relative;
     display: inline-block;
     max-width: 75%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 15px;
 }
 
 .message-box.bg-primary {
@@ -142,11 +145,10 @@ body.dark-mode #main-area {
     border-radius: 30px 30px 0 30px;
 }
 
-
 .message-box.bg-light {
     background-color: #f8f9fa;
     color: black;
-    border-radius: 0px 30px 30px 30px;
+    border-radius: 30px 30px 30px 0;
 }
 
 body.dark-mode .message-box.bg-light {
@@ -154,7 +156,37 @@ body.dark-mode .message-box.bg-light {
     color: white;
 }
 
-/* New Conversation styles */
+/* Estilos para acciones de mensajes */
+.message-actions {
+    top: -20px;
+    right: -5px;
+    display: flex;
+    gap: 0.25rem;
+    padding: 0.3rem;
+}
+
+.message-actions .badge {
+    cursor: pointer;
+    border-radius: 75%;
+    padding: 0.5rem;
+}
+
+.message-actions .badge.bg-secondary {
+    background-color: #6c757d;
+}
+
+.message-actions .badge.bg-secondary:hover {
+    background-color: #5a6268;
+}
+
+.message-actions .edit-badge:hover {
+    background-color: #28a745 !important;
+}
+
+.message-actions .delete-badge:hover {
+    background-color: #dc3545 !important;
+}
+
 a.list-group-item.list-group-item-action.bg-success {
     background-color: #28a745 !important;
     color: #fff;
@@ -165,7 +197,7 @@ body.dark-mode a.list-group-item.list-group-item-action.bg-success {
     color: #fff;
 }
 
-/* Modal styles */
+/* Estilos para el modal */
 .modal-content {
     background-color: #f8f9fa;
 }
@@ -183,7 +215,7 @@ body.dark-mode .modal-body {
     border-top: 1px solid #444;
 }
 
-/* Custom scrollbar styles */
+/* Estilos personalizados para la barra de desplazamiento */
 .modal-body ul.list-group::-webkit-scrollbar {
     width: 0.5em;
 }

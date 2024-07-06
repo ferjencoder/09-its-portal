@@ -7,16 +7,16 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/messages_styles.css' %}">
-<div class="container-fluid">
+<div class="container-fluid d-flex flex-column h-100">
     <div class="text-center">
         <h1 class="display-4">{% trans "Messages" %}</h1>
         <hr class="my-5">
     </div>
-    <div class="d-flex" style="height: calc(100vh - 220px);">
-        <!-- Sidebar for conversations -->
-        <div class="flex-shrink-0 px-0" id="sidebar">
-            <div class="list-group list-group-flush">
-                <a href="#" class="list-group-item list-group-item-action py-3 px-4 bg-success" data-bs-toggle="modal" data-bs-target="#newConversationModal">
+    <div class="d-flex flex-grow-1" style="height: calc(100vh - 270px);">
+        <!-- Sidebar de conversaciones -->
+        <div class="card flex-shrink-0 me-3" id="sidebar" style="width: 25%;">
+            <div class="card-header p-0">
+                <a href="#" class="list-group-item list-group-item-action m-0 p-2 bg-success" data-bs-toggle="modal" data-bs-target="#newConversationModal">
                     <div class="d-flex align-items-center">
                         <i class="bi bi-plus-circle me-3" style="font-size: 1.5rem;"></i>
                         <div class="d-flex flex-column">
@@ -24,30 +24,34 @@
                         </div>
                     </div>
                 </a>
-                {% for conversation in conversations %}
-                <a href="{% url 'messages_app:messages_view' recipient_id=conversation.id %}" class="list-group-item list-group-item-action py-3 px-4">
-                    <div class="d-flex align-items-center">
-                        <img src="{{ conversation.avatar }}" alt="{{ conversation.name }}" class="rounded-circle me-3" width="40">
-                        <div class="d-flex flex-column">
-                            <span class="fw-bold">{{ conversation.name }}</span>
-                            <span class="text-muted">
-                                {% if conversation.last_message.sender == user %}
-                                    You: {{ conversation.last_message.content|truncatewords:5 }}
-                                {% else %}
-                                    {{ conversation.last_message.content|truncatewords:5 }}
-                                {% endif %}
-                            </span>
-                            <span class="small text-muted">{{ conversation.last_message_time|naturaltime }}</span>
+            </div>
+            <div class="card-body p-0 overflow-auto">
+                <div class="list-group list-group-flush">
+                    {% for conversation in conversations %}
+                    <a href="{% url 'messages_app:messages_view' recipient_id=conversation.id %}" class="list-group-item list-group-item-action py-3 px-4">
+                        <div class="d-flex align-items-center">
+                            <img src="{{ conversation.avatar }}" alt="{{ conversation.name }}" class="rounded-circle me-3" width="40">
+                            <div class="d-flex flex-column">
+                                <span class="fw-bold">{{ conversation.name }}</span>
+                                <span class="text-muted">
+                                    {% if conversation.last_message.sender == user %}
+                                        {% trans "You" %}: {{ conversation.last_message.content|truncatewords:5 }}
+                                    {% else %}
+                                        {{ conversation.last_message.content|truncatewords:5 }}
+                                    {% endif %}
+                                </span>
+                                <span class="small text-muted">{{ conversation.last_message_time|naturaltime }}</span>
+                            </div>
                         </div>
-                    </div>
-                </a>
-                {% endfor %}
+                    </a>
+                    {% endfor %}
+                </div>
             </div>
         </div>
-        <!-- Main area for messages -->
-        <div class="flex-grow-1 px-2" id="main-area">
-            <div class="d-flex flex-column h-100">
-                <div class="d-flex align-items-center border-bottom px-4 py-3">
+        <!-- Área principal de mensajes -->
+        <div class="card flex-grow-1 p-0 d-flex flex-column">
+            <div class="card-header">
+                <div class="d-flex align-items-center">
                     {% if recipient %}
                         <img src="{{ recipient.profile.profile_picture.url }}" alt="{{ recipient.username }}" class="rounded-circle me-3" width="40">
                         <h4>{{ recipient.username }}</h4>
@@ -55,21 +59,33 @@
                         <h4>{% trans "Chat" %}</h4>
                     {% endif %}
                 </div>
+            </div>
+            <div class="card-body flex-grow-1 d-flex flex-column p-0">
                 <div class="flex-grow-1 px-4 py-3 overflow-auto" id="messages">
                     {% for message in messages %}
                     <div class="d-flex {% if message.sender == user %}justify-content-end{% else %}justify-content-start{% endif %} mb-4">
-                        <div class="p-3 message-box {% if message.sender == user %}bg-primary text-white{% else %}bg-light{% endif %}">
+                        <div class="p-3 message-box position-relative {% if message.sender == user %}bg-primary text-white{% else %}bg-light{% endif %}">
                             {{ message.content }}
                             <div class="small text-muted mt-1">{{ message.created_at|naturaltime }}</div>
+                            {% if message.sender == user %}
+                            <div class="message-actions position-absolute">
+                                <a href="{% url 'messages_app:edit_message' message.id %}" class="badge badge-circle bg-secondary text-decoration-none edit-badge">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'messages_app:delete_message' message.id %}" class="badge badge-circle bg-secondary text-decoration-none delete-badge">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                     {% endfor %}
                 </div>
                 {% if recipient %}
-                <div class="border-top px-4 py-3">
+                <div class="card-footer">
                     <form method="post" action="{% url 'messages_app:send_message' recipient.id %}" class="d-flex">
                         {% csrf_token %}
-                        <input type="text" name="content" class="form-control me-2" placeholder="Type a message" required>
+                        <input type="text" name="content" class="form-control me-2" placeholder="{% trans 'Type a message' %}" required>
                         <button type="submit" class="btn btn-success">{% trans "Send" %}</button>
                     </form>
                 </div>
@@ -79,7 +95,7 @@
     </div>
 </div>
 
-<!-- Modal for new conversation -->
+<!-- Modal para nueva conversación -->
 <div class="modal fade" id="newConversationModal" tabindex="-1" aria-labelledby="newConversationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -88,7 +104,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <ul class="list-group list-group-flush" style="max-height: 200px; overflow-y: auto;">
+                <ul class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
                     {% for user in users %}
                     <a href="{% url 'messages_app:messages_view' recipient_id=user.id %}" class="list-group-item list-group-item-action py-3 px-4">
                         <div class="d-flex align-items-center">

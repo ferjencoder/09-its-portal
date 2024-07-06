@@ -7,10 +7,12 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.templatetags.static import static
 from .models import Message
+from .forms import MessageForm
 
 
 @login_required
 def default_messages_view(request):
+    # Vista predeterminada de mensajes, muestra todas las conversaciones
     users = User.objects.exclude(id=request.user.id)
     conversations = (
         Message.objects.filter(sender=request.user)
@@ -62,6 +64,7 @@ def default_messages_view(request):
 
 @login_required
 def messages_view(request, recipient_id=None):
+    # Vista de los mensajes específicos de una conversación
     users = User.objects.exclude(id=request.user.id)
     recipient = None
     messages = []
@@ -125,6 +128,7 @@ def messages_view(request, recipient_id=None):
 
 @login_required
 def send_message(request, recipient_id):
+    # Enviar un nuevo mensaje
     if request.method == "POST":
         content = request.POST.get("content")
         recipient = get_object_or_404(User, id=recipient_id)
@@ -137,6 +141,7 @@ def send_message(request, recipient_id):
 
 @login_required
 def reply_message(request, message_id):
+    # Responder un mensaje específico
     original_message = get_object_or_404(Message, id=message_id)
     recipient = original_message.sender
     if request.method == "POST":
@@ -154,9 +159,28 @@ def reply_message(request, message_id):
 
 @login_required
 def delete_message(request, message_id):
+    # Eliminar un mensaje
     message = get_object_or_404(Message, id=message_id)
     if message.sender == request.user or message.recipient == request.user:
         message.delete()
         return redirect("messages_app:default_messages_view")
     else:
         return HttpResponseForbidden("You are not allowed to delete this message.")
+
+
+@login_required
+def edit_message(request, message_id):
+    # Editar un mensaje existente
+    message = get_object_or_404(Message, id=message_id, sender=request.user)
+    if request.method == "POST":
+        form = MessageForm(request.POST, instance=message)
+        if form.is_valid():
+            form.save()
+            return redirect(
+                "messages_app:messages_view", recipient_id=message.recipient.id
+            )
+    else:
+        form = MessageForm(instance=message)
+    return render(
+        request, "messages_app/edit_message.html", {"form": form, "message": message}
+    )
