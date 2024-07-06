@@ -1,11 +1,12 @@
 # messages_app/views.py
 
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Message
 from django.contrib.auth.models import User
 from django.db.models import Max, Q
+from django.http import HttpResponseForbidden
+from django.shortcuts import render, redirect, get_object_or_404
 from django.templatetags.static import static
+from .models import Message
 
 
 @login_required
@@ -149,3 +150,13 @@ def reply_message(request, message_id):
         "messages_app/reply_message.html",
         {"original_message": original_message},
     )
+
+
+@login_required
+def delete_message(request, message_id):
+    message = get_object_or_404(Message, id=message_id)
+    if message.sender == request.user or message.recipient == request.user:
+        message.delete()
+        return redirect("messages_app:default_messages_view")
+    else:
+        return HttpResponseForbidden("You are not allowed to delete this message.")
