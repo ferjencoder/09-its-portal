@@ -10,7 +10,6 @@ from django.core.files.storage import default_storage
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
 from .forms import BlogPostForm, CategoryForm
 from .models import BlogPost, Category
@@ -118,9 +117,11 @@ def create_blog_post(request):
 def admin_blog_list(request):
     category_id = request.GET.get("category", None)
     if category_id:
-        blog_posts = BlogPost.objects.filter(category_id=category_id)
+        blog_posts = BlogPost.objects.filter(category_id=category_id).order_by(
+            "-created_at"
+        )
     else:
-        blog_posts = BlogPost.objects.all()
+        blog_posts = BlogPost.objects.all().order_by("-created_at")
 
     categories = Category.objects.all()
     selected_category = int(category_id) if category_id else None
@@ -187,7 +188,7 @@ def upload_image(request):
     return JsonResponse({"error": {"message": "Error al subir la imagen"}})
 
 
-# Lista pública de blogs
+# Lista pública de blogs con paginación y filtro por categoría
 def blog_list_public(request):
     category_id = request.GET.get("category")
     if category_id:
