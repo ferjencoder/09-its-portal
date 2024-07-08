@@ -2,24 +2,263 @@
  
 {% extends "sidebars/base_sidebar.html" %}
 {% load i18n %}
+{% load static %}
+
+{% block title %}{{ project.name }} - {% trans "Project Details" %}{% endblock %}
 
 {% block content %}
 <div class="container mt-1">
-    <div class="text-center">
-        <h1 class="display-4">{{ project.name }}</h1>
-        <hr class="my-5">
-    </div>
-    <div class="row justify-content-center mt-4">
+    <!-- Detalles del proyecto -->
+    <div class="row justify-content-between align-items-center mb-4">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <p><strong>{% trans "Description:" %}</strong> {{ project.description }}</p>
-                    <p><strong>{% trans "Status:" %}</strong> {{ project.status }}</p>
-                    <p><strong>{% trans "Start Date:" %}</strong> {{ project.start_date }}</p>
-                    <p><strong>{% trans "End Date:" %}</strong> {{ project.end_date }}</p>
+            <h1 class="display-6 ms-2">{{ project.code }} - {{ project.name }}</h1>
+        </div>
+        <div class="col-md-4 text-end">
+            <span class="badge bg-info me-2">{{ project.get_status_display }}</span>
+            <a href="{% url 'projects_app:edit_project' project.id %}" class="btn btn-success btn-sm">
+                <i class="bi bi-pencil-square"></i> {% trans "Edit Project" %}
+            </a>
+        </div>
+        <hr class="my-2">
+    </div>
+
+    <div class="row" style="height: calc(100vh - 200px);">
+        <!-- Panel de Entregables -->
+        <div class="col-md-6 mb-4" style="height: 100%; overflow-y: auto;">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">{% trans "Deliverables" %}</h4>
+                        <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#addDeliverableModal" title="{% trans 'Add Deliverable' %}">
+                            <i class="bi bi-plus-circle me-1"></i>{% trans "Add Deliverable" %}
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body pt-0" style="overflow-y: auto;">
+                    <ul class="list-group">
+                        {% for deliverable in project.deliverables.all %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center mb-2">
+                                <div>
+                                    <h5 class="mb-1">{{ deliverable.name }}</h5>
+                                    <p class="mb-1"><strong>{% trans "Due Date:" %}</strong> {{ deliverable.due_date }}</p>
+                                    <p class="mb-1"><strong>{% trans "Status:" %}</strong> {{ deliverable.get_status_display }}</p>
+                                </div>
+                                <div class="btn-group" role="group" aria-label="Deliverable Actions">
+                                    <button class="btn btn-secondary btn-sm" style="width: 38px;" data-bs-toggle="modal" data-bs-target="#uploadDocumentModal" data-deliverable-id="{{ deliverable.id }}" title="{% trans 'Upload Document' %}">
+                                        <i class="bi bi-upload"></i>
+                                    </button>
+                                    <button class="btn btn-success btn-sm" style="width: 38px;" data-bs-toggle="modal" data-bs-target="#approveDocumentModal" data-deliverable-id="{{ deliverable.id }}" title="{% trans 'Approve' %}">
+                                        <i class="bi bi-check-circle"></i>
+                                    </button>
+                                    <button class="btn btn-primary btn-sm" style="width: 38px;" data-bs-toggle="modal" data-bs-target="#editDeliverableModal" data-deliverable-id="{{ deliverable.id }}" title="{% trans 'Edit Deliverable' %}">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" style="width: 38px;" data-bs-toggle="modal" data-bs-target="#deleteDeliverableModal" data-deliverable-id="{{ deliverable.id }}" title="{% trans 'Delete' %}">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel de Tareas y Actualizaciones -->
+        <div class="col-md-6 mb-4 d-flex flex-column" style="height: 100%;">
+            <!-- Sección de Tareas -->
+            <div class="card mb-4 flex-grow-1" style="overflow-y: auto;">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% trans "Tasks" %}</h4>
+                </div>
+                <div class="card-body" style="overflow-y: auto;">
+                    <ul class="list-group">
+                        {% for task in project.tasks.all %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center mb-2">
+                                <div>
+                                    <h5 class="mb-1">{{ task.name }}</h5>
+                                    <p class="mb-1"><strong>{% trans "Due Date:" %}</strong> {{ task.due_date }}</p>
+                                    <p class="mb-1"><strong>{% trans "Status:" %}</strong> {{ task.get_status_display }}</p>
+                                </div>
+                                <div>
+                                    <a href="{% url 'projects_app:update_task_status' task.id %}" class="btn btn-outline-secondary btn-sm" title="{% trans 'Update Status' %}">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Sección de Actualizaciones -->
+            <div class="card flex-grow-1" style="overflow-y: auto;">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{% trans "Updates" %}</h4>
+                </div>
+                <div class="card-body" style="overflow-y: auto;">
+                    <ul class="list-group">
+                        {% for update in project.updates.all %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center mb-2">
+                                <div>
+                                    <h5 class="mb-1">{{ update.title }}</h5>
+                                    <p class="mb-1"><strong>{% trans "Date:" %}</strong> {{ update.date }}</p>
+                                    <p class="mb-1">{{ update.content }}</p>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modales -->
+<!-- Modal para agregar entregable -->
+<div class="modal fade" id="addDeliverableModal" tabindex="-1" aria-labelledby="addDeliverableModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addDeliverableModalLabel">{% trans "Add Deliverable" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addDeliverableForm" method="post" action="{% url 'projects_app:create_deliverable' project.id %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="deliverableName" class="form-label">{% trans "Name" %}</label>
+                        <input type="text" class="form-control" id="deliverableName" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deliverableDueDate" class="form-label">{% trans "Due Date" %}</label>
+                        <input type="date" class="form-control" id="deliverableDueDate" name="due_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deliverableStatus" class="form-label">{% trans "Status" %}</label>
+                        <select class="form-control" id="deliverableStatus" name="status" required>
+                            <option value="">{% trans "Select Status" %}</option>
+                            <option value="pending">{% trans "Pending" %}</option>
+                            <option value="uploaded">{% trans "Uploaded" %}</option>
+                            <option value="approved">{% trans "Approved" %}</option>
+                            <option value="commented">{% trans "Commented" %}</option>
+                            <option value="rejected">{% trans "Rejected" %}</option>
+                            <option value="annulled">{% trans "Annulled" %}</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-success">{% trans "Add" %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para subir documento -->
+<div class="modal fade" id="uploadDocumentModal" tabindex="-1" aria-labelledby="uploadDocumentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadDocumentModalLabel">{% trans "Upload Document" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="uploadDocumentForm" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" name="document_file" required>
+                    <button type="submit" class="btn btn-primary">{% trans "Upload" %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para aprobar documento -->
+<div class="modal fade" id="approveDocumentModal" tabindex="-1" aria-labelledby="approveDocumentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="approveDocumentModalLabel">{% trans "Approve Document" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="approveDocumentForm" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="deliverableStatus" class="form-label">{% trans "Status" %}</label>
+                        <select class="form-control" id="deliverableStatus" name="status" required>
+                            <option value="pending">{% trans "Pending" %}</option>
+                            <option value="uploaded">{% trans "Uploaded" %}</option>
+                            <option value="approved">{% trans "Approved" %}</option>
+                            <option value="commented">{% trans "Commented" %}</option>
+                            <option value="rejected">{% trans "Rejected" %}</option>
+                            <option value="annulled">{% trans "Annulled" %}</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">{% trans "Approve" %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para editar entregable -->
+<div class="modal fade" id="editDeliverableModal" tabindex="-1" aria-labelledby="editDeliverableModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editDeliverableModalLabel">{% trans "Edit Deliverable" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editDeliverableForm" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="deliverableName" class="form-label">{% trans "Name" %}</label>
+                        <input type="text" class="form-control" id="deliverableName" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deliverableDueDate" class="form-label">{% trans "Due Date" %}</label>
+                        <input type="date" class="form-control" id="deliverableDueDate" name="due_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="deliverableStatus" class="form-label">{% trans "Status" %}</label>
+                        <select class="form-control" id="deliverableStatus" name="status" required>
+                            <option value="pending">{% trans "Pending" %}</option>
+                            <option value="uploaded">{% trans "Uploaded" %}</option>
+                            <option value="approved">{% trans "Approved" %}</option>
+                            <option value="commented">{% trans "Commented" %}</option>
+                            <option value="rejected">{% trans "Rejected" %}</option>
+                            <option value="annulled">{% trans "Annulled" %}</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">{% trans "Save Changes" %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para eliminar entregable -->
+<div class="modal fade" id="deleteDeliverableModal" tabindex="-1" aria-labelledby="deleteDeliverableModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteDeliverableModalLabel">{% trans "Delete Deliverable" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>{% trans "Are you sure you want to delete the deliverable" %} "<span id="modalDeliverableName"></span>"?</p>
+            </div>
+            <div class="modal-footer">
+                <form id="deleteDeliverableForm" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Cancel" %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/projects.js' %}"></script>
 {% endblock %}

@@ -8,8 +8,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from blog_app.models import BlogPost
 from forum_app.models import ForumPost
 from messages_app.models import Message
-from .forms import ProjectForm, ProjectStatusForm, AssignmentForm
 from .models import Project, ProjectAssignment, Task, Document, Update, Deliverable
+from .forms import ProjectForm, ProjectStatusForm, AssignmentForm, DeliverableForm
 
 
 # Verifica si el usuario es administrador
@@ -29,7 +29,7 @@ def admin_projects_dashboard(request):
 
     return render(
         request,
-        "projects/admin_dashboard.html",
+        "dashboard/admin_projects_dashboard.html",
         {
             "projects": projects,
             "messages": messages,
@@ -232,7 +232,7 @@ def update_task_status(request, task_id):
 
 @login_required
 def upload_document(request, deliverable_id):
-    # Vista q permite a los usuarios cargar documentos para un entregable específico.
+    # Vista que permite a los usuarios cargar documentos para un entregable específico.
     # Solo el usuario asignado puede cargar documentos.
     deliverable = get_object_or_404(Deliverable, id=deliverable_id)
     if deliverable.assigned_to != request.user:
@@ -255,15 +255,19 @@ def upload_document(request, deliverable_id):
 
 @login_required
 def create_deliverable(request, project_id):
-    # Crea los entregables por proyecto
     project = get_object_or_404(Project, id=project_id)
     if request.method == "POST":
         name = request.POST.get("name")
         due_date = request.POST.get("due_date")
+        status = request.POST.get("status")
         assigned_to_id = request.POST.get("assigned_to")
         assigned_to = User.objects.get(id=assigned_to_id) if assigned_to_id else None
         Deliverable.objects.create(
-            project=project, name=name, due_date=due_date, assigned_to=assigned_to
+            project=project,
+            name=name,
+            due_date=due_date,
+            status=status,
+            assigned_to=assigned_to,
         )
         return redirect("projects_app:view_project", project_id=project_id)
     employees = User.objects.filter(groups__name="employee")
@@ -293,3 +297,35 @@ def approve_document(request, document_id):
         )
 
     return render(request, "documents/approve_document.html", {"document": document})
+
+
+@login_required
+@user_passes_test(is_admin)
+def delete_deliverable(request, deliverable_id):
+    deliverable = get_object_or_404(Deliverable, id=deliverable_id)
+    project_id = deliverable.project.id
+    if request.method == "POST":
+        deliverable.delete()
+        return redirect("projects_app:view_project", project_id=project_id)
+    return render(
+        request, "documents/delete_deliverable.html", {"deliverable": deliverable}
+    )
+
+
+@login_required
+def edit_deliverable(request, deliverable_id):
+    deliverable = get_object_or_404(Deliverable, id=deliverable_id)
+    if request.method == "POST":
+        form = DeliverableForm(request.POST, instance=deliverable)
+        if form.is_valid():
+            form.save()
+            return redirect(
+                "projects_app:view_project", project_id=deliverable.project.id
+            )
+    else:
+        form = DeliverableForm(instance=deliverable)
+    return render(
+        request,
+        "documents/edit_deliverable.html",
+        {"form": form, "deliverable": deliverable},
+    )

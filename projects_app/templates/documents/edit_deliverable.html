@@ -1,0 +1,18 @@
+<!-- projects_app/templates/documents/edit_deliverable.html -->
+
+{% extends "sidebars/base_sidebar.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Edit Deliverable" %}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{% trans "Edit Deliverable" %}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">{% trans "Save Changes" %}</button>
+    </form>
+</div>
+{% endblock %}

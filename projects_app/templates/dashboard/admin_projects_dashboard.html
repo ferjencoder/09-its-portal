@@ -1,4 +1,4 @@
-<!-- projects_app/templates/projects/admin_view_projects.html -->
+<!-- projects_app/templates/projects/admin_projects_dashboard.html -->
 
 {% extends "sidebars/base_sidebar.html" %}
 {% load i18n %}
@@ -30,11 +30,10 @@
                                 <span class="text-decoration-none">{{ project.name }}</span>
                                 <div>
                                     <a href="{% url 'projects_app:view_project' project.id %}" class="btn btn-sm btn-primary">{% trans "View" %}</a>
-                                    {% if is_admin %}
-                                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProjectModal" data-project-id="{{ project.id }}" data-project-name="{{ project.name }}">
-                                            {% trans "Delete" %}
-                                        </button>
-                                    {% endif %}
+                                    <a href="{% url 'projects_app:edit_project' project.id %}" class="btn btn-sm btn-secondary">{% trans "Edit" %}</a>
+                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProjectModal" data-project-id="{{ project.id }}" data-project-name="{{ project.name }}">
+                                        {% trans "Delete" %}
+                                    </button>
                                 </div>
                             </li>
                         {% endfor %}
@@ -45,7 +44,7 @@
     </div>
 </div>
 
-<!-- Modal for project deletion -->
+<!-- Modal para eliminar el proyecto -->
 <div class="modal fade" id="deleteProjectModal" tabindex="-1" aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

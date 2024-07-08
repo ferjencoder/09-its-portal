@@ -57,7 +57,11 @@ def main():
     # Preguntar al usuario si desea crear nuevos usuarios
     create_new_users = input("¿Desea crear nuevos usuarios? (s/n): ").lower()
     if create_new_users == "s":
-        num_users = int(input("Ingrese el número de usuarios para crear por rol: "))
+        num_users = int(
+            input(
+                f'Ingrese el número de usuarios para crear por role. 4 recomendados porque tienen imágenes de perfil, sino agregarlos en r"\main\tests\images": '
+            )
+        )
 
         for i in range(1, num_users + 1):
             create_user(

@@ -35,7 +35,7 @@ urlpatterns = [
         name="update_task_status",
     ),
     path(
-        "documents/upload/<int:document_id>/",
+        "documents/upload/<int:deliverable_id>/",
         views.upload_document,
         name="upload_document",
     ),
@@ -45,8 +45,19 @@ urlpatterns = [
         name="create_deliverable",
     ),
     path(
+        "documents/delete/<int:deliverable_id>/",
+        views.delete_deliverable,
+        name="delete_deliverable",
+    ),
+    path(
         "documents/approve/<int:deliverable_id>/",
         views.approve_document,
         name="approve_document",
+    ),
+    path("<int:project_id>/edit/", views.edit_project, name="edit_project"),
+    path(
+        "deliverables/edit/<int:deliverable_id>/",
+        views.edit_deliverable,
+        name="edit_deliverable",
     ),
 ]

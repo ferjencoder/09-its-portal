@@ -3,21 +3,30 @@
 {% extends "sidebars/base_sidebar.html" %}
 {% load i18n %}
 
-{% block title %}Upload Document{% endblock %}
-
 {% block content %}
-<div class="container mt-4">
-    <h1 class="text-center">{% trans "Upload Document" %}</h1>
-    <hr>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="document_file">{% trans "Document File" %}</label>
-            <input type="file" id="document_file" name="document_file" class="form-control" required>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="mb-0">{% trans "Upload Document" %}</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="document_file" class="form-label">{% trans "Document" %}</label>
+                            <input type="file" name="document_file" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">{% trans "Upload" %}</button>
+                        <a href="{% url 'projects_app:view_project' deliverable.project.id %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+                    </form>
+                </div>
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary mt-3">{% trans "Upload" %}</button>
-    </form>
+    </div>
 </div>
 {% endblock %}
+
 
 

@@ -3,7 +3,18 @@
 ITS Portal es una aplicación web desarrollada como proyecto final para el curso de Python de Coderhouse.
 Esta aplicación está diseñada para facilitar la gestión de proyectos, comunicaciones y foros para distintos tipos de usuarios: administradores, empleados y clientes.
 
+
+Índice
+Pasos para la Instalación
+
+Pasos para Cargar la Base de Datos
+Tests
+Pendientes
+
+
 ## Índice
+- [Pasos para cargar la bd y probar el site](#pasos-para-cargar-la-bd-y-probar-el-site)
+- [Tests](#tests)
 - [Tecnologías Utilizadas](#tecnologías-utilizadas)
 - [Funcionalidades de la Aplicación](#funcionalidades-de-la-aplicación)
   - [Administrador](#administrador)
@@ -17,14 +28,31 @@ Esta aplicación está diseñada para facilitar la gestión de proyectos, comuni
 - [Licencia](#licencia)
 - [Contacto](#contacto)
 
+
+## Pasos para cargar la bd y probar el site:
+1. python main/create_test_users.py
+2. python blog_app/create_test_blog_data.py
+3. python forum_app/create_test_forum_data.py 
+4. python messages_app/create_test_messages_data.py
+5. python messages_app/create_test_projects_data.py (pendiente)
+
+## Tests:
+1. python manage.py test blog_app
+2. python manage.py test forum_app
+3. python manage.py test main
+4. python manage.py test messages_app
+5. python manage.py test projects_app
+
 ## Tecnologías Utilizadas
 
 - **Python**: Lenguaje principal utilizado para la lógica del backend.
 - **Django**: Framework web utilizado para el desarrollo del backend.
 - **SQLite**: Base de datos utilizada para el almacenamiento de datos.
-- **Bootstrap**: Framework de CSS utilizado para el diseño y la apariencia.
 - **JavaScript**: Utilizado para funcionalidades interactivas en el frontend.
-- **HTML/CSS**: Lenguajes utilizados para la estructura y el diseño de las páginas web.
+- **CKeditor5**: Utilizado para agregar texto enriquecido en las publicaciones del blog y otros contenidos.
+- **JSON**: Formato utilizado para el intercambio de datos.
+- **AJAX**: Técnica utilizada para la actualización asíncrona de las páginas web.
+- **Bootstrap**: Framework de CSS utilizado para el diseño y la apariencia.
 - **FontAwesome**: Utilizado para iconos en la interfaz de usuario.
 
 ## Funcionalidades de la Aplicación
@@ -32,25 +60,33 @@ Esta aplicación está diseñada para facilitar la gestión de proyectos, comuni
 ### Administrador
 
 - **Dashboard de Administrador**: Vista principal donde el administrador puede acceder a todas las funcionalidades.
-- **Gestión de Proyectos**: Crear, ver y gestionar proyectos.
+- **Gestión de Proyectos**: Crear, ver, editar y eliminar proyectos. Asignar empleados y clientes a los proyectos.
 - **Gestión de Asignaciones**: Crear, ver y gestionar asignaciones para los empleados.
-- **Mensajes**: Visualizar y gestionar mensajes.
+- **Gestión de Entregables**: Crear, ver, editar, subir documentos, aprobar y eliminar entregables.
+- **Gestión de Tareas**: Ver y actualizar el estado de las tareas asignadas a los empleados.
+- **Gestión de Actualizaciones**: Ver las actualizaciones relacionadas con los proyectos.
+- **Mensajes**: Visualizar y gestionar mensajes entre usuarios.
 - **Foro**: Participar y gestionar foros de discusión.
-- **Blog**: Crear y gestionar publicaciones en el blog.
+- **Blog**: Crear, editar y gestionar publicaciones en el blog.
 
 ### Empleado
 
 - **Dashboard de Empleado**: Vista principal donde los empleados pueden acceder a sus funcionalidades específicas.
-- **Gestión de Proyectos**: Ver proyectos asignados.
-- **Mensajes**: Visualizar y gestionar mensajes.
-- **Foro**: Participar en foros de discusión.
+- **Gestión de Proyectos**: Ver proyectos asignados y sus detalles.
+- **Gestión de Entregables**: Ver entregables asignados y su estado. Subir documentos y comentar sobre los entregables.
+- **Gestión de Tareas**: Ver y actualizar el estado de las tareas asignadas.
+- **Mensajes**: Visualizar y gestionar mensajes entre usuarios.
+- **Foro**: Participar en foros de discusión y colaborar con otros empleados y administradores.
+- **Blog**: Ver y comentar en publicaciones del blog.
 
 ### Cliente
 
 - **Dashboard de Cliente**: Vista principal donde los clientes pueden acceder a sus funcionalidades específicas.
-- **Gestión de Proyectos**: Ver proyectos en los que están involucrados.
-- **Mensajes**: Visualizar y gestionar mensajes.
-- **Foro**: Participar en foros de discusión.
+- **Gestión de Proyectos**: Ver proyectos en los que están involucrados, sus detalles y progreso.
+- **Gestión de Entregables**: Ver entregables y su estado.
+- **Mensajes**: Visualizar y gestionar mensajes entre usuarios.
+- **Foro**: Participar en foros de discusión relacionados con sus proyectos.
+- **Blog**: Ver y comentar en publicaciones del blog.
 
 ## Instalación
 
@@ -105,114 +141,24 @@ python manage.py runserver
 
 Abre tu navegador y ve a http://127.0.0.1:8000
 
-## Estructura del Proyecto
-
-```md
-its-portal/
-├── blog/
-│   ├── templates/
-│   ├── admin.py
-│   ├── apps.py
-│   ├── forms.py
-│   ├── models.py
-│   ├── tests.py
-│   ├── urls.py
-│   ├── views.py
-│   └── __init__.py
-├── client_portal/
-│   ├── templates/
-│   ├── admin.py
-│   ├── apps.py
-│   ├── forms.py
-│   ├── models.py
-│   ├── tests.py
-│   ├── urls.py
-│   ├── views.py
-│   └── __init__.py
-├── employee_portal/
-│   ├── templates/
-│   ├── admin.py
-│   ├── apps.py
-│   ├── forms.py
-│   ├── models.py
-│   ├── signals.py
-│   ├── tests.py
-│   ├── urls.py
-│   ├── views.py
-│   └── __init__.py
-├── forum_app/
-│   ├── templates/
-│   ├── admin.py
-│   ├── apps.py
-│   ├── forms.py
-│   ├── models.py
-│   ├── tests.py
-│   ├── urls.py
-│   ├── views.py
-│   └── __init__.py
-├── its_admin/
-│   ├── templates/
-│   ├── admin.py
-│   ├── apps.py
-│   ├── forms.py
-│   ├── models.py
-│   ├── tests.py
-│   ├── urls.py
-│   ├── views.py
-│   └── __init__.py
-├── its_portal/
-│   ├── static/
-│   ├── settings.py
-│   ├── urls.py
-│   ├── wsgi.py
-│   └── __init__.py
-├── main/
-│   ├── templates/
-│   ├── admin.py
-│   ├── apps.py
-│   ├── forms.py
-│   ├── models.py
-│   ├── signals.py
-│   ├── tests.py
-│   ├── urls.py
-│   ├── utils.py
-│   ├── views.py
-│   └── __init__.py
-├── messages_app/
-│   ├── templates/
-│   ├── admin.py
-│   ├── apps.py
-│   ├── forms.py
-│   ├── models.py
-│   ├── tests.py
-│   ├── urls.py
-│   ├── views.py
-│   └── __init__.py
-├── projects/
-│   ├── templates/
-│   ├── admin.py
-│   ├── apps.py
-│   ├── forms.py
-│   ├── models.py
-│   ├── tests.py
-│   ├── urls.py
-│   ├── views.py
-│   └── __init__.py
-├── .env
-├── db.sqlite3
-├── manage.py
-└── Pipfile
-```
-
 ## Pendientes
 - [ ] README.md: versión inglés también
 - [ ] Video: versión esp e inglés
-- [ ] Tests: testear mejor el foro
-- [ ] Refactorizar: quizás modularizar los links de la sidebar y otros que pueda optimizar.
 - [ ] Repensar: uso de jquery, es poco pero...
-- [ ] User experience: mejorar la cantidad de clicks y que el tablero tenga toda la info.
 - [ ] Look and feel: el dark-mode para los group-items por ej.
+- [ ] Funcionalidad para que el usuario pueda dockear los paneles a su gusto.
+- [ ] Un settings para que el user pueda manejar notificaciones y seleccionar una paleta de colores por ej.
+- [ ] Pensar en agregar react... websockets...
 
+## Estructura del Proyecto
+- main/: Contiene la configuración principal del proyecto.
+- blog_app/: Aplicación para la gestión de blogs.
+- forum_app/: Aplicación para la gestión de foros.
+- messages_app/: Aplicación para la gestión de mensajes.
+- projects_app/: Aplicación para la gestión de proyectos.
+- static/: Archivos estáticos (CSS, JavaScript, imágenes).
+- templates/: Plantillas HTML para la representación de las vistas.
+- requirements.txt: Lista de dependencias del proyecto.
 
 ## Contribuir
 Si deseas contribuir a este proyecto, por favor sigue los siguientes pasos:

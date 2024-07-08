@@ -118,7 +118,9 @@
                 </div>
                 <div class="card-body">
                     <div class="progress mb-3" role="progressbar" aria-valuenow="{{ task_completion_rate|default:'0' }}" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: {{ task_completion_rate|default:'0' }}%"></div>
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                        style="width: {{ task_completion_rate|default:'0' }}%"
+                        ></div>
                     </div>
                     <p>{% trans "Tasks Completion Rate" %}</p>
                 </div>

@@ -1,0 +1,26 @@
+<!-- projects_app/templates/documents/delete_deliverable.html -->
+
+{% extends "sidebars/base_sidebar.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">{% trans "Delete Deliverable" %}</h4>
+                </div>
+                <div class="card-body">
+                    <p>{% trans "Are you sure you want to delete the deliverable" %} "<strong>{{ deliverable.name }}</strong>"?</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
+                        <a href="{% url 'projects_app:view_project' deliverable.project.id %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

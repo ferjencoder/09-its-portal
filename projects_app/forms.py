@@ -2,7 +2,7 @@
 
 from django.contrib.auth.models import User
 from django import forms
-from .models import Project, ProjectAssignment
+from .models import Project, ProjectAssignment, Deliverable
 
 
 # Formulario para crear y editar proyectos
@@ -46,3 +46,10 @@ class AssignmentForm(forms.ModelForm):
     class Meta:
         model = ProjectAssignment
         fields = ["project", "employee", "client"]
+
+
+# Form para el manejo de los entregables/deliverables
+class DeliverableForm(forms.ModelForm):
+    class Meta:
+        model = Deliverable
+        fields = ["name", "due_date", "status"]
