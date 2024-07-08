@@ -1,7 +1,7 @@
 # blog/admin.py
 
 from django.contrib import admin
-from .models import BlogPost
+from .models import BlogPost, BlogCategory
 
 
 class BlogPostAdmin(admin.ModelAdmin):
@@ -10,3 +10,4 @@ class BlogPostAdmin(admin.ModelAdmin):
 
 
 admin.site.register(BlogPost, BlogPostAdmin)
+admin.site.register(BlogCategory)

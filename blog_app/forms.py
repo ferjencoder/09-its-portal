@@ -1,14 +1,14 @@
 # blog_app/forms.py
 
 from django import forms
-from .models import BlogPost, Category
+from .models import BlogPost, BlogCategory
 from django_ckeditor_5.widgets import CKEditor5Widget
 
 
-class CategoryForm(forms.ModelForm):
+class BlogCategoryForm(forms.ModelForm):
     # Form para crear y editar categorías de blogs
     class Meta:
-        model = Category
+        model = BlogCategory
         fields = ["name"]
         widgets = {
             "name": forms.TextInput(attrs={"class": "form-control", "id": "id_name"}),
@@ -16,7 +16,7 @@ class CategoryForm(forms.ModelForm):
 
 
 class BlogPostForm(forms.ModelForm):
-    # Formu para crear y editar publicaciones de blogs
+    # Form para crear y editar publicaciones de blogs
     body = forms.CharField(
         widget=CKEditor5Widget(config_name="extends"),
         required=False,

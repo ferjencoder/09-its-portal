@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.urls import reverse
-from .models import ForumPost, ForumTopic
+from .models import ForumPost, ForumTopic, ForumCategory
 from .forms import ForumPostForm, ForumTopicForm
 
 
@@ -12,6 +12,7 @@ from .forms import ForumPostForm, ForumTopicForm
 def forum(request):
     # Vista para la página principal del foro
     search_query = request.GET.get("search", "")
+    categories = ForumCategory.objects.all()
 
     if search_query:
         recent_topics = ForumTopic.objects.filter(
@@ -51,6 +52,7 @@ def forum(request):
             "recent_topics": recent_topics,
             "recent_posts": recent_posts,
             "search_query": search_query,
+            "categories": categories,
         },
     )
 
@@ -77,10 +79,13 @@ def create_topic(request):
             topic = form.save(commit=False)
             topic.author = request.user
             topic.save()
-            return redirect("forum_app:forum")
+            return redirect("forum_app:topic_detail", topic_id=topic.pk)
     else:
         form = ForumTopicForm()
-    return render(request, "forum_app/create_topic.html", {"form": form})
+    categories = ForumCategory.objects.all()
+    return render(
+        request, "forum_app/create_topic.html", {"form": form, "categories": categories}
+    )
 
 
 @login_required

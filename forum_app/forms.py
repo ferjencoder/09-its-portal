@@ -8,9 +8,10 @@ class ForumTopicForm(forms.ModelForm):
     # Formulario para crear y editar temas del foro
     class Meta:
         model = ForumTopic
-        fields = ["title"]
+        fields = ["title", "category"]
         widgets = {
             "title": forms.TextInput(attrs={"class": "form-control"}),
+            "category": forms.Select(attrs={"class": "form-control"}),
         }
 
 

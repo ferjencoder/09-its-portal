@@ -18,6 +18,8 @@ from main.models import Profile
 def create_group(name):
     # Crear o recuperar un grupo de usuarios por nombre
     group, created = Group.objects.get_or_create(name=name)
+    if created:
+        print(f"Grupo creado: {name}")
     return group
 
 
@@ -27,6 +29,9 @@ def create_user(username, email, password, group_name, image_name):
     if created:
         user.set_password(password)  # Establecer la contraseña del usuario
         user.save()
+        print(f"Usuario creado: {username}")
+    else:
+        print(f"Usuario ya existe: {username}")
 
     group = Group.objects.get(name=group_name)
     user.groups.add(group)
@@ -55,13 +60,15 @@ def main():
     create_group("client")
 
     # Preguntar al usuario si desea crear nuevos usuarios
-    create_new_users = input("¿Desea crear nuevos usuarios? (s/n): ").lower()
+    # create_new_users = input("¿Desea crear nuevos usuarios? (s/n): ").lower()
+    create_new_users = "s"
     if create_new_users == "s":
-        num_users = int(
-            input(
-                f'Ingrese el número de usuarios para crear por role. 4 recomendados porque tienen imágenes de perfil, sino agregarlos en r"\main\tests\images": '
-            )
-        )
+        # num_users = int(
+        #    input(
+        #        'Ingrese el número de usuarios para crear por role. 4 recomendados porque tienen imágenes de perfil, sino agregarlos en r"\\main\\tests\\images": '
+        #    )
+        # )
+        num_users = int(4)
 
         for i in range(1, num_users + 1):
             create_user(
@@ -77,9 +84,6 @@ def main():
             create_user(
                 f"client{i}", f"client{i}@gm.com", "client", "client", f"client{i}.png"
             )
-
-        # Ejecutar el script de creación de datos de prueba del foro
-        os.system("python forum_app/create_test_forum_data.py")
     else:
         print("No se crearán nuevos usuarios.")
 

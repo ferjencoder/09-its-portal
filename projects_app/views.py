@@ -12,8 +12,8 @@ from .models import Project, ProjectAssignment, Task, Document, Update, Delivera
 from .forms import ProjectForm, ProjectStatusForm, AssignmentForm, DeliverableForm
 
 
-# Verifica si el usuario es administrador
 def is_admin(user):
+    # Verifica si el usuario es admin
     return user.groups.filter(name="admin").exists()
 
 
@@ -21,7 +21,6 @@ def is_admin(user):
 @user_passes_test(is_admin)
 def admin_projects_dashboard(request):
     # Vista que muestra el tablero de proyectos para los admin.
-    # Obtiene todos los proyectos, mensajes, publicaciones en el foro y entradas del blog.
     projects = Project.objects.all()
     messages = Message.objects.all()[:10]
     forum_posts = ForumPost.objects.select_related("topic").all()[:10]
@@ -42,27 +41,17 @@ def admin_projects_dashboard(request):
 @login_required
 def employee_projects_dashboard(request):
     # Vista del dashboard del empleado
-    # Incluye proyectos asignados, tareas, documentos pendientes y cargados, y actualizaciones recientes.
-    # Proyectos asignados al usuario actual
     assigned_projects = Project.objects.filter(assigned_to_employees=request.user)
-
-    # Tareas asignadas al usuario actual
     tasks = Task.objects.filter(assigned_to=request.user).order_by("due_date")
-
-    # Documentos pendientes y cargados
     pending_documents = Document.objects.filter(
         status="pending", assigned_to=request.user
     )
     uploaded_documents = Document.objects.filter(
         status="uploaded", assigned_to=request.user
     )
-
-    # Actualizaciones recientes
     recent_updates = Update.objects.filter(project__in=assigned_projects).order_by(
         "-date"
     )[:10]
-
-    # Cálculo del % de finalización de tareas
     total_tasks = tasks.count()
     completed_tasks = tasks.filter(status="completed").count()
     task_completion_rate = (
@@ -83,7 +72,6 @@ def employee_projects_dashboard(request):
 @login_required
 def view_projects(request):
     # Vista para ver todos los proyectos
-    # el admin puede ver todos los proyectos, otros usuarios solo los asignados a ellos
     if is_admin(request.user):
         projects = Project.objects.all()
     else:
@@ -104,7 +92,7 @@ def create_project(request):
         if form.is_valid():
             project = form.save(commit=False)
             project.save()
-            form.save_m2m()  # Guarda relaciones many to many
+            form.save_m2m()
             return redirect("projects_app:view_projects")
     else:
         form = ProjectForm()
@@ -194,7 +182,6 @@ def assignment_list(request):
 @user_passes_test(is_admin)
 def create_assignment(request):
     # Vista para crear una nueva asignación de proyecto
-    # permite a los admin crear una nueva asignación de proyecto
     if request.method == "POST":
         form = AssignmentForm(request.POST)
         if form.is_valid():
@@ -210,14 +197,14 @@ def create_assignment(request):
 def submit_feedback(request):
     if request.method == "POST":
         feedback = request.POST.get("feedback")
-        return HttpResponse("Thank you for your feedback!")
+        return HttpResponse("¡Gracias por tus comentarios!")
     else:
-        return HttpResponse("Invalid request method.", status=405)
+        return HttpResponse("Método de solicitud no válido.", status=405)
 
 
 @login_required
 def update_task_status(request, task_id):
-    # Vista q permite a los employee actualizar el estado de una tarea/task.
+    # Vista que permite a los empleados actualizar el estado de una tarea.
     task = get_object_or_404(Task, id=task_id)
     if task.assigned_to != request.user:
         raise PermissionDenied
@@ -247,6 +234,8 @@ def upload_document(request, deliverable_id):
         )
         document.save()
         return redirect("projects_app:view_project", project_id=deliverable.project.id)
+    else:
+        return HttpResponse("No se proporcionó el archivo del documento.", status=400)
 
     return render(
         request, "documents/upload_document.html", {"deliverable": deliverable}
@@ -255,6 +244,7 @@ def upload_document(request, deliverable_id):
 
 @login_required
 def create_deliverable(request, project_id):
+    # Vista para crear un nuevo entregable
     project = get_object_or_404(Project, id=project_id)
     if request.method == "POST":
         name = request.POST.get("name")
@@ -280,8 +270,7 @@ def create_deliverable(request, project_id):
 
 @login_required
 def approve_document(request, document_id):
-    # Vista q permite a los clientes aprobar documentos.
-    # Con el form para cambiar el estado del documento y agregar comentarios.
+    # Vista que permite a los clientes aprobar documentos.
     document = get_object_or_404(Document, id=document_id)
     if document.deliverable.project.client != request.user:
         raise PermissionDenied
@@ -302,6 +291,7 @@ def approve_document(request, document_id):
 @login_required
 @user_passes_test(is_admin)
 def delete_deliverable(request, deliverable_id):
+    # Vista para eliminar un entregable
     deliverable = get_object_or_404(Deliverable, id=deliverable_id)
     project_id = deliverable.project.id
     if request.method == "POST":
@@ -314,6 +304,7 @@ def delete_deliverable(request, deliverable_id):
 
 @login_required
 def edit_deliverable(request, deliverable_id):
+    # Vista para editar un entregable
     deliverable = get_object_or_404(Deliverable, id=deliverable_id)
     if request.method == "POST":
         form = DeliverableForm(request.POST, instance=deliverable)

@@ -13,6 +13,7 @@ class UserCreationTests(TestCase):
         self.create_group("admin")
         self.create_group("employee")
         self.create_group("client")
+        self.create_group("user")
 
         # Crear usuarios de prueba con imagen de perfil
         self.create_user("admin1", "admin1@example.com", "admin", "admin")

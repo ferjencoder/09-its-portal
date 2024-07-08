@@ -12,12 +12,16 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "its_portal.settings")
 django.setup()
 
 from django.contrib.auth.models import User
-from blog_app.models import BlogPost, Category
+from blog_app.models import BlogPost, BlogCategory
 
 
 def create_category(name):
     # Crear o recuperar una categoría de blog por nombre.
-    category, created = Category.objects.get_or_create(name=name)
+    category, created = BlogCategory.objects.get_or_create(name=name)
+    if created:
+        print(f"Categoría creada: {name}")
+    else:
+        print(f"Categoría existente: {name}")
     return category
 
 
@@ -25,8 +29,18 @@ def create_blog_post(
     title, subtitle, body, author_username, category_name, image_name=None
 ):
     # Crear una entrada de blog con un autor y categoría específicos, y una imagen opcional.
-    author = User.objects.get(username=author_username)
-    category = Category.objects.get(name=category_name)
+    try:
+        author = User.objects.get(username=author_username)
+    except User.DoesNotExist:
+        print(f"Error: El usuario {author_username} no existe.")
+        return
+
+    try:
+        category = BlogCategory.objects.get(name=category_name)
+    except BlogCategory.DoesNotExist:
+        print(f"Error: La categoría {category_name} no existe.")
+        return
+
     blog_post, created = BlogPost.objects.get_or_create(
         title=title,
         subtitle=subtitle,
@@ -34,6 +48,11 @@ def create_blog_post(
         author=author,
         defaults={"category": category},
     )
+
+    if created:
+        print(f"Entrada de blog creada: {title}")
+    else:
+        print(f"Entrada de blog existente: {title}")
 
     if image_name:
         # Copiar imagen del blog
@@ -49,98 +68,109 @@ def create_blog_post(
         shutil.copy(image_path, media_path)
         blog_post.image = os.path.join("blog_images", image_name)
         blog_post.save()
+        print(f"Imagen para {title} guardada en {media_path}")
 
     return blog_post
 
 
 def main():
-    # Crear categorias del blog (servicios de ITS)
-    create_category("Automation Solutions")
-    create_category("Data Visualization")
-    create_category("Project Management")
-    create_category("Training Services")
+    # Crear categorías del blog (servicios de ITS)
+    categories = [
+        "Automation Solutions",
+        "Data Visualization",
+        "Project Management",
+        "Training Services",
+    ]
+    for category in categories:
+        create_category(category)
+
+    # Detalles de las entradas de blog
+    blog_posts = [
+        {
+            "title": "First Automation Blog",
+            "subtitle": "Subtitle for Automation Blog",
+            "body": "Content of the first automation blog.",
+            "author_username": "admin1",
+            "category_name": "Automation Solutions",
+            "image_name": "blog_image1.jpg",
+        },
+        {
+            "title": "First Data Visualization Blog",
+            "subtitle": "Subtitle for Data Visualization Blog",
+            "body": "Content of the first data visualization blog.",
+            "author_username": "employee1",
+            "category_name": "Data Visualization",
+            "image_name": "blog_image2.jpg",
+        },
+        {
+            "title": "First Project Management Blog",
+            "subtitle": "Subtitle for Project Management Blog",
+            "body": "Content of the first project management blog.",
+            "author_username": "client1",
+            "category_name": "Project Management",
+            "image_name": "blog_image3.jpg",
+        },
+        {
+            "title": "First Training Blog",
+            "subtitle": "Subtitle for Training Blog",
+            "body": "Content of the first training blog.",
+            "author_username": "admin2",
+            "category_name": "Training Services",
+            "image_name": "blog_image4.jpg",
+        },
+        {
+            "title": "Second Automation Blog",
+            "subtitle": "Subtitle for Automation Blog",
+            "body": "Content of the second automation blog.",
+            "author_username": "employee2",
+            "category_name": "Automation Solutions",
+            "image_name": "blog_image5.jpg",
+        },
+        {
+            "title": "Second Data Visualization Blog",
+            "subtitle": "Subtitle for Data Visualization Blog",
+            "body": "Content of the second data visualization blog.",
+            "author_username": "client2",
+            "category_name": "Data Visualization",
+            "image_name": "blog_image6.jpg",
+        },
+        {
+            "title": "Second Project Management Blog",
+            "subtitle": "Subtitle for Project Management Blog",
+            "body": "Content of the second project management blog.",
+            "author_username": "admin3",
+            "category_name": "Project Management",
+            "image_name": "blog_image7.jpg",
+        },
+        {
+            "title": "Second Training Blog",
+            "subtitle": "Subtitle for Training Blog",
+            "body": "Content of the second training blog.",
+            "author_username": "employee3",
+            "category_name": "Training Services",
+            "image_name": "blog_image8.jpg",
+        },
+        {
+            "title": "Third Automation Blog",
+            "subtitle": "Subtitle for Automation Blog",
+            "body": "Content of the third automation blog.",
+            "author_username": "client3",
+            "category_name": "Automation Solutions",
+            "image_name": "blog_image9.jpg",
+        },
+        {
+            "title": "Third Data Visualization Blog",
+            "subtitle": "Subtitle for Data Visualization Blog",
+            "body": "Content of the third data visualization blog.",
+            "author_username": "admin4",
+            "category_name": "Data Visualization",
+            "image_name": "blog_image10.jpg",
+        },
+    ]
 
     # Crear entradas de blog
-    create_blog_post(
-        "First Automation Blog",
-        "Subtitle for Automation Blog",
-        "Content of the first automation blog.",
-        "admin1",
-        "Automation Solutions",
-        "blog_image1.jpg",
-    )
-    create_blog_post(
-        "First Data Visualization Blog",
-        "Subtitle for Data Visualization Blog",
-        "Content of the first data visualization blog.",
-        "employee1",
-        "Data Visualization",
-        "blog_image2.jpg",
-    )
-    create_blog_post(
-        "First Project Management Blog",
-        "Subtitle for Project Management Blog",
-        "Content of the first project management blog.",
-        "client1",
-        "Project Management",
-        "blog_image3.jpg",
-    )
-    create_blog_post(
-        "First Training Blog",
-        "Subtitle for Training Blog",
-        "Content of the first training blog.",
-        "admin2",
-        "Training Services",
-        "blog_image4.jpg",
-    )
-    create_blog_post(
-        "Second Automation Blog",
-        "Subtitle for Automation Blog",
-        "Content of the second automation blog.",
-        "employee2",
-        "Automation Solutions",
-        "blog_image5.jpg",
-    )
-    create_blog_post(
-        "Second Data Visualization Blog",
-        "Subtitle for Data Visualization Blog",
-        "Content of the second data visualization blog.",
-        "client2",
-        "Data Visualization",
-        "blog_image6.jpg",
-    )
-    create_blog_post(
-        "Second Project Management Blog",
-        "Subtitle for Project Management Blog",
-        "Content of the second project management blog.",
-        "admin3",
-        "Project Management",
-        "blog_image7.jpg",
-    )
-    create_blog_post(
-        "Second Training Blog",
-        "Subtitle for Training Blog",
-        "Content of the second training blog.",
-        "employee3",
-        "Training Services",
-        "blog_image8.jpg",
-    )
-    create_blog_post(
-        "Third Automation Blog",
-        "Subtitle for Automation Blog",
-        "Content of the third automation blog.",
-        "client3",
-        "Automation Solutions",
-        "blog_image9.jpg",
-    )
-    create_blog_post(
-        "Third Data Visualization Blog",
-        "Subtitle for Data Visualization Blog",
-        "Content of the third data visualization blog.",
-        "admin4",
-        "Data Visualization",
-        "blog_image10.jpg",
-    )
+    for post in blog_posts:
+        create_blog_post(**post)
 
 
 if __name__ == "__main__":

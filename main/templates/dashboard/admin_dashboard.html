@@ -23,7 +23,7 @@
                         <h4>{% trans "Projects" %}</h4>
                     </a>
                 </div>
-                <div class="card-body" style="max-height: 200px; overflow-y: auto;">
+                <div class="card-body" style="max-height: 270px; overflow-y: auto;">
                     <ul class="list-group">
                         {% for project in projects %}
                             {% url 'projects_app:edit_project' project.id as edit_url %}
@@ -53,7 +53,7 @@
                         <h4>{% trans "Messages" %}</h4>
                     </a>
                 </div>
-                <div class="card-body" style="max-height: 200px; overflow-y: auto;">
+                <div class="card-body" style="max-height: 270px; overflow-y: auto;">
                     <ul class="list-group">
                         {% for message in messages %}
                             {% url 'messages_app:messages_view' message.sender.id as reply_url %}
@@ -74,7 +74,7 @@
                         <h4>{% trans "Forum Posts" %}</h4>
                     </a>
                 </div>
-                <div class="card-body" style="max-height: 200px; overflow-y: auto;">
+                <div class="card-body" style="max-height: 270px; overflow-y: auto;">
                     <ul class="list-group">
                         {% for post in forum_posts %}
                             {% url 'forum_app:create_post' post.topic.id as create_post_url %}
@@ -95,7 +95,7 @@
                         <h4>{% trans "Blog Posts" %}</h4>
                     </a>
                 </div>
-                <div class="card-body" style="max-height: 200px; overflow-y: auto;">
+                <div class="card-body" style="max-height: 270px; overflow-y: auto;">
                     <ul class="list-group">
                         {% for post in blog_posts %}
                             {% url 'blog:edit_blog_post' post.id as edit_blog_post_url %}

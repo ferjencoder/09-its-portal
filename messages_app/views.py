@@ -6,73 +6,50 @@ from django.db.models import Max, Q
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.templatetags.static import static
-from .models import Message
+from .models import Message, Conversation
 from .forms import MessageForm
+from main.utils import get_or_create_conversation
 
 
 @login_required
 def default_messages_view(request):
-    # Vista que maneja la visualización de la lista de conversaciones para el usuario que ha iniciado sesión.
-    # Filtra y ordena las conversaciones en función del tiempo del último mensaje.
+    # View to handle the display of the list of conversations for the logged-in user.
+    # Filters and sorts conversations based on the time of the last message.
     search_query = request.GET.get("search", "")
     users = User.objects.exclude(id=request.user.id)
 
-    # Filtrar conversaciones basado en la consulta de búsqueda
     if search_query:
         conversations = (
-            Message.objects.filter(
-                Q(sender=request.user) & Q(recipient__username__icontains=search_query)
-            )
-            .values("recipient")
-            .annotate(last_message_time=Max("created_at"))
-            .union(
-                Message.objects.filter(
-                    Q(recipient=request.user)
-                    & Q(sender__username__icontains=search_query)
-                )
-                .values("sender")
-                .annotate(last_message_time=Max("created_at"))
-            )
+            Conversation.objects.filter(participants=request.user)
+            .filter(participants__username__icontains=search_query)
+            .annotate(last_message_time=Max("messages__created_at"))
             .order_by("-last_message_time")
         )
     else:
         conversations = (
-            Message.objects.filter(sender=request.user)
-            .values("recipient")
-            .annotate(last_message_time=Max("created_at"))
-            .union(
-                Message.objects.filter(recipient=request.user)
-                .values("sender")
-                .annotate(last_message_time=Max("created_at"))
-            )
+            Conversation.objects.filter(participants=request.user)
+            .annotate(last_message_time=Max("messages__created_at"))
             .order_by("-last_message_time")
         )
 
     conversation_details = []
-    for convo in conversations:
-        last_message = (
-            Message.objects.filter(
-                Q(sender=request.user, recipient_id=convo["recipient"])
-                | Q(recipient=request.user, sender_id=convo["recipient"])
+    for conversation in conversations:
+        last_message = conversation.messages.order_by("-created_at").first()
+        recipient_user = conversation.participants.exclude(id=request.user.id).first()
+        if recipient_user:
+            conversation_details.append(
+                {
+                    "id": recipient_user.id,
+                    "name": recipient_user.username,
+                    "avatar": (
+                        recipient_user.profile.profile_picture.url
+                        if recipient_user.profile.profile_picture
+                        else static("assets/images/default_avatar.png")
+                    ),
+                    "last_message": last_message,
+                    "last_message_time": last_message.created_at,
+                }
             )
-            .order_by("-created_at")
-            .first()
-        )
-
-        recipient_user = User.objects.get(id=convo["recipient"])
-        conversation_details.append(
-            {
-                "id": recipient_user.id,
-                "name": recipient_user.username,
-                "avatar": (
-                    recipient_user.profile.profile_picture.url
-                    if recipient_user.profile.profile_picture
-                    else static("assets/images/default_avatar.png")
-                ),
-                "last_message": last_message,
-                "last_message_time": last_message.created_at,
-            }
-        )
 
     return render(
         request,
@@ -87,58 +64,28 @@ def default_messages_view(request):
 
 @login_required
 def messages_view(request, recipient_id=None):
-    # vista que muestra los mensajes dentro de una conversación seleccionada.
-    # filtra en base a una consulta de búsqueda.
+    # View to display messages within a selected conversation.
     query = request.GET.get("search")
     user = request.user
     users = User.objects.exclude(id=request.user.id)
     recipient = None
     messages = []
 
-    # Filtrar conversaciones basado en la consulta de búsqueda
-    if query:
-        messages_qs = Message.objects.filter(
-            Q(content__icontains=query) & (Q(sender=user) | Q(recipient=user))
-        ).distinct()
-
-        user_ids = set(messages_qs.values_list("sender_id", flat=True)) | set(
-            messages_qs.values_list("recipient_id", flat=True)
-        )
-        users = User.objects.filter(
-            Q(username__icontains=query) | Q(id__in=user_ids)
-        ).distinct()
-
     if recipient_id:
         recipient = get_object_or_404(User, id=recipient_id)
-        messages = Message.objects.filter(
-            Q(sender=request.user, recipient=recipient)
-            | Q(sender=recipient, recipient=request.user)
-        ).order_by("created_at")
+        conversation = get_or_create_conversation(user, recipient)
+        messages = conversation.messages.order_by("created_at")
 
     conversations = (
-        Message.objects.filter(sender=request.user)
-        .values("recipient")
-        .annotate(last_message_time=Max("created_at"))
-        .union(
-            Message.objects.filter(recipient=request.user)
-            .values("sender")
-            .annotate(last_message_time=Max("created_at"))
-        )
+        Conversation.objects.filter(participants=user)
+        .annotate(last_message_time=Max("messages__created_at"))
         .order_by("-last_message_time")
     )
 
     conversation_details = []
-    for convo in conversations:
-        last_message = (
-            Message.objects.filter(
-                Q(sender=request.user, recipient_id=convo["recipient"])
-                | Q(recipient=request.user, sender_id=convo["recipient"])
-            )
-            .order_by("-created_at")
-            .first()
-        )
-
-        recipient_user = User.objects.get(id=convo["recipient"])
+    for conversation in conversations:
+        last_message = conversation.messages.order_by("-created_at").first()
+        recipient_user = conversation.participants.exclude(id=user.id).first()
         conversation_details.append(
             {
                 "id": recipient_user.id,
@@ -168,12 +115,16 @@ def messages_view(request, recipient_id=None):
 
 @login_required
 def send_message(request, recipient_id):
-    # Vista que maneja el envío de un nuevo mensaje a un destinatario.
+    # View to handle sending a new message to a recipient.
     if request.method == "POST":
         content = request.POST.get("content")
         recipient = get_object_or_404(User, id=recipient_id)
+        conversation = get_or_create_conversation(request.user, recipient)
         Message.objects.create(
-            sender=request.user, recipient=recipient, content=content
+            sender=request.user,
+            recipient=recipient,
+            content=content,
+            conversation=conversation,
         )
         return redirect("messages_app:messages_view", recipient_id=recipient_id)
     return redirect("messages_app:default_messages_view")
@@ -181,13 +132,17 @@ def send_message(request, recipient_id):
 
 @login_required
 def reply_message(request, message_id):
-    # vista que maneja la respuesta a un mensaje existente.
+    # View to handle replying to an existing message.
     original_message = get_object_or_404(Message, id=message_id)
     recipient = original_message.sender
     if request.method == "POST":
         content = request.POST.get("content")
+        conversation = get_or_create_conversation(request.user, recipient)
         Message.objects.create(
-            sender=request.user, recipient=recipient, content=content
+            sender=request.user,
+            recipient=recipient,
+            content=content,
+            conversation=conversation,
         )
         return redirect("messages_app:messages_view", recipient_id=recipient.id)
     return render(
@@ -199,7 +154,7 @@ def reply_message(request, message_id):
 
 @login_required
 def delete_message(request, message_id):
-    # vista que maneja la eliminación de un mensaje.
+    # View to handle deleting a message.
     message = get_object_or_404(Message, id=message_id)
     recipient_id = (
         message.recipient.id if message.sender == request.user else message.sender.id
@@ -213,7 +168,7 @@ def delete_message(request, message_id):
 
 @login_required
 def edit_message(request, message_id):
-    # Vista que permite la edición de un mensaje existente.
+    # View to allow editing an existing message.
     message = get_object_or_404(Message, id=message_id, sender=request.user)
     if request.method == "POST":
         form = MessageForm(request.POST, instance=message)
@@ -231,29 +186,28 @@ def edit_message(request, message_id):
 
 @login_required
 def search_messages(request):
-    # vista que maneja la búsqueda de mensajes y la visualización de los resultados de la búsqueda.
-    # TODO: agregar que busque por palabras en los cuerpos/textos de los mensajes.
+    # View to handle searching for messages and displaying search results.
     query = request.GET.get("search")
     user = request.user
     conversations = []
 
     if query:
-        # Filtrar mensajes que contienen la consulta
+        # Filter messages containing the query
         messages = Message.objects.filter(
             Q(content__icontains=query) & (Q(sender=user) | Q(recipient=user))
         ).distinct()
 
-        # Obtener IDs de usuarios involucrados en los mensajes filtrados
+        # Get IDs of users involved in the filtered messages
         user_ids = set(messages.values_list("sender_id", flat=True)) | set(
             messages.values_list("recipient_id", flat=True)
         )
 
-        # Filtrar usuarios por nombre de usuario que contiene la consulta
+        # Filter users by username containing the query
         users = User.objects.filter(
             Q(username__icontains=query) & Q(id__in=user_ids)
         ).distinct()
 
-        # Combinar mensajes y usuarios para obtener conversaciones
+        # Combine messages and users to get conversations
         for other_user in users:
             last_message = (
                 Message.objects.filter(

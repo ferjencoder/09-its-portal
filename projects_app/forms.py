@@ -5,8 +5,8 @@ from django import forms
 from .models import Project, ProjectAssignment, Deliverable
 
 
-# Formulario para crear y editar proyectos
 class ProjectForm(forms.ModelForm):
+    # Form para crear y editar proyectos
     assigned_to_client = forms.ModelChoiceField(
         queryset=User.objects.filter(groups__name="client"), required=False
     )
@@ -34,22 +34,22 @@ class ProjectForm(forms.ModelForm):
         }
 
 
-# Formulario para actualizar el estado del proyecto
 class ProjectStatusForm(forms.ModelForm):
+    # Form para actualizar el estado del proyecto
     class Meta:
         model = Project
         fields = ["status"]
 
 
-# Formulario para asignaciones de proyectos
 class AssignmentForm(forms.ModelForm):
+    # Form para asignaciones de proyectos
     class Meta:
         model = ProjectAssignment
         fields = ["project", "employee", "client"]
 
 
-# Form para el manejo de los entregables/deliverables
 class DeliverableForm(forms.ModelForm):
+    # Form para el manejo de los entregables
     class Meta:
         model = Deliverable
         fields = ["name", "due_date", "status"]

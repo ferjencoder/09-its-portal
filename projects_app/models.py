@@ -7,6 +7,11 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
 
+# Función para generar la ruta de subida de archivos
+def get_upload_path(instance, filename):
+    return f"projects_files/{instance.deliverable.project.code}/documents/{filename}"
+
+
 # Model de Proyecto
 class Project(models.Model):
     PENDING = "pending"
@@ -121,10 +126,6 @@ class Document(models.Model):
 
     def __str__(self):
         return self.file.name
-
-
-def get_upload_path(instance, filename):
-    return f"projects_files/{instance.deliverable.project.code}/documents/{filename}"
 
 
 # Model de Actualización

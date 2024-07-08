@@ -11,8 +11,8 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
-from .forms import BlogPostForm, CategoryForm
-from .models import BlogPost, Category
+from .forms import BlogPostForm, BlogCategoryForm
+from .models import BlogPost, BlogCategory
 
 
 # Verifica si el usuario pertenece al grupo "admin"
@@ -30,7 +30,7 @@ def is_employee(user):
 @user_passes_test(is_admin)
 def create_category(request):
     if request.method == "POST":
-        form = CategoryForm(request.POST)
+        form = BlogCategoryForm(request.POST)
         if form.is_valid():
             form.save()
             return JsonResponse(
@@ -53,7 +53,7 @@ def create_category(request):
 def delete_category(request, category_id):
     if request.method == "DELETE":
         try:
-            category = get_object_or_404(Category, id=category_id)
+            category = get_object_or_404(BlogCategory, id=category_id)
             category.delete()
             return JsonResponse(
                 {"success": True, "message": "Categoría eliminada exitosamente."}
@@ -77,7 +77,7 @@ def blog_list(request):
     page_number = request.GET.get("page")
     blog_posts = paginator.get_page(page_number)
 
-    categories = Category.objects.all()
+    categories = BlogCategory.objects.all()
 
     return render(
         request,
@@ -99,10 +99,8 @@ def blog_detail(request, id):
 # Lista de blogs del empleado logueado con paginación
 @login_required
 def employee_blog_list(request):
-    # Obtener el ID de la categoría seleccionada
     category_id = request.GET.get("category")
 
-    # Filtrar posts del usuario actual y por categoría si se selecciona una
     if category_id:
         blog_posts = BlogPost.objects.filter(
             author=request.user, category_id=category_id
@@ -112,13 +110,11 @@ def employee_blog_list(request):
             "-created_at"
         )
 
-    # Paginación
     paginator = Paginator(blog_posts, 3)  # Muestra 3 publicaciones por página
     page_number = request.GET.get("page")
     blog_posts = paginator.get_page(page_number)
 
-    # Obtener todas las categorías
-    categories = Category.objects.all()
+    categories = BlogCategory.objects.all()
     selected_category = int(category_id) if category_id else None
 
     if not blog_posts:
@@ -170,7 +166,7 @@ def admin_blog_list(request):
     else:
         blog_posts = BlogPost.objects.all().order_by("-created_at")
 
-    categories = Category.objects.all()
+    categories = BlogCategory.objects.all()
     selected_category = int(category_id) if category_id else None
 
     paginator = Paginator(blog_posts, 3)  # Muestra 3 publicaciones por página
@@ -253,7 +249,7 @@ def blog_list_public(request):
     page_number = request.GET.get("page")
     blog_posts = paginator.get_page(page_number)
 
-    categories = Category.objects.all()
+    categories = BlogCategory.objects.all()
 
     return render(
         request,
@@ -264,29 +260,3 @@ def blog_list_public(request):
             "selected_category": int(category_id) if category_id else None,
         },
     )
-
-
-# Verifica si el usuario pertenece al grupo "admin"
-# is_admin(user)
-# Verifica si el usuario pertenece al grupo "employee"
-# is_employee(user)
-# Crear una nueva categoría (solo admin)
-# create_category(request)
-# Lista de blogs con paginación y filtro por categoría
-# blog_list(request)
-# Detalle de un blog específico
-# blog_detail(request, id)
-# Lista de blogs del empleado logueado con paginación
-# employee_blog_list(request)
-# Crear una nueva entrada de blog
-# create_blog_post(request)
-# Lista de blogs para el admin con paginación y filtro por categoría
-# admin_blog_list(request)
-# Editar una entrada de blog
-# edit_blog_post(request, id)
-# Eliminar una entrada de blog
-# delete_blog_post(request, id)
-# Subir una imagen para el blog
-# upload_image(request)
-# Lista pública de blogs con paginación y filtro por categoría
-# blog_list_public(request)

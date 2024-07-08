@@ -16,7 +16,7 @@ from django.utils import translation
 from django.views.decorators.csrf import csrf_protect
 from .forms import RegisterForm, ProfileForm, UserEditForm
 from .models import Profile
-from .utils import get_profile
+from .utils import get_profile, get_or_create_conversation
 from forum_app.models import ForumTopic, ForumPost
 from messages_app.models import Message
 from projects_app.models import Project
@@ -62,6 +62,9 @@ def about(request):
     return render(request, "main/about.html")
 
 
+# main/views.py
+
+
 def contact(request):
     # Maneja el formulario de contacto y envía un mensaje al administrador
     if request.method == "POST":
@@ -75,10 +78,16 @@ def contact(request):
             messages.error(request, "No admin found to send the message to.")
             return redirect("main:contact")
 
+        # Crear o obtener la conversación
+        conversation = get_or_create_conversation(
+            None if request.user.is_anonymous else request.user, admin_user
+        )
+
         Message.objects.create(
             sender=None if request.user.is_anonymous else request.user,
             recipient=admin_user,
             content=f"Name: {name}\nEmail: {email}\n\n{message_body}",
+            conversation=conversation,
         )
 
         messages.success(request, "Your message has been sent successfully!")
