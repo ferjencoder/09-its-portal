@@ -5,11 +5,21 @@ from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.utils import timezone
 from blog_app.models import BlogPost
 from forum_app.models import ForumPost
 from messages_app.models import Message
+from main.models import Profile
 from .models import Project, ProjectAssignment, Task, Document, Update, Deliverable
-from .forms import ProjectForm, ProjectStatusForm, AssignmentForm, DeliverableForm
+from .forms import (
+    ProjectForm,
+    ProjectStatusForm,
+    AssignmentForm,
+    DeliverableForm,
+    UpdateForm,
+    TaskForm,
+    DocumentForm,
+)
 
 
 def is_admin(user):
@@ -25,22 +35,26 @@ def admin_projects_dashboard(request):
     messages = Message.objects.all()[:10]
     forum_posts = ForumPost.objects.select_related("topic").all()[:10]
     blog_posts = BlogPost.objects.all()[:10]
+    tasks = Task.objects.all().order_by("due_date")
+    pending_documents = Document.objects.filter(status="pending")
+    uploaded_documents = Document.objects.filter(status="uploaded")
+    recent_updates = Update.objects.all().order_by("-date")[:10]
 
-    return render(
-        request,
-        "dashboard/admin_projects_dashboard.html",
-        {
-            "projects": projects,
-            "messages": messages,
-            "forum_posts": forum_posts,
-            "blog_posts": blog_posts,
-        },
-    )
+    context = {
+        "projects": projects,
+        "messages": messages,
+        "forum_posts": forum_posts,
+        "blog_posts": blog_posts,
+        "tasks": tasks,
+        "pending_documents": pending_documents,
+        "uploaded_documents": uploaded_documents,
+        "recent_updates": recent_updates,
+    }
+    return render(request, "dashboard/admin_projects_dashboard.html", context)
 
 
 @login_required
 def employee_projects_dashboard(request):
-    # Vista del dashboard del empleado
     assigned_projects = Project.objects.filter(assigned_to_employees=request.user)
     tasks = Task.objects.filter(assigned_to=request.user).order_by("due_date")
     pending_documents = Document.objects.filter(
@@ -58,6 +72,10 @@ def employee_projects_dashboard(request):
         (completed_tasks / total_tasks) * 100 if total_tasks > 0 else 0
     )
 
+    task_form = TaskForm()
+    update_form = UpdateForm()
+    document_form = DocumentForm()
+
     context = {
         "assigned_projects": assigned_projects,
         "tasks": tasks,
@@ -65,8 +83,30 @@ def employee_projects_dashboard(request):
         "uploaded_documents": uploaded_documents,
         "recent_updates": recent_updates,
         "task_completion_rate": task_completion_rate,
+        "task_form": task_form,
+        "update_form": update_form,
+        "document_form": document_form,
     }
     return render(request, "dashboard/employee_projects_dashboard.html", context)
+
+
+@login_required
+def client_projects_dashboard(request):
+    # Vista del dashboard del cliente
+    client_projects = Project.objects.filter(client=request.user)
+    messages = Message.objects.filter(recipient=request.user)[:10]
+    forum_posts = ForumPost.objects.filter(author=request.user).select_related("topic")[
+        :10
+    ]
+    blog_posts = BlogPost.objects.filter(author=request.user)[:10]
+
+    context = {
+        "client_projects": client_projects,
+        "messages": messages,
+        "forum_posts": forum_posts,
+        "blog_posts": blog_posts,
+    }
+    return render(request, "dashboard/client_projects_dashboard.html", context)
 
 
 @login_required
@@ -192,14 +232,29 @@ def create_assignment(request):
     return render(request, "projects/create_assignment.html", {"form": form})
 
 
-# Vista de feedback
 @login_required
 def submit_feedback(request):
+    # Vista para enviar feedback
     if request.method == "POST":
         feedback = request.POST.get("feedback")
         return HttpResponse("¡Gracias por tus comentarios!")
     else:
         return HttpResponse("Método de solicitud no válido.", status=405)
+
+
+@login_required
+def create_task(request):
+    # Vista para crear una nueva tarea
+    if request.method == "POST":
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.created_at = timezone.now()
+            task.save()
+            return redirect("projects_app:admin_projects_dashboard")
+    else:
+        form = TaskForm()
+    return render(request, "projects/create_task.html", {"form": form})
 
 
 @login_required
@@ -220,7 +275,6 @@ def update_task_status(request, task_id):
 @login_required
 def upload_document(request, deliverable_id):
     # Vista que permite a los usuarios cargar documentos para un entregable específico.
-    # Solo el usuario asignado puede cargar documentos.
     deliverable = get_object_or_404(Deliverable, id=deliverable_id)
     if deliverable.assigned_to != request.user:
         raise PermissionDenied
@@ -320,3 +374,43 @@ def edit_deliverable(request, deliverable_id):
         "documents/edit_deliverable.html",
         {"form": form, "deliverable": deliverable},
     )
+
+
+@login_required
+def create_update(request):
+    # Vista para crear una nueva actualización
+    if request.method == "POST":
+        form = UpdateForm(request.POST)
+        if form.is_valid():
+            update = form.save(commit=False)
+            update.date = timezone.now()
+            update.save()
+
+            # Determina el rol del usuario y redirige en consecuencia
+            profile = Profile.objects.get(user=request.user)
+            if profile.role == "admin":
+                return redirect("projects_app:admin_projects_dashboard")
+            elif profile.role == "employee":
+                return redirect("projects_app:employee_projects_dashboard")
+            elif profile.role == "client":
+                return redirect("projects_app:client_projects_dashboard")
+            else:
+                return redirect("projects_app:admin_projects_dashboard")
+    else:
+        form = UpdateForm()
+    return render(request, "projects/create_update.html", {"form": form})
+
+
+@login_required
+def add_document(request):
+    # Vista para agregar un nuevo documento
+    if request.method == "POST":
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            document = form.save(commit=False)
+            document.uploaded_at = timezone.now()
+            document.save()
+            return redirect("projects_app:admin_projects_dashboard")
+    else:
+        form = DocumentForm()
+    return render(request, "documents/add_document.html", {"form": form})

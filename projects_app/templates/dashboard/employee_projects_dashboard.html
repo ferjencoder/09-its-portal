@@ -5,43 +5,90 @@
 {% load static %}
 {% load custom_filters %}
 
-{% block title %}Employee Dashboard{% endblock %}
+{% block title %}{% trans "Employee Dashboard - ITS Portal" %}{% endblock %}
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/custom_styles.css' %}">
-<div class="container mt-1">
+<div class="container-fluid mt-1">
     <div class="text-center">
         <h1 class="display-4">{% trans "Employee Dashboard" %}</h1>
         <hr class="my-5">
     </div>
 
     <div class="row">
-        <!-- Sección de Proyectos Asignados -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
+        <!-- Primer Panel -->
+        <div class="col-md-4 mb-4">
+            <!-- Métricas de Desempeño -->
+            <div class="card mb-4" style="height: 600px;">
                 <div class="card-header bg-success text-white">
-                    <h4>{% trans "Assigned Projects" %}</h4>
+                    <h4>{% trans "Performance Metrics" %}</h4>
                 </div>
-                <div class="card-body" style="max-height: 200px; overflow-y: auto;">
-                    <ul class="list-group">
-                        {% for project in assigned_projects %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <a href="{% url 'projects_app:view_project' project.id %}" class="text-decoration-none">{{ project.name }}</a>
-                                <span class="badge bg-primary rounded-pill">{{ project.get_status_display }}</span>
-                            </li>
-                        {% endfor %}
-                    </ul>
+                <div class="card-body p-0 pt-3 px-3 justify-content-start" style="overflow-y: auto;">
+                    <!-- Barra de progreso para las métricas de desempeño -->
+                    <div class="progress mb-4" role="progressbar" aria-valuenow="{{ task_completion_rate|default:'0' }}" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                        style="width: {{ task_completion_rate|default:'0' }}%">
+                        </div>
+                    </div>
+
+                    <!-- Proyectos Asignados -->
+                    <div class="mb-4">
+                        <div class="card-header bg-success text-white">
+                            <h4>{% trans "Assigned Projects" %}</h4>
+                        </div>
+                        <div class="card-body p-2" style="height: 200px; overflow-y: auto;">
+                            <!-- Lista de proyectos asignados con barra de desplazamiento -->
+                            <ul class="list-group">
+                                {% for project in assigned_projects %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <a href="{% url 'projects_app:view_project' project.id %}" class="text-decoration-none">{{ project.name }}</a>
+                                        <span class="badge 
+                                            {% if project.status == 'pending' %}bg-warning text-dark
+                                            {% elif project.status == 'ongoing' %}bg-success
+                                            {% elif project.status == 'completed' %}bg-secondary
+                                            {% endif %} rounded-pill">{{ project.get_status_display }}</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Actualizaciones Recientes -->
+                    <div>
+                        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                            <h4>{% trans "Recent Updates" %}</h4>
+                            <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUpdateModal" title="{% trans 'Add New Update' %}">
+                                <i class="bi bi-plus-circle" style="font-size: 1.5em;"></i>
+                            </a>
+                        </div>
+                        <div class="card-body p-2" style="height: 200px; overflow-y: auto;">
+                            <!-- Lista de actualizaciones recientes con barra de desplazamiento -->
+                            <ul class="list-group">
+                                {% for update in recent_updates %}
+                                    <li class="list-group-item">
+                                        <strong>{{ update.title }}</strong>: {{ update.content|truncatewords:10 }}
+                                        <small>{% trans "Updated on:" %} {{ update.date }}</small>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Sección de Tareas y Plazos -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-header bg-success text-white">
+        <!-- Segundo Panel -->
+        <div class="col-md-4 mb-4">
+            <!-- Tareas y Plazos -->
+            <div class="card mb-4" style="height: 600px;">
+                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
                     <h4>{% trans "Tasks and Deadlines" %}</h4>
+                    <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTaskModal" title="{% trans 'Add New Task' %}">
+                        <i class="bi bi-plus-circle" style="font-size: 1.5em;"></i>
+                    </a>
                 </div>
-                <div class="card-body" style="max-height: 200px; overflow-y: auto;">
+                <div class="card-body p-2" style="overflow-y: auto;">
+                    <!-- Lista de tareas y plazos con barra de desplazamiento -->
                     <ul class="list-group">
                         {% for task in tasks %}
                             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -60,13 +107,18 @@
             </div>
         </div>
 
-        <!-- Sección de Documentos -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-header bg-success text-white">
+        <!-- Tercer Panel -->
+        <div class="col-md-4 mb-4">
+            <!-- Documentos -->
+            <div class="card mb-4" style="height: 600px;">
+                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
                     <h4>{% trans "Documents" %}</h4>
+                    <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addDocumentModal" title="{% trans 'Add New Document' %}">
+                        <i class="bi bi-plus-circle" style="font-size: 1.5em;"></i>
+                    </a>
                 </div>
-                <div class="card-body text-start" style="max-height: 200px; overflow-y: auto;">
+                <div class="card-body p-2" style="overflow-y: auto;">
+                    <!-- Documentos pendientes con barra de desplazamiento -->
                     <h5>{% trans "Pending Documents" %}</h5>
                     <ul class="list-group">
                         {% for document in pending_documents %}
@@ -76,6 +128,7 @@
                             </li>
                         {% endfor %}
                     </ul>
+                    <!-- Documentos subidos con barra de desplazamiento -->
                     <h5 class="mt-3">{% trans "Uploaded Documents" %}</h5>
                     <ul class="list-group">
                         {% for document in uploaded_documents %}
@@ -87,74 +140,94 @@
                     </ul>
                 </div>
             </div>
-        </div>
 
-        <!-- Sección de Actualizaciones Recientes -->
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-header bg-success text-white">
-                    <h4>{% trans "Recent Updates" %}</h4>
-                </div>
-                <div class="card-body" style="max-height: 200px; overflow-y: auto;">
-                    <ul class="list-group">
-                        {% for update in recent_updates %}
-                            <li class="list-group-item">
-                                <strong>{{ update.title }}</strong>: {{ update.content|truncatewords:10 }}
-                                <small>{% trans "Updated on:" %} {{ update.date }}</small>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <!-- Sección de Métricas de Desempeño -->
-        <div class="col-md-12 mb-4">
-            <div class="card">
-                <div class="card-header bg-success text-white">
-                    <h4>{% trans "Performance Metrics" %}</h4>
-                </div>
-                <div class="card-body">
-                    <div class="progress mb-3" role="progressbar" aria-valuenow="{{ task_completion_rate|default:'0' }}" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
-                        style="width: {{ task_completion_rate|default:'0' }}%"
-                        ></div>
-                    </div>
-                    <p>{% trans "Tasks Completion Rate" %}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <!-- Sección de Comentarios y Soporte -->
-        <div class="col-md-12">
+            <!-- Comentarios y Soporte -->
             <div class="card">
                 <div class="card-header bg-success text-white">
                     <h4>{% trans "Feedback and Support" %}</h4>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-0 px-3" style="height: 130px; overflow-y: auto;">
+                    <!-- Formulario de comentarios -->
                     <form action="{% url 'projects_app:submit_feedback' %}" method="post">
                         {% csrf_token %}
                         <div class="form-group">
-                            <label for="feedback">{% trans "Your Feedback" %}</label>
-                            <textarea class="form-control" id="feedback" name="feedback" rows="3" required></textarea>
+                            <div class="d-flex justify-content-between align-items-end">
+                                <label for="feedback" class="mt-2 mb-1">{% trans "Your Feedback" %}</label>
+                                <button type="submit" class="btn btn-success btn-sm mt-3">{% trans "Submit" %}</button>
+                            </div>
+                            <textarea class="form-control" id="feedback" name="feedback" rows="2" required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">{% trans "Submit" %}</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modals -->
+<div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="addTaskForm" action="{% url 'projects_app:create_task' %}" method="post">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTaskModalLabel">{% trans "Add New Task" %}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ task_form.as_p }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
+                    <button type="submit" class="btn btn-primary">{% trans "Save changes" %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addUpdateModal" tabindex="-1" aria-labelledby="addUpdateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="addUpdateForm" action="{% url 'projects_app:create_update' %}" method="post">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addUpdateModalLabel">{% trans "Add New Update" %}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ update_form.as_p }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
+                    <button type="submit" class="btn btn-primary">{% trans "Save changes" %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addDocumentModal" tabindex="-1" aria-labelledby="addDocumentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="addDocumentForm" action="{% url 'projects_app:add_document' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addDocumentModalLabel">{% trans "Add New Document" %}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{ document_form.as_p }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
+                    <button type="submit" class="btn btn-primary">{% trans "Save changes" %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const progressBar = document.querySelector(".progress-bar");
-        const completionRate = progressBar.getAttribute("aria-valuenow");
-        progressBar.style.width = completionRate + "%";
-    });
-</script>
+<script src="{% static 'js/projects.js' %}"></script>

@@ -2,7 +2,7 @@
 
 from django.contrib.auth.models import User
 from django import forms
-from .models import Project, ProjectAssignment, Deliverable
+from .models import Project, ProjectAssignment, Deliverable, Update, Task, Document
 
 
 class ProjectForm(forms.ModelForm):
@@ -28,7 +28,7 @@ class ProjectForm(forms.ModelForm):
             "assigned_to_employees",
         ]
         widgets = {
-            "description": forms.Textarea(attrs={"rows": 7}),
+            "description": forms.Textarea(attrs={"rows": 4}),
             "start_date": forms.DateInput(attrs={"type": "date"}),
             "end_date": forms.DateInput(attrs={"type": "date"}),
         }
@@ -53,3 +53,30 @@ class DeliverableForm(forms.ModelForm):
     class Meta:
         model = Deliverable
         fields = ["name", "due_date", "status"]
+
+
+class UpdateForm(forms.ModelForm):
+    # Form para crear updates del proyecto
+    class Meta:
+        model = Update
+        fields = ["title", "content"]
+        widgets = {
+            "title": forms.TextInput(attrs={"class": "form-control"}),
+            "content": forms.Textarea(attrs={"class": "form-control"}),
+        }
+
+
+class TaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ["name", "description", "due_date", "status", "assigned_to"]
+        widgets = {
+            "due_date": forms.DateInput(attrs={"type": "date"}),
+            "description": forms.Textarea(attrs={"rows": 3}),
+        }
+
+
+class DocumentForm(forms.ModelForm):
+    class Meta:
+        model = Document
+        fields = ["deliverable", "file", "status", "assigned_to"]
