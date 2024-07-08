@@ -252,11 +252,32 @@ def dashboard(request):
 
     if profile:
         if profile.role == "employee":
-            topics = ForumTopic.objects.all()
+            projects = Project.objects.filter(assigned_to_employees=request.user)
             messages_list = Message.objects.filter(recipient=request.user)
-            context.update({"topics": topics, "messages": messages_list})
+            forum_posts = ForumPost.objects.filter(author=request.user)
+            blog_posts = BlogPost.objects.filter(author=request.user)
+            context.update(
+                {
+                    "projects": projects,
+                    "messages": messages_list,
+                    "forum_posts": forum_posts,
+                    "blog_posts": blog_posts,
+                }
+            )
             return render(request, "dashboard/employee_dashboard.html", context)
         elif profile.role == "client":
+            projects = Project.objects.filter(client=request.user)
+            messages_list = Message.objects.filter(recipient=request.user)
+            forum_posts = ForumPost.objects.filter(author=request.user)
+            blog_posts = BlogPost.objects.filter(author=request.user)
+            context.update(
+                {
+                    "projects": projects,
+                    "messages": messages_list,
+                    "forum_posts": forum_posts,
+                    "blog_posts": blog_posts,
+                }
+            )
             return render(request, "dashboard/client_dashboard.html", context)
         elif profile.role == "admin":
             projects = Project.objects.all()
