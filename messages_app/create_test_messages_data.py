@@ -1,4 +1,4 @@
-# messages_app / create_test_messages_data.py
+# messages_app/create_test_messages_data.py
 
 import os
 import sys
@@ -26,17 +26,17 @@ def create_message(content, sender_username, recipient_username):
 
 def main():
     # Crear mensajes entre usuarios
-    create_message("Hola, soy admin1", "admin1", "employee1")
-    create_message("Hola admin1, soy employee1", "employee1", "admin1")
-    create_message("Hola, soy client1", "client1", "admin1")
-    create_message("Hola client1, soy admin1", "admin1", "client1")
-    create_message("Hola, soy employee1", "employee1", "client1")
-    create_message("Hola employee1, soy client1", "client1", "employee1")
+    users = User.objects.all()
+
+    for sender in users:
+        for recipient in users:
+            if sender != recipient:
+                content = f"Hola {recipient.username}, soy {sender.username}"
+                create_message(content, sender.username, recipient.username)
 
 
 if __name__ == "__main__":
     main()
-
 
 # sys.path.append: Se agrega el directorio raíz del proyecto al sys.path para que el script pueda encontrar las configuraciones y módulos de Django.
 # os.environ.setdefault: Se configura la variable de entorno para usar el archivo de configuración de Django.

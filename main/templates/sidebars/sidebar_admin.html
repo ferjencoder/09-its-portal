@@ -11,7 +11,7 @@
     </li>
     <li class="my-1">
         <!-- Enlace a la vista de proyectos del admin -->
-        <a href="{% url 'projects_app:view_projects' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'view_projects' %}active{% endif %}">
+        <a href="{% url 'projects_app:admin_projects_dashboard' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'view_projects' %}active{% endif %}">
             <i class="bi-briefcase me-2"></i> {% trans "Projects" %}
         </a>
     </li>

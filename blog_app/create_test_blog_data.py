@@ -16,6 +16,7 @@ from blog_app.models import BlogPost, Category
 
 
 def create_category(name):
+    # Crear o recuperar una categoría de blog por nombre.
     category, created = Category.objects.get_or_create(name=name)
     return category
 
@@ -23,6 +24,7 @@ def create_category(name):
 def create_blog_post(
     title, subtitle, body, author_username, category_name, image_name=None
 ):
+    # Crear una entrada de blog con un autor y categoría específicos, y una imagen opcional.
     author = User.objects.get(username=author_username)
     category = Category.objects.get(name=category_name)
     blog_post, created = BlogPost.objects.get_or_create(
@@ -52,107 +54,92 @@ def create_blog_post(
 
 
 def main():
-    # Crear categorías de blog
-    create_category("Technology")
-    create_category("Health")
-    create_category("Education")
+    # Crear categorias del blog (servicios de ITS)
+    create_category("Automation Solutions")
+    create_category("Data Visualization")
+    create_category("Project Management")
+    create_category("Training Services")
 
     # Crear entradas de blog
     create_blog_post(
-        "First Technology Blog",
-        "Subtitle for Technology Blog",
-        "Content of the first technology blog.",
+        "First Automation Blog",
+        "Subtitle for Automation Blog",
+        "Content of the first automation blog.",
         "admin1",
-        "Technology",
-        "tech_blog.jpg",
+        "Automation Solutions",
+        "blog_image1.jpg",
     )
     create_blog_post(
-        "First Health Blog",
-        "Subtitle for Health Blog",
-        "Content of the first health blog.",
+        "First Data Visualization Blog",
+        "Subtitle for Data Visualization Blog",
+        "Content of the first data visualization blog.",
         "employee1",
-        "Health",
-        "health_blog.jpg",
+        "Data Visualization",
+        "blog_image2.jpg",
     )
     create_blog_post(
-        "First Education Blog",
-        "Subtitle for Education Blog",
-        "Content of the first education blog.",
+        "First Project Management Blog",
+        "Subtitle for Project Management Blog",
+        "Content of the first project management blog.",
         "client1",
-        "Education",
-        "education_blog.jpg",
+        "Project Management",
+        "blog_image3.jpg",
     )
     create_blog_post(
-        "Second Technology Blog",
-        "Subtitle for Technology Blog",
-        "Content of the first technology blog.",
-        "admin1",
-        "Technology",
-        "tech_blog.jpg",
+        "First Training Blog",
+        "Subtitle for Training Blog",
+        "Content of the first training blog.",
+        "admin2",
+        "Training Services",
+        "blog_image4.jpg",
     )
     create_blog_post(
-        "Second Health Blog",
-        "Subtitle for Health Blog",
-        "Content of the second health blog.",
-        "employee1",
-        "Health",
-        "health_blog.jpg",
+        "Second Automation Blog",
+        "Subtitle for Automation Blog",
+        "Content of the second automation blog.",
+        "employee2",
+        "Automation Solutions",
+        "blog_image5.jpg",
     )
     create_blog_post(
-        "Second Education Blog",
-        "Subtitle for Education Blog",
-        "Content of the second education blog.",
-        "client1",
-        "Education",
-        "education_blog.jpg",
+        "Second Data Visualization Blog",
+        "Subtitle for Data Visualization Blog",
+        "Content of the second data visualization blog.",
+        "client2",
+        "Data Visualization",
+        "blog_image6.jpg",
     )
     create_blog_post(
-        "Third Technology Blog",
-        "Subtitle for Technology Blog",
-        "Content of the third technology blog.",
-        "admin1",
-        "Technology",
-        "tech_blog.jpg",
+        "Second Project Management Blog",
+        "Subtitle for Project Management Blog",
+        "Content of the second project management blog.",
+        "admin3",
+        "Project Management",
+        "blog_image7.jpg",
     )
     create_blog_post(
-        "Third Health Blog",
-        "Subtitle for Health Blog",
-        "Content of the third health blog.",
-        "employee1",
-        "Health",
-        "health_blog.jpg",
+        "Second Training Blog",
+        "Subtitle for Training Blog",
+        "Content of the second training blog.",
+        "employee3",
+        "Training Services",
+        "blog_image8.jpg",
     )
     create_blog_post(
-        "Third Education Blog",
-        "Subtitle for Education Blog",
-        "Content of the third education blog.",
-        "client1",
-        "Education",
-        "education_blog.jpg",
+        "Third Automation Blog",
+        "Subtitle for Automation Blog",
+        "Content of the third automation blog.",
+        "client3",
+        "Automation Solutions",
+        "blog_image9.jpg",
     )
     create_blog_post(
-        "Fourth Technology Blog",
-        "Subtitle for Technology Blog",
-        "Content of the fourth technology blog.",
-        "admin1",
-        "Technology",
-        "tech_blog.jpg",
-    )
-    create_blog_post(
-        "Fourth Health Blog",
-        "Subtitle for Health Blog",
-        "Content of the fourth health blog.",
-        "employee1",
-        "Health",
-        "health_blog.jpg",
-    )
-    create_blog_post(
-        "Fourth Education Blog",
-        "Subtitle for Education Blog",
-        "Content of the fourth education blog.",
-        "client1",
-        "Education",
-        "education_blog.jpg",
+        "Third Data Visualization Blog",
+        "Subtitle for Data Visualization Blog",
+        "Content of the third data visualization blog.",
+        "admin4",
+        "Data Visualization",
+        "blog_image10.jpg",
     )
 
 

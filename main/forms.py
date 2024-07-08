@@ -7,6 +7,7 @@ from .models import Profile
 
 
 class UserRegistrationForm(forms.ModelForm):
+    # Formulario para registro de usuarios
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
     password2 = forms.CharField(label="Repeat password", widget=forms.PasswordInput)
 
@@ -30,6 +31,7 @@ class UserRegistrationForm(forms.ModelForm):
 
 
 class ProfileForm(forms.ModelForm):
+    # Formulario para actualizar perfil de usuario
     class Meta:
         model = Profile
         fields = ["bio", "location", "birth_date", "profile_picture"]
@@ -44,7 +46,9 @@ class ProfileForm(forms.ModelForm):
 
 
 class RegisterForm(UserCreationForm):
+    # Formulario de registro que incluye rol y email
     email = forms.EmailField(required=True)
+    # IDEA: Agregar user a las choices si alguna vez decido implementarlo para los msjs
     role = forms.ChoiceField(
         choices=[
             ("client", "Client"),
@@ -79,6 +83,7 @@ class RegisterForm(UserCreationForm):
 
 
 class UserEditForm(forms.ModelForm):
+    # Formulario para editar el usuario
     class Meta:
         model = User
         fields = ("first_name", "last_name")

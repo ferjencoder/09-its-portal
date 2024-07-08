@@ -1,0 +1,85 @@
+<!-- projects_app/templates/projects/admin_view_projects.html -->
+
+{% extends "sidebars/base_sidebar.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Projects - ITS Portal" %}{% endblock %}
+
+{% block content %}
+<div class="container mt-1">
+    <div class="text-center">
+        <h1 class="display-4">{% trans "Projects" %}</h1>
+        <hr class="my-5">
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-start">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">{% trans "Projects" %}</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="text-end mb-3">
+                        <a href="{% url 'projects_app:create_project' %}" class="btn btn-success">{% trans "Create New Project" %}</a>
+                    </div>
+                    <ul class="list-group">
+                        {% for project in projects %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center mb-2">
+                                <span class="text-decoration-none">{{ project.name }}</span>
+                                <div>
+                                    <a href="{% url 'projects_app:view_project' project.id %}" class="btn btn-sm btn-primary">{% trans "View" %}</a>
+                                    {% if is_admin %}
+                                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteProjectModal" data-project-id="{{ project.id }}" data-project-name="{{ project.name }}">
+                                            {% trans "Delete" %}
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for project deletion -->
+<div class="modal fade" id="deleteProjectModal" tabindex="-1" aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteProjectModalLabel">{% trans "Delete Project" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>{% trans "Are you sure you want to delete the project" %} "<span id="modalProjectName"></span>"?</p>
+            </div>
+            <div class="modal-footer">
+                <form id="deleteProjectForm" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Cancel" %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const deleteProjectModal = document.getElementById('deleteProjectModal');
+        deleteProjectModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const projectId = button.getAttribute('data-project-id');
+            const projectName = button.getAttribute('data-project-name');
+            const modalProjectName = deleteProjectModal.querySelector('#modalProjectName');
+            modalProjectName.textContent = projectName;
+
+            const deleteProjectForm = document.getElementById('deleteProjectForm');
+            deleteProjectForm.action = '{% url "projects_app:delete_project" 0 %}'.replace('0', projectId);
+        });
+    });
+</script>
+{% endblock %}

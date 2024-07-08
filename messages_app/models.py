@@ -2,6 +2,7 @@
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 
 class Message(models.Model):
@@ -35,3 +36,5 @@ class Message(models.Model):
             models.Index(fields=["sender"]),
             models.Index(fields=["recipient"]),
         ]
+        verbose_name = _("Message")
+        verbose_name_plural = _("Messages")

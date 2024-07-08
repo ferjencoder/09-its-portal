@@ -1,0 +1,34 @@
+<!-- projects_app/templates/documents/create_deliverable.html -->
+
+{% extends "sidebars/base_sidebar.html" %}
+{% load i18n %}
+
+{% block title %}Create Deliverable{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center">{% trans "Create Deliverable" %}</h1>
+    <hr>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">{% trans "Name" %}</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="due_date">{% trans "Due Date" %}</label>
+            <input type="date" id="due_date" name="due_date" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="assigned_to">{% trans "Assigned To" %}</label>
+            <select id="assigned_to" name="assigned_to" class="form-control">
+                <option value="">{% trans "Select Employee" %}</option>
+                {% for employee in employees %}
+                    <option value="{{ employee.id }}">{{ employee.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">{% trans "Create" %}</button>
+    </form>
+</div>
+{% endblock %}

@@ -10,7 +10,7 @@ from django.core.files.storage import default_storage
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from .forms import BlogPostForm, CategoryForm
 from .models import BlogPost, Category
 
@@ -38,8 +38,28 @@ def create_category(request):
             )
         else:
             return JsonResponse(
-                {"success": False, "message": "Error al crear la categoría."}
+                {"success": False, "message": "Error al crear la categoría."},
+                status=400,
             )
+    return JsonResponse(
+        {"success": False, "message": "Método de solicitud inválido."}, status=400
+    )
+
+
+# Eliminar una categoría (solo el admin)
+@login_required
+@user_passes_test(is_admin)
+@csrf_exempt
+def delete_category(request, category_id):
+    if request.method == "DELETE":
+        try:
+            category = get_object_or_404(Category, id=category_id)
+            category.delete()
+            return JsonResponse(
+                {"success": True, "message": "Categoría eliminada exitosamente."}
+            )
+        except Exception as e:
+            return JsonResponse({"success": False, "message": str(e)})
     return JsonResponse({"success": False, "message": "Método de solicitud inválido."})
 
 

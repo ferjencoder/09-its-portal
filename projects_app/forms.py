@@ -5,6 +5,7 @@ from django import forms
 from .models import Project, ProjectAssignment
 
 
+# Formulario para crear y editar proyectos
 class ProjectForm(forms.ModelForm):
     assigned_to_client = forms.ModelChoiceField(
         queryset=User.objects.filter(groups__name="client"), required=False
@@ -33,12 +34,14 @@ class ProjectForm(forms.ModelForm):
         }
 
 
+# Formulario para actualizar el estado del proyecto
 class ProjectStatusForm(forms.ModelForm):
     class Meta:
         model = Project
         fields = ["status"]
 
 
+# Formulario para asignaciones de proyectos
 class AssignmentForm(forms.ModelForm):
     class Meta:
         model = ProjectAssignment

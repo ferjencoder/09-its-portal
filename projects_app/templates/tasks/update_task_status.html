@@ -1,0 +1,24 @@
+<!--projects_app/templates/tasks/update_task_status.html-->
+
+{% extends "sidebars/base_sidebar.html" %}
+{% load i18n %}
+
+{% block title %}Update Task Status{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center">{% trans "Update Task Status" %}</h1>
+    <hr>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="status">{% trans "Status" %}</label>
+            <select id="status" name="status" class="form-control">
+                <option value="pending" {% if task.status == "pending" %}selected{% endif %}>{% trans "Pending" %}</option>
+                <option value="completed" {% if task.status == "completed" %}selected{% endif %}>{% trans "Completed" %}</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">{% trans "Update" %}</button>
+    </form>
+</div>
+{% endblock %}

@@ -6,11 +6,12 @@ from django.utils.translation import gettext_lazy as _
 
 
 def user_directory_path(instance, filename):
-    # File will be uploaded to MEDIA_ROOT/profile_images/user_<id>/<filename>
+    # La imagen se subirá a MEDIA_ROOT/profile_images/user_<id>/<filename>
     return f"profile_images/user_{instance.user.id}/{filename}"
 
 
 class Profile(models.Model):
+    # Modelo de perfil de usuario con roles y detalles adicionales
     USER_ROLES = (
         ("user", _("User")),
         ("employee", _("Employee")),
@@ -26,7 +27,7 @@ class Profile(models.Model):
     location = models.CharField(max_length=100, blank=True, null=True)
     birth_date = models.DateField(null=True, blank=True)
     profile_picture = models.ImageField(
-        upload_to="profile_images/",
+        upload_to=user_directory_path,
         default="profile_images/default_avatar.png",
         blank=True,
         null=True,

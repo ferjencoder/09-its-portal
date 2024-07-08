@@ -1,0 +1,23 @@
+<!-- projects_app/templates/documents/upload_document.html -->
+
+{% extends "sidebars/base_sidebar.html" %}
+{% load i18n %}
+
+{% block title %}Upload Document{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center">{% trans "Upload Document" %}</h1>
+    <hr>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="document_file">{% trans "Document File" %}</label>
+            <input type="file" id="document_file" name="document_file" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">{% trans "Upload" %}</button>
+    </form>
+</div>
+{% endblock %}
+
+

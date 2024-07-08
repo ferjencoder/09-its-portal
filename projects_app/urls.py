@@ -18,4 +18,35 @@ urlpatterns = [
     path("view/", views.view_projects, name="view_projects"),
     path("assignments/", views.assignment_list, name="assignment_list"),
     path("assignments/create/", views.create_assignment, name="create_assignment"),
+    path(
+        "admin_dashboard/",
+        views.admin_projects_dashboard,
+        name="admin_projects_dashboard",
+    ),
+    path(
+        "employee_dashboard/",
+        views.employee_projects_dashboard,
+        name="employee_projects_dashboard",
+    ),
+    path("submit_feedback/", views.submit_feedback, name="submit_feedback"),
+    path(
+        "tasks/<int:task_id>/update_status/",
+        views.update_task_status,
+        name="update_task_status",
+    ),
+    path(
+        "documents/upload/<int:document_id>/",
+        views.upload_document,
+        name="upload_document",
+    ),
+    path(
+        "documents/create_deliverable/<int:project_id>/",
+        views.create_deliverable,
+        name="create_deliverable",
+    ),
+    path(
+        "documents/approve/<int:deliverable_id>/",
+        views.approve_document,
+        name="approve_document",
+    ),
 ]

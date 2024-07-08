@@ -33,3 +33,11 @@ def add_attribute(field, attr_value):
             attrs[definition[0]] = definition[1]
         return field.as_widget(attrs=attrs)
     return field
+
+
+@register.filter(name="add_percent")
+def add_percent(value):
+    try:
+        return f"{value}%"
+    except (ValueError, TypeError):
+        return "0%"

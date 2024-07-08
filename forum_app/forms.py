@@ -5,6 +5,7 @@ from .models import ForumTopic, ForumPost
 
 
 class ForumTopicForm(forms.ModelForm):
+    # Formulario para crear y editar temas del foro
     class Meta:
         model = ForumTopic
         fields = ["title"]
@@ -14,6 +15,7 @@ class ForumTopicForm(forms.ModelForm):
 
 
 class ForumPostForm(forms.ModelForm):
+    # Formulario para crear y editar publicaciones del foro
     class Meta:
         model = ForumPost
         fields = ["content"]

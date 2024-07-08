@@ -4,17 +4,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.urls import reverse
-from django.core.paginator import Paginator
 from .models import ForumPost, ForumTopic
 from .forms import ForumPostForm, ForumTopicForm
 
 
 @login_required
 def forum(request):
-    # Obtener el término de búsqueda, si existe
+    # Vista para la página principal del foro
     search_query = request.GET.get("search", "")
 
-    # Filtrar los temas recientes basados en el término de búsqueda
     if search_query:
         recent_topics = ForumTopic.objects.filter(
             title__icontains=search_query
@@ -22,20 +20,16 @@ def forum(request):
     else:
         recent_topics = ForumTopic.objects.order_by("-created_at")[:10]
 
-    # Obtener todos los posts recientes
     recent_posts = ForumPost.objects.order_by("-created_at")[:10]
 
-    # Comprobar si la solicitud es AJAX para cargar posts recientes
     if request.headers.get("x-requested-with") == "XMLHttpRequest":
         post_data = {
             "posts": [
                 {
                     "id": post.id,
-                    "title": post.title,
+                    "title": post.topic.title,
                     "content": post.content,
                     "comment_count": post.comments.count(),
-                    "like_count": post.like_count,
-                    "view_count": post.view_count,
                     "created_at": post.created_at.strftime("%Y-%m-%d %H:%M:%S"),
                     "profile_picture": (
                         post.author.profile.profile_picture.url
@@ -50,7 +44,6 @@ def forum(request):
         }
         return JsonResponse(post_data)
 
-    # Renderizar la vista del foro
     return render(
         request,
         "forum_app/forum.html",
@@ -64,7 +57,7 @@ def forum(request):
 
 @login_required
 def topic_detail(request, topic_id):
-    # Obtener detalles del tema y sus posts
+    # Vista para los detalles de un tema específico
     topic = get_object_or_404(ForumTopic, id=topic_id)
     posts = ForumPost.objects.filter(topic=topic).order_by("-created_at")
     form = ForumPostForm()
@@ -77,6 +70,7 @@ def topic_detail(request, topic_id):
 
 @login_required
 def create_topic(request):
+    # Vista para crear un nuevo tema en el foro
     if request.method == "POST":
         form = ForumTopicForm(request.POST)
         if form.is_valid():
@@ -91,6 +85,7 @@ def create_topic(request):
 
 @login_required
 def create_post(request, topic_id):
+    # Vista para crear una nueva publicación en un tema
     topic = get_object_or_404(ForumTopic, id=topic_id)
     if request.method == "POST":
         form = ForumPostForm(request.POST)
@@ -99,7 +94,7 @@ def create_post(request, topic_id):
             post.topic = topic
             post.author = request.user
             post.save()
-            if request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
+            if request.headers.get("x-requested-with") == "XMLHttpRequest":
                 post_data = {
                     "id": post.id,
                     "title": post.topic.title,
@@ -130,14 +125,14 @@ def create_post(request, topic_id):
 
 @login_required
 def post_detail(request, post_id):
-    # Obtener detalles del post
+    # Vista para los detalles de una publicación específica
     post = get_object_or_404(ForumPost, id=post_id)
     return render(request, "forum_app/post_detail.html", {"post": post})
 
 
 @login_required
 def reply_post(request, post_id):
-    # Responder a un post
+    # Vista para responder a una publicación
     post = get_object_or_404(ForumPost, id=post_id)
     posts_in_topic = ForumPost.objects.filter(topic=post.topic).order_by("-created_at")
     if request.method == "POST":

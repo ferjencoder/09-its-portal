@@ -20,7 +20,7 @@ environ.Env.read_env(env_file=str(BASE_DIR / ".env"))
 # Configuración de inicio rápido para desarrollo - no apta para producción
 # Ver https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
-# ADVERTENCIA DE SEGURIDAD: mantén la clave secreta usada en producción en secreto
+# Configuración de inicio rápido para desarrollo - no apta para producción
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 # Determinar si estamos en desarrollo o producción
@@ -90,8 +90,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "its_portal.wsgi.application"
 
 # Base de datos
-# Ver https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -100,8 +98,6 @@ DATABASES = {
 }
 
 # Validación de contraseñas
-# Ver https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
@@ -118,8 +114,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internacionalización
-# Ver https://docs.djangoproject.com/en/3.2/topics/i18n/
-
 LANGUAGE_CODE = "en"
 
 LANGUAGES = [
@@ -152,7 +146,7 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # CKEDITOR_UPLOAD_PATH = "uploads/"
-#
+
 # CKEDITOR_5_CONFIGS = {
 #    "default": {
 #        "toolbar": [
@@ -194,6 +188,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 #    },
 # }
 
+# CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
 CKEDITOR_5_CONFIGS = {

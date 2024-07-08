@@ -12,9 +12,12 @@ from .forms import MessageForm
 
 @login_required
 def default_messages_view(request):
+    # Vista que maneja la visualización de la lista de conversaciones para el usuario que ha iniciado sesión.
+    # Filtra y ordena las conversaciones en función del tiempo del último mensaje.
     search_query = request.GET.get("search", "")
     users = User.objects.exclude(id=request.user.id)
 
+    # Filtrar conversaciones basado en la consulta de búsqueda
     if search_query:
         conversations = (
             Message.objects.filter(
@@ -84,13 +87,15 @@ def default_messages_view(request):
 
 @login_required
 def messages_view(request, recipient_id=None):
+    # vista que muestra los mensajes dentro de una conversación seleccionada.
+    # filtra en base a una consulta de búsqueda.
     query = request.GET.get("search")
     user = request.user
     users = User.objects.exclude(id=request.user.id)
     recipient = None
     messages = []
 
-    # Filter conversations based on search query
+    # Filtrar conversaciones basado en la consulta de búsqueda
     if query:
         messages_qs = Message.objects.filter(
             Q(content__icontains=query) & (Q(sender=user) | Q(recipient=user))
@@ -163,6 +168,7 @@ def messages_view(request, recipient_id=None):
 
 @login_required
 def send_message(request, recipient_id):
+    # Vista que maneja el envío de un nuevo mensaje a un destinatario.
     if request.method == "POST":
         content = request.POST.get("content")
         recipient = get_object_or_404(User, id=recipient_id)
@@ -175,6 +181,7 @@ def send_message(request, recipient_id):
 
 @login_required
 def reply_message(request, message_id):
+    # vista que maneja la respuesta a un mensaje existente.
     original_message = get_object_or_404(Message, id=message_id)
     recipient = original_message.sender
     if request.method == "POST":
@@ -192,6 +199,7 @@ def reply_message(request, message_id):
 
 @login_required
 def delete_message(request, message_id):
+    # vista que maneja la eliminación de un mensaje.
     message = get_object_or_404(Message, id=message_id)
     recipient_id = (
         message.recipient.id if message.sender == request.user else message.sender.id
@@ -200,11 +208,12 @@ def delete_message(request, message_id):
         message.delete()
         return redirect("messages_app:messages_view", recipient_id=recipient_id)
     else:
-        return HttpResponseForbidden("You are not allowed to delete this message.")
+        return HttpResponseForbidden("No tienes permiso para eliminar este mensaje.")
 
 
 @login_required
 def edit_message(request, message_id):
+    # Vista que permite la edición de un mensaje existente.
     message = get_object_or_404(Message, id=message_id, sender=request.user)
     if request.method == "POST":
         form = MessageForm(request.POST, instance=message)
@@ -222,27 +231,29 @@ def edit_message(request, message_id):
 
 @login_required
 def search_messages(request):
+    # vista que maneja la búsqueda de mensajes y la visualización de los resultados de la búsqueda.
+    # TODO: agregar que busque por palabras en los cuerpos/textos de los mensajes.
     query = request.GET.get("search")
     user = request.user
     conversations = []
 
     if query:
-        # Filter messages containing the query
+        # Filtrar mensajes que contienen la consulta
         messages = Message.objects.filter(
             Q(content__icontains=query) & (Q(sender=user) | Q(recipient=user))
         ).distinct()
 
-        # Get user IDs involved in the filtered messages
+        # Obtener IDs de usuarios involucrados en los mensajes filtrados
         user_ids = set(messages.values_list("sender_id", flat=True)) | set(
             messages.values_list("recipient_id", flat=True)
         )
 
-        # Filter users by username containing the query
+        # Filtrar usuarios por nombre de usuario que contiene la consulta
         users = User.objects.filter(
             Q(username__icontains=query) & Q(id__in=user_ids)
         ).distinct()
 
-        # Combine messages and users to get conversations
+        # Combinar mensajes y usuarios para obtener conversaciones
         for other_user in users:
             last_message = (
                 Message.objects.filter(
