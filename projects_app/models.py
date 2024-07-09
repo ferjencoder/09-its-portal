@@ -48,7 +48,6 @@ class Project(models.Model):
 
     def __str__(self):
         return f"{self.code} - {self.name}"
-        return f"{self.code} - {self.name}"
 
 
 # Señal para generar códigos únicos de proyecto
@@ -109,6 +108,14 @@ class Task(models.Model):
     assigned_to = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="tasks", verbose_name="Asignado a"
     )
+    project = models.ForeignKey(
+        "projects_app.Project",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="tasks",
+    )
+    is_personal = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

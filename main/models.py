@@ -1,17 +1,18 @@
 # main/models.py
+# This file contains the models for the Django app. Models define the structure of the database tables.
 
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 
 
+# La imagen se subirá a MEDIA_ROOT/profile_images/user_<id>/<filename>
 def user_directory_path(instance, filename):
-    # La imagen se subirá a MEDIA_ROOT/profile_images/user_<id>/<filename>
     return f"profile_images/user_{instance.user.id}/{filename}"
 
 
+# Modelo de perfil de usuario con roles y detalles adicionales
 class Profile(models.Model):
-    # Modelo de perfil de usuario con roles y detalles adicionales
     USER_ROLES = (
         ("user", _("User")),
         ("employee", _("Employee")),

@@ -1,4 +1,5 @@
 # main/forms.py
+# This file is used to create forms using Django's form classes. It's where forms are defined for the models or custom forms.
 
 from django import forms
 from django.contrib.auth.models import User, Group
@@ -6,8 +7,8 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import Profile
 
 
+# Formulario para registro de usuarios
 class UserRegistrationForm(forms.ModelForm):
-    # Formulario para registro de usuarios
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
     password2 = forms.CharField(label="Repeat password", widget=forms.PasswordInput)
 
@@ -30,8 +31,8 @@ class UserRegistrationForm(forms.ModelForm):
         return username
 
 
+# Formulario para actualizar perfil de usuario
 class ProfileForm(forms.ModelForm):
-    # Formulario para actualizar perfil de usuario
     class Meta:
         model = Profile
         fields = ["bio", "location", "birth_date", "profile_picture"]
@@ -45,8 +46,8 @@ class ProfileForm(forms.ModelForm):
         }
 
 
+# Formulario de registro que incluye rol y email
 class RegisterForm(UserCreationForm):
-    # Formulario de registro que incluye rol y email
     email = forms.EmailField(required=True)
     # IDEA: Agregar user a las choices si alguna vez decido implementarlo para los msjs
     role = forms.ChoiceField(
@@ -82,8 +83,8 @@ class RegisterForm(UserCreationForm):
         return user
 
 
+# Formulario para editar el usuario
 class UserEditForm(forms.ModelForm):
-    # Formulario para editar el usuario
     class Meta:
         model = User
         fields = ("first_name", "last_name")

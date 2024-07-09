@@ -1,4 +1,5 @@
 # main/admin.py
+# This file is used to register models with the Django admin site, allowing the models management through the admin interface.
 
 from django.contrib import admin
 from .models import Profile

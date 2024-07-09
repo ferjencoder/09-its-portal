@@ -6,14 +6,14 @@
         <div class="modal-content">
             <form id="addUpdateForm" action="{% url 'projects_app:create_update' %}" method="post">
                 {% csrf_token %}
-                <div class="modal-header">
+                <div class="modal-header bg-dark text-white">
                     <h5 class="modal-title" id="addUpdateModalLabel">{% trans "Add New Update" %}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body bg-dark text-white">
                     {{ update_form.as_p }}
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer bg-dark text-white">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
                     <button type="submit" class="btn btn-primary">{% trans "Save changes" %}</button>
                 </div>

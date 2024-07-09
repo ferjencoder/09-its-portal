@@ -1,4 +1,5 @@
 # main/views.py
+# This file contains the views for the app. Views handle the logic for the web pages and return HTTP responses.
 
 import os
 import shutil
@@ -25,14 +26,14 @@ from blog_app.models import BlogPost
 logger = logging.getLogger(__name__)
 
 
+# Manejo de fallo de verificación CSRF
 def csrf_failure(request, reason=""):
-    # Manejo de fallo de verificación CSRF
     return HttpResponse("CSRF verification failed. Reason: %s" % reason)
 
 
+# Vista protegida con login y manejo de roles de usuario
 @login_required
 def some_view(request):
-    # Vista protegida con login y manejo de roles de usuario
     user_role = request.user.groups.first().name
     if user_role == "admin":
         return render(request, "main/sidebar_admin.html")
@@ -44,29 +45,26 @@ def some_view(request):
         return render(request, "main/sidebar_generic.html")
 
 
+# Configuración del idioma del usuario
 def set_language(request):
-    # Configuración del idioma del usuario
     user_language = request.GET.get("language", "en")
     translation.activate(user_language)
     request.session[translation.LANGUAGE_SESSION_KEY] = user_language
     return redirect(request.META.get("HTTP_REFERER"))
 
 
+# Renderiza la página principal
 def home(request):
-    # Renderiza la página principal
     return render(request, "main/home.html")
 
 
+# Renderiza la página "About Us"
 def about(request):
-    # Renderiza la página "Sobre nosotros"
     return render(request, "main/about.html")
 
 
-# main/views.py
-
-
+# Maneja el formulario de contacto y envía un mensaje al administrador
 def contact(request):
-    # Maneja el formulario de contacto y envía un mensaje al administrador
     if request.method == "POST":
         name = request.POST["name"]
         email = request.POST["email"]
@@ -96,19 +94,19 @@ def contact(request):
     return render(request, "main/contact.html")
 
 
+# Renderiza la página de servicios
 def services(request):
-    # Renderiza la página de servicios
     return render(request, "main/services.html")
 
 
+# Renderiza la página de solicitud de cotización
 def request_quote(request):
-    # Renderiza la página de solicitud de cotización
     return render(request, "main/request_quote.html")
 
 
+# Maneja el registro de usuarios y asignación de roles
 @csrf_protect
 def register(request):
-    # Maneja el registro de usuarios y asignación de roles
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
@@ -133,16 +131,16 @@ def register(request):
     return render(request, "main/register.html", {"form": form})
 
 
+# Vista para mostrar mensajes del usuario
 @login_required
 def messages_view(request):
-    # Vista para mostrar mensajes del usuario
     messages = Message.objects.filter(recipient=request.user)
     return render(request, "messages_app/messages.html", {"messages": messages})
 
 
+# Vista para mostrar y editar el perfil del usuario
 @login_required
 def profile(request):
-    # Vista para mostrar y editar el perfil del usuario
     profile = get_profile(request.user)
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=profile)
@@ -155,9 +153,9 @@ def profile(request):
     return render(request, "main/profile.html", {"form": form})
 
 
+# Vista para editar el perfil del usuario
 @login_required
 def edit_profile(request):
-    # Vista para editar el perfil del usuario
     profile = Profile.objects.get(user=request.user)
     predefined_images = [
         f"assets/images/avatars/{image}"
@@ -244,9 +242,9 @@ def edit_profile(request):
     )
 
 
+# Vista para el dashboard del usuario según su rol
 @login_required
 def dashboard(request):
-    # Vista para el dashboard del usuario según su rol
     profile = get_profile(request.user)
     context = {"profile": profile}
 
@@ -299,8 +297,8 @@ def dashboard(request):
         return redirect("main:create_profile")
 
 
+# Vista para manejar el login de usuarios
 def login_view(request):
-    # Vista para manejar el login de usuarios
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -319,14 +317,14 @@ def login_view(request):
     return render(request, "main/login.html", {"form": form})
 
 
+# Vista para manejar el logout de usuarios
 def logout_view(request):
-    # Vista para manejar el logout de usuarios
     logout(request)
     return redirect("main:home")
 
 
+# Vista de prueba para las carpetas media y static
 def test_media_static(request):
-    # Vista de prueba para las carpetas media y static
     return render(
         request,
         "main/test_media_static.html",

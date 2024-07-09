@@ -1,4 +1,5 @@
 # main/test.py
+# This file is used to write unit tests for the app.
 
 from django.test import TestCase
 from django.contrib.auth.models import User, Group
@@ -8,8 +9,8 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 
 class UserCreationTests(TestCase):
 
+    # Crear grupos de roles
     def setUp(self):
-        # Crear grupos de roles
         self.create_group("admin")
         self.create_group("employee")
         self.create_group("client")
@@ -45,8 +46,8 @@ class UserCreationTests(TestCase):
         profile.role = group_name  # Asegurarse de que el rol se asigne correctamente
         profile.save()
 
+    # Verificar que los usuarios se crearon correctamente
     def test_users_creation(self):
-        # Verificar que los usuarios se crearon correctamente
         self.verify_user("admin1", "admin1@example.com", "admin")
         self.verify_user("admin2", "admin2@example.com", "admin")
         self.verify_user("employee1", "employee1@example.com", "employee")
@@ -63,4 +64,4 @@ class UserCreationTests(TestCase):
         self.assertEqual(profile.role, role)
         self.assertTrue(
             profile.profile_picture
-        )  # Verificar que la imagen de perfil esté asignada
+        )  # Verifica que la imagen de perfil esté asignada

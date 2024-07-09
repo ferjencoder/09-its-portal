@@ -6,18 +6,27 @@
         <div class="modal-content">
             <form id="addTaskForm" action="{% url 'projects_app:create_task' %}" method="post">
                 {% csrf_token %}
-                <div class="modal-header">
+                <div class="modal-header bg-dark text-white">
                     <h5 class="modal-title" id="addTaskModalLabel">{% trans "Add New Task" %}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body bg-dark text-white">
+                    <div class="mb-3">
+                        <label for="id_project" class="form-label">{% trans "Project" %}</label>
+                        <select class="form-control" id="id_project" name="project">
+                            <option value="">{% trans "None" %}</option>
+                            {% for project in projects %}
+                                <option value="{{ project.id }}" {% if task_form.project.value == project.id %}selected{% endif %}>{{ project.code }} - {{ project.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                     <div class="mb-3">
                         <label for="id_name" class="form-label">{% trans "Name" %}</label>
                         <input type="text" class="form-control" id="id_name" name="name" value="{{ task_form.name.value }}">
                     </div>
                     <div class="mb-3">
                         <label for="id_description" class="form-label">{% trans "Description" %}</label>
-                        <textarea class="form-control" id="id_description" name="description" rows="3">{{ task_form.description.value }}</textarea>
+                        <textarea class="form-control" id="id_description" name="description">{{ task_form.description.value }}</textarea>
                     </div>
                     <div class="mb-3">
                         <label for="id_due_date" class="form-label">{% trans "Due Date" %}</label>
@@ -32,15 +41,11 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="id_assigned_to" class="form-label">{% trans "Assigned To" %}</label>
-                        <select class="form-control" id="id_assigned_to" name="assigned_to">
-                            {% for user in task_form.assigned_to.field.queryset %}
-                                <option value="{{ user.id }}" {% if task_form.assigned_to.value == user.id %}selected{% endif %}>{{ user.username }}</option>
-                            {% endfor %}
-                        </select>
+                        <label for="id_is_personal" class="form-label">{% trans "Personal Task" %}</label>
+                        <input type="checkbox" class="form-check-input" id="id_is_personal" name="is_personal" {% if task_form.is_personal.value %}checked{% endif %}>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer bg-dark text-white">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
                     <button type="submit" class="btn btn-primary">{% trans "Save changes" %}</button>
                 </div>
