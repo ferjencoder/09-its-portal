@@ -32,23 +32,23 @@ def is_admin(user):
 def admin_projects_dashboard(request):
     # Vista que muestra el tablero de proyectos para los admin.
     projects = Project.objects.all()
-    messages = Message.objects.all()[:10]
-    forum_posts = ForumPost.objects.select_related("topic").all()[:10]
-    blog_posts = BlogPost.objects.all()[:10]
     tasks = Task.objects.all().order_by("due_date")
     pending_documents = Document.objects.filter(status="pending")
     uploaded_documents = Document.objects.filter(status="uploaded")
     recent_updates = Update.objects.all().order_by("-date")[:10]
+    task_completion_rate = (
+        tasks.filter(status="completed").count() / tasks.count() * 100
+        if tasks.count() > 0
+        else 0
+    )
 
     context = {
         "projects": projects,
-        "messages": messages,
-        "forum_posts": forum_posts,
-        "blog_posts": blog_posts,
         "tasks": tasks,
         "pending_documents": pending_documents,
         "uploaded_documents": uploaded_documents,
         "recent_updates": recent_updates,
+        "task_completion_rate": task_completion_rate,
     }
     return render(request, "dashboard/admin_projects_dashboard.html", context)
 

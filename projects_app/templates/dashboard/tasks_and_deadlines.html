@@ -1,0 +1,28 @@
+<!--projects_app/dashboard/tasks_and_deadlines.html-->
+
+{% load i18n %}
+<div class="card mb-4" style="height: 700px;">
+    <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+        <h4>{% trans "Tasks and Deadlines" %}</h4>
+        <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTaskModal" title="{% trans 'Add New Task' %}">
+            <i class="bi bi-plus-circle" style="font-size: 1.5em;"></i>
+        </a>
+    </div>
+    <div class="card-body p-2" style="overflow-y: auto;">
+        <!-- Lista de tareas y plazos con barra de desplazamiento -->
+        <ul class="list-group">
+            {% for task in tasks %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-1">{{ task.name }}</h5>
+                        <small>{% trans "Due Date:" %} {{ task.due_date }}</small>
+                    </div>
+                    <div>
+                        <span class="badge badge-primary badge-pill">{{ task.get_status_display }}</span>
+                        <a href="{% url 'projects_app:update_task_status' task.id %}" class="btn btn-sm btn-secondary">{% trans "Update Status" %}</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

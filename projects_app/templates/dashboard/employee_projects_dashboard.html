@@ -17,149 +17,21 @@
 
     <div class="row">
         <!-- Primer Panel -->
-        <div class="col-md-4 mb-4">
-            <!-- Métricas de Desempeño -->
-            <div class="card mb-4" style="height: 600px;">
-                <div class="card-header bg-success text-white">
-                    <h4>{% trans "Performance Metrics" %}</h4>
-                </div>
-                <div class="card-body p-0 pt-3 px-3 justify-content-start" style="overflow-y: auto;">
-                    <!-- Barra de progreso para las métricas de desempeño -->
-                    <div class="progress mb-4" role="progressbar" aria-valuenow="{{ task_completion_rate|default:'0' }}" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
-                        style="width: {{ task_completion_rate|default:'0' }}%">
-                        </div>
-                    </div>
-
-                    <!-- Proyectos Asignados -->
-                    <div class="mb-4">
-                        <div class="card-header bg-success text-white">
-                            <h4>{% trans "Assigned Projects" %}</h4>
-                        </div>
-                        <div class="card-body p-2" style="height: 200px; overflow-y: auto;">
-                            <!-- Lista de proyectos asignados con barra de desplazamiento -->
-                            <ul class="list-group">
-                                {% for project in assigned_projects %}
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <a href="{% url 'projects_app:view_project' project.id %}" class="text-decoration-none">{{ project.name }}</a>
-                                        <span class="badge 
-                                            {% if project.status == 'pending' %}bg-warning text-dark
-                                            {% elif project.status == 'ongoing' %}bg-success
-                                            {% elif project.status == 'completed' %}bg-secondary
-                                            {% endif %} rounded-pill">{{ project.get_status_display }}</span>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Actualizaciones Recientes -->
-                    <div>
-                        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-                            <h4>{% trans "Recent Updates" %}</h4>
-                            <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUpdateModal" title="{% trans 'Add New Update' %}">
-                                <i class="bi bi-plus-circle" style="font-size: 1.5em;"></i>
-                            </a>
-                        </div>
-                        <div class="card-body p-2" style="height: 200px; overflow-y: auto;">
-                            <!-- Lista de actualizaciones recientes con barra de desplazamiento -->
-                            <ul class="list-group">
-                                {% for update in recent_updates %}
-                                    <li class="list-group-item">
-                                        <strong>{{ update.title }}</strong>: {{ update.content|truncatewords:10 }}
-                                        <small>{% trans "Updated on:" %} {{ update.date }}</small>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="col-md-4 mb-4" style="height: 700px;">
+            {% include 'dashboard/performance_metrics.html' %}
+            {% include 'dashboard/assigned_projects.html' %}
+            {% include 'dashboard/recent_updates.html' %}
         </div>
 
         <!-- Segundo Panel -->
-        <div class="col-md-4 mb-4">
-            <!-- Tareas y Plazos -->
-            <div class="card mb-4" style="height: 600px;">
-                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-                    <h4>{% trans "Tasks and Deadlines" %}</h4>
-                    <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTaskModal" title="{% trans 'Add New Task' %}">
-                        <i class="bi bi-plus-circle" style="font-size: 1.5em;"></i>
-                    </a>
-                </div>
-                <div class="card-body p-2" style="overflow-y: auto;">
-                    <!-- Lista de tareas y plazos con barra de desplazamiento -->
-                    <ul class="list-group">
-                        {% for task in tasks %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h5 class="mb-1">{{ task.name }}</h5>
-                                    <small>{% trans "Due Date:" %} {{ task.due_date }}</small>
-                                </div>
-                                <div>
-                                    <span class="badge badge-primary badge-pill">{{ task.get_status_display }}</span>
-                                    <a href="{% url 'projects_app:update_task_status' task.id %}" class="btn btn-sm btn-secondary">{% trans "Update Status" %}</a>
-                                </div>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
+        <div class="col-md-4 mb-4" style="height: 700px;">
+            {% include 'dashboard/tasks_and_deadlines.html' %}
         </div>
 
         <!-- Tercer Panel -->
-        <div class="col-md-4 mb-4">
-            <!-- Documentos -->
-            <div class="card mb-4" style="height: 600px;">
-                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-                    <h4>{% trans "Documents" %}</h4>
-                    <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addDocumentModal" title="{% trans 'Add New Document' %}">
-                        <i class="bi bi-plus-circle" style="font-size: 1.5em;"></i>
-                    </a>
-                </div>
-                <div class="card-body p-2" style="overflow-y: auto;">
-                    <!-- Documentos pendientes con barra de desplazamiento -->
-                    <h5>{% trans "Pending Documents" %}</h5>
-                    <ul class="list-group">
-                        {% for document in pending_documents %}
-                            <li class="list-group-item">
-                                {{ document.name }}
-                                <a href="{% url 'projects_app:upload_document' document.id %}" class="btn btn-sm btn-primary float-right">{% trans "Upload" %}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                    <!-- Documentos subidos con barra de desplazamiento -->
-                    <h5 class="mt-3">{% trans "Uploaded Documents" %}</h5>
-                    <ul class="list-group">
-                        {% for document in uploaded_documents %}
-                            <li class="list-group-item">
-                                {{ document.name }}
-                                <a href="{{ document.file.url }}" class="btn btn-sm btn-success float-right">{% trans "View" %}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Comentarios y Soporte -->
-            <div class="card">
-                <div class="card-header bg-success text-white">
-                    <h4>{% trans "Feedback and Support" %}</h4>
-                </div>
-                <div class="card-body p-0 px-3" style="height: 130px; overflow-y: auto;">
-                    <!-- Formulario de comentarios -->
-                    <form action="{% url 'projects_app:submit_feedback' %}" method="post">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <div class="d-flex justify-content-between align-items-end">
-                                <label for="feedback" class="mt-2 mb-1">{% trans "Your Feedback" %}</label>
-                                <button type="submit" class="btn btn-success btn-sm mt-3">{% trans "Submit" %}</button>
-                            </div>
-                            <textarea class="form-control" id="feedback" name="feedback" rows="2" required></textarea>
-                        </div>
-                    </form>
-                </div>
-            </div>
+        <div class="col-md-4 mb-4" style="height: 700px;">
+            {% include 'dashboard/deliverables.html' %}
+            {% include 'dashboard/feedback_and_support.html' %}
         </div>
     </div>
 </div>
@@ -213,7 +85,7 @@
             <form id="addDocumentForm" action="{% url 'projects_app:add_document' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addDocumentModalLabel">{% trans "Add New Document" %}</h5>
+                    <h5 class="modal-title" id="addDocumentModalLabel">{% trans "Add New Deliverable" %}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
