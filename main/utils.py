@@ -4,6 +4,16 @@ from .models import Profile
 from messages_app.models import Conversation
 
 
+def is_admin(user):
+    # Verifica si el usuario es administrador
+    return user.groups.filter(name="admin").exists()
+
+
+def is_employee(user):
+    # Verifica si el usuario pertenece al grupo "employee"
+    return user.groups.filter(name="employee").exists()
+
+
 def get_profile(user):
     # Obtener perfil del usuario o devolver none si no existe
     try:

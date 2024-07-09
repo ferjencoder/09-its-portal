@@ -6,6 +6,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
+from main.utils import is_admin
 from blog_app.models import BlogPost
 from forum_app.models import ForumPost
 from messages_app.models import Message
@@ -22,15 +23,10 @@ from .forms import (
 )
 
 
-def is_admin(user):
-    # Verifica si el usuario es admin
-    return user.groups.filter(name="admin").exists()
-
-
 @login_required
 @user_passes_test(is_admin)
 def admin_projects_dashboard(request):
-    # Vista que muestra el tablero de proyectos para los admin.
+    # Vista que muestra el tablero de proyectos para los administradores
     projects = Project.objects.all()
     tasks = Task.objects.all().order_by("due_date")
     pending_documents = Document.objects.filter(status="pending")
@@ -55,6 +51,7 @@ def admin_projects_dashboard(request):
 
 @login_required
 def employee_projects_dashboard(request):
+    # Vista que muestra el tablero de proyectos para los empleados
     assigned_projects = Project.objects.filter(assigned_to_employees=request.user)
     tasks = Task.objects.filter(assigned_to=request.user).order_by("due_date")
     pending_documents = Document.objects.filter(
@@ -92,7 +89,7 @@ def employee_projects_dashboard(request):
 
 @login_required
 def client_projects_dashboard(request):
-    # Vista del dashboard del cliente
+    # Vista del tablero del cliente
     client_projects = Project.objects.filter(client=request.user)
     messages = Message.objects.filter(recipient=request.user)[:10]
     forum_posts = ForumPost.objects.filter(author=request.user).select_related("topic")[
@@ -147,7 +144,10 @@ def edit_project(request, project_id):
     if request.method == "POST":
         form = ProjectForm(request.POST, instance=project)
         if form.is_valid():
-            form.save()
+            project = form.save(commit=False)
+            project.assigned_to_client = form.cleaned_data["assigned_to_client"]
+            project.save()
+            form.save_m2m()
             return redirect("projects_app:view_projects")
     else:
         form = ProjectForm(instance=project)
@@ -180,7 +180,7 @@ def delete_project(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
     if request.method == "POST":
         project.delete()
-        return redirect("projects_app:view_projects")
+        return redirect("projects_app:admin_projects_dashboard")
     return render(request, "projects/project_confirm_delete.html", {"project": project})
 
 
@@ -251,7 +251,17 @@ def create_task(request):
             task = form.save(commit=False)
             task.created_at = timezone.now()
             task.save()
-            return redirect("projects_app:admin_projects_dashboard")
+
+            # Determine the role of the user and redirect accordingly
+            profile = Profile.objects.get(user=request.user)
+            if profile.role == "admin":
+                return redirect("projects_app:admin_projects_dashboard")
+            elif profile.role == "employee":
+                return redirect("projects_app:employee_projects_dashboard")
+            elif profile.role == "client":
+                return redirect("projects_app:client_projects_dashboard")
+            else:
+                return redirect("main:dashboard")
     else:
         form = TaskForm()
     return render(request, "projects/create_task.html", {"form": form})
@@ -259,7 +269,7 @@ def create_task(request):
 
 @login_required
 def update_task_status(request, task_id):
-    # Vista que permite a los empleados actualizar el estado de una tarea.
+    # Vista que permite a los empleados actualizar el estado de una tarea
     task = get_object_or_404(Task, id=task_id)
     if task.assigned_to != request.user:
         raise PermissionDenied
@@ -274,7 +284,7 @@ def update_task_status(request, task_id):
 
 @login_required
 def upload_document(request, deliverable_id):
-    # Vista que permite a los usuarios cargar documentos para un entregable específico.
+    # Vista que permite a los usuarios cargar documentos para un entregable específico
     deliverable = get_object_or_404(Deliverable, id=deliverable_id)
     if deliverable.assigned_to != request.user:
         raise PermissionDenied
@@ -323,40 +333,6 @@ def create_deliverable(request, project_id):
 
 
 @login_required
-def approve_document(request, document_id):
-    # Vista que permite a los clientes aprobar documentos.
-    document = get_object_or_404(Document, id=document_id)
-    if document.deliverable.project.client != request.user:
-        raise PermissionDenied
-
-    if request.method == "POST":
-        status = request.POST.get("status")
-        comments = request.POST.get("comments")
-        document.status = status
-        document.comments = comments
-        document.save()
-        return redirect(
-            "projects_app:view_project", project_id=document.deliverable.project.id
-        )
-
-    return render(request, "documents/approve_document.html", {"document": document})
-
-
-@login_required
-@user_passes_test(is_admin)
-def delete_deliverable(request, deliverable_id):
-    # Vista para eliminar un entregable
-    deliverable = get_object_or_404(Deliverable, id=deliverable_id)
-    project_id = deliverable.project.id
-    if request.method == "POST":
-        deliverable.delete()
-        return redirect("projects_app:view_project", project_id=project_id)
-    return render(
-        request, "documents/delete_deliverable.html", {"deliverable": deliverable}
-    )
-
-
-@login_required
 def edit_deliverable(request, deliverable_id):
     # Vista para editar un entregable
     deliverable = get_object_or_404(Deliverable, id=deliverable_id)
@@ -374,6 +350,68 @@ def edit_deliverable(request, deliverable_id):
         "documents/edit_deliverable.html",
         {"form": form, "deliverable": deliverable},
     )
+
+
+@login_required
+@user_passes_test(is_admin)
+def delete_deliverable(request, deliverable_id):
+    # Vista para eliminar un entregable
+    deliverable = get_object_or_404(Deliverable, id=deliverable_id)
+    project_id = deliverable.project.id
+    if request.method == "POST":
+        deliverable.delete()
+        return redirect("projects_app:view_project", project_id=project_id)
+    return render(
+        request, "documents/delete_deliverable.html", {"deliverable": deliverable}
+    )
+
+
+@login_required
+def add_document(request):
+    # Vista para agregar un nuevo deliverable
+    if request.method == "POST":
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            document = form.save(commit=False)
+            document.uploaded_at = timezone.now()  # Guardar la fecha de subida
+            document.save()
+            return redirect(
+                "projects_app:admin_projects_dashboard"
+            )  # Redireccionar según el rol del usuario
+    else:
+        form = DocumentForm()
+
+    # Obtener todos los proyectos para el desplegable en el formulario
+    projects = Project.objects.all()
+
+    return render(
+        request,
+        "modals/add_deliverable_modal.html",
+        {
+            "document_form": form,
+            "projects": projects,
+        },
+    )
+
+
+@login_required
+def approve_document(request, document_id):
+    # Vista que permite a los clientes aprobar documentos
+    document = get_object_or_404(Document, id=document_id)
+    if document.deliverable.project.client != request.user:
+        raise PermissionDenied
+
+    if request.method == "POST":
+        status = request.POST.get("status")
+        comments = request.POST.get("comments")
+        document.status = status
+        document.comments = comments
+        document.save()
+        return redirect(
+            "projects_app:view_project", project_id=document.deliverable.project.id
+        )
+
+    return render(request, "documents/approve_document.html", {"document": document})
 
 
 @login_required
@@ -399,18 +437,3 @@ def create_update(request):
     else:
         form = UpdateForm()
     return render(request, "projects/create_update.html", {"form": form})
-
-
-@login_required
-def add_document(request):
-    # Vista para agregar un nuevo documento
-    if request.method == "POST":
-        form = DocumentForm(request.POST, request.FILES)
-        if form.is_valid():
-            document = form.save(commit=False)
-            document.uploaded_at = timezone.now()
-            document.save()
-            return redirect("projects_app:admin_projects_dashboard")
-    else:
-        form = DocumentForm()
-    return render(request, "documents/add_document.html", {"form": form})

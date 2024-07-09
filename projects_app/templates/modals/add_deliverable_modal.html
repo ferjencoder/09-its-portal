@@ -1,0 +1,54 @@
+<!-- projects_app/templates/modals/add_deliverable_modal.html -->
+
+{% load i18n %}
+<div class="modal fade" id="addDeliverableModal" tabindex="-1" aria-labelledby="addDeliverableModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="addDeliverableForm" action="{% url 'projects_app:add_document' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title" id="addDeliverableModalLabel">{% trans "Add New Deliverable" %}</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-dark text-white">
+                    <div class="mb-3">
+                        <label for="id_project" class="form-label">{% trans "Project" %}</label>
+                        <select class="form-control" id="id_project" name="project">
+                            {% for project in projects %}
+                                <option value="{{ project.id }}" {% if document_form.project.value == project.id %}selected{% endif %}>{{ project.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_name" class="form-label">{% trans "Name" %}</label>
+                        <input type="text" class="form-control" id="id_name" name="name" value="{{ document_form.name.value }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_file" class="form-label">{% trans "File" %}</label>
+                        <input type="file" class="form-control" id="id_file" name="file">
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_status" class="form-label">{% trans "Status" %}</label>
+                        <select class="form-control" id="id_status" name="status">
+                            {% for value, display in document_form.status.field.choices %}
+                                <option value="{{ value }}" {% if document_form.status.value == value %}selected{% endif %}>{{ display }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_assigned_to" class="form-label">{% trans "Assigned To" %}</label>
+                        <select class="form-control" id="id_assigned_to" name="assigned_to">
+                            {% for user in document_form.assigned_to.field.queryset %}
+                                <option value="{{ user.id }}" {% if document_form.assigned_to.value == user.id %}selected{% endif %}>{{ user.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer bg-dark text-white">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
+                    <button type="submit" class="btn btn-primary">{% trans "Save changes" %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

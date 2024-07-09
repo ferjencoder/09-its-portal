@@ -1,10 +1,10 @@
-<!--projects_app/dashboard/deliverables.html-->
+<!-- projects_app/dashboard/deliverables.html -->
 
 {% load i18n %}
 <div class="card mb-4" style="height: 492px;">
     <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
         <h4>{% trans "Deliverables" %}</h4>
-        <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addDocumentModal" title="{% trans 'Add New Deliverable' %}">
+        <a href="#" class="link-light link-offset-2 link-underline-opacity-0 link-underline-opacity-0-hover border-0 m-0 p-0" data-bs-toggle="modal" data-bs-target="#addDeliverableModal" title="{% trans 'Add New Deliverable' %}">
             <i class="bi bi-plus-circle" style="font-size: 1.5em;"></i>
         </a>
     </div>
@@ -14,8 +14,8 @@
         <ul class="list-group">
             {% for document in pending_documents %}
                 <li class="list-group-item">
-                    {{ document.name }}
-                    <a href="{% url 'projects_app:upload_document' document.id %}" class="btn btn-sm btn-primary float-right">{% trans "Upload" %}</a>
+                    {{ document.deliverable.name }}
+                    <a href="{% url 'projects_app:upload_document' document.id %}" class="btn btn-sm btn-primary float-end">{% trans "Upload" %}</a>
                 </li>
             {% endfor %}
         </ul>
@@ -24,11 +24,12 @@
         <ul class="list-group">
             {% for document in uploaded_documents %}
                 <li class="list-group-item">
-                    {{ document.name }}
-                    <a href="{{ document.file.url }}" class="btn btn-sm btn-success float-right">{% trans "View" %}</a>
+                    {{ document.deliverable.name }}
+                    <a href="{{ document.file.url }}" class="btn btn-sm btn-success float-end">{% trans "View" %}</a>
                 </li>
             {% endfor %}
         </ul>
     </div>
 </div>
 
+{% include 'modals/add_deliverable_modal.html' %}

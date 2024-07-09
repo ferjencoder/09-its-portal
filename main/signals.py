@@ -20,7 +20,7 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
 
 @receiver(post_migrate)
 def create_default_groups(sender, **kwargs):
-    # Crear grupos por defecto después de migrar
+    # Crear grupos por defecto si no existen
     if sender.name == "main":
         Group.objects.get_or_create(name="user")
         Group.objects.get_or_create(name="client")

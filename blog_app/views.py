@@ -13,16 +13,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from .forms import BlogPostForm, BlogCategoryForm
 from .models import BlogPost, BlogCategory
-
-
-# Verifica si el usuario pertenece al grupo "admin"
-def is_admin(user):
-    return user.groups.filter(name="admin").exists()
-
-
-# Verifica si el usuario pertenece al grupo "employee"
-def is_employee(user):
-    return user.groups.filter(name="employee").exists()
+from main.utils import is_admin, is_employee
 
 
 # Crear una nueva categoría (solo admin)

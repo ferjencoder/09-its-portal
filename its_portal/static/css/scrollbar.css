@@ -25,11 +25,11 @@ body.dark-mode ::-webkit-scrollbar-track {
 }
 
 body.dark-mode ::-webkit-scrollbar-thumb {
-    background: #444;
+    background: #666;
 }
 
 body.dark-mode ::-webkit-scrollbar-thumb:hover {
-    background: #666;
+    background: #999;
 }
 
 /* Scrollbar styles specifically for modals */

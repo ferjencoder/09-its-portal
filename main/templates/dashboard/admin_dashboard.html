@@ -11,24 +11,39 @@
 <div class="container mt-1">
     <div class="text-center">
         <h1 class="display-4">{% trans "Admin Dashboard" %}</h1>
-        <hr class="my-5">
+        <hr class="mt-5 mb-4">
     </div>
 
     <div class="row">
         <!-- Sección de Proyectos -->
         <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <a href="{% url 'projects_app:view_projects' %}" class="text-white text-decoration-none">
-                        <h4>{% trans "Projects" %}</h4>
-                    </a>
+            <div class="card" style="height: 338px;">
+                <div class="card-header bg-primary">
+                    <div class="btn-toolbar justify-content-between m-0 p-0" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group m-0 p-0" role="group" aria-label="First group">
+                            <button type="button" class="btn border-0 w-100 m-0 p-0">
+                                <a href="{% url 'projects_app:view_projects' %}" class="text-white text-decoration-none card-header-link">
+                                <h4>{% trans "Projects" %}</h4>
+                            </a>
+                            </button>
+                        </div>
+                        <div class="btn-group m-0 p-0" role="group" aria-label="Third group">
+                            <button type="button" class="btn border-0 m-0 p-0">
+                                <a href="{% url 'projects_app:create_project' %}" class="link-light link-offset-2 link-underline-opacity-0 link-underline-opacity-0-hover border-0 m-0 p-0" title="{% trans 'Add New Project' %}">
+                                <i class="bi bi-plus-circle" style="font-size: 1.5em;"></i>
+                            </a>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body" style="max-height: 270px; overflow-y: auto;">
+                <div class="card-body px-3 py-3" style="overflow-y: auto;">
                     <ul class="list-group">
                         {% for project in projects %}
-                            {% url 'projects_app:edit_project' project.id as edit_url %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center" onclick="window.location.href='{{ edit_url }}'" style="cursor: pointer;">
-                                <span>{{ project.name }}</span>
+                            {% url 'projects_app:view_project' project.id as view_url %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center"
+                            onclick="window.location.href='{{ view_url }}'" 
+                            style="cursor: pointer;">
+                                <span>{{ project.code }} - {{ project.name }} - {{ project.assigned_to_client.username }}</span>
                                 <span>
                                     {% if project.status == 'pending' %}
                                         <span class="badge bg-warning text-dark">{{ project.get_status_display }}</span>
@@ -47,13 +62,13 @@
 
         <!-- Sección de Mensajes -->
         <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
+            <div class="card" style="height: 338px;">
+                <div class="card-header bg-primary text-white card-header-link">
                     <a href="{% url 'messages_app:default_messages_view' %}" class="text-white text-decoration-none">
                         <h4>{% trans "Messages" %}</h4>
                     </a>
                 </div>
-                <div class="card-body" style="max-height: 270px; overflow-y: auto;">
+                <div class="card-body px-3 py-3" style="overflow-y: auto;">
                     <ul class="list-group">
                         {% for message in messages %}
                             {% url 'messages_app:messages_view' message.sender.id as reply_url %}
@@ -68,13 +83,13 @@
 
         <!-- Sección de Posts en el Foro -->
         <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
+            <div class="card" style="height: 338px;">
+                <div class="card-header bg-primary text-white card-header-link">
                     <a href="{% url 'forum_app:forum' %}" class="text-white text-decoration-none">
                         <h4>{% trans "Forum Posts" %}</h4>
                     </a>
                 </div>
-                <div class="card-body" style="max-height: 270px; overflow-y: auto;">
+                <div class="card-body px-3 py-3" style="overflow-y: auto;">
                     <ul class="list-group">
                         {% for post in forum_posts %}
                             {% url 'forum_app:create_post' post.topic.id as create_post_url %}
@@ -89,13 +104,28 @@
 
         <!-- Sección de Posts en el Blog -->
         <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <a href="{% url 'blog:admin_blog_list' %}" class="text-white text-decoration-none">
-                        <h4>{% trans "Blog Posts" %}</h4>
-                    </a>
-                </div>
-                <div class="card-body" style="max-height: 270px; overflow-y: auto;">
+            <div class="card" style="height: 338px;">
+                
+                <div class="card-header bg-primary">
+                    <div class="btn-toolbar justify-content-between m-0 p-0" role="toolbar" aria-label="Toolbar with button groups">
+                        <div class="btn-group m-0 p-0" role="group" aria-label="First group">
+                            <button type="button" class="btn border-0 w-100 m-0 p-0">
+                                <a href="{% url 'blog:admin_blog_list' %}" class="text-white text-decoration-none">
+                                    <h4>{% trans "Blog Posts" %}</h4>
+                                </a>
+                            </button>
+                        </div>
+                        <div class="btn-group m-0 p-0" role="group" aria-label="Third group">
+                            <button type="button" class="btn border-0 m-0 p-0">
+                                <a href="{% url 'blog:create_blog_post' %}" 
+                                class="link-light link-offset-2 link-underline-opacity-0 link-underline-opacity-0-hover border-0 m-0 p-0" title="{% trans 'Add New Blog Post' %}">
+                                    <i class="bi bi-plus-circle m-0 p-0" style="font-size: 1.5em;"></i>
+                                </a>
+                            </button>
+                        </div>
+                    </div>
+                </div>                
+                <div class="card-body px-3 py-3" style="overflow-y: auto;">
                     <ul class="list-group">
                         {% for post in blog_posts %}
                             {% url 'blog:edit_blog_post' post.id as edit_blog_post_url %}
@@ -109,4 +139,10 @@
         </div>
     </div>
 </div>
+
+<style>
+.card-header-link:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+</style>
 {% endblock %}
