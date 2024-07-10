@@ -1,6 +1,7 @@
 # projects_app/views.py
 
 from django.http import JsonResponse
+from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
@@ -28,6 +29,7 @@ from .forms import (
 @user_passes_test(is_admin)
 def admin_projects_dashboard(request):
     # Vista que muestra el tablero de proyectos para los administradores
+    assigned_projects = Project.objects.all()
     projects = Project.objects.all()
     tasks = Task.objects.all().order_by("due_date")
     pending_documents = Document.objects.filter(status="pending")
@@ -38,15 +40,17 @@ def admin_projects_dashboard(request):
         if tasks.count() > 0
         else 0
     )
+    project_form = ProjectForm()
 
-    # Contexto para pasar a los templates
     context = {
         "projects": projects,
+        "assigned_projects": assigned_projects,
         "tasks": tasks,
         "pending_documents": pending_documents,
         "uploaded_documents": uploaded_documents,
         "recent_updates": recent_updates,
         "task_completion_rate": task_completion_rate,
+        "project_form": project_form,
     }
     return render(request, "dashboard/admin_projects_dashboard.html", context)
 
@@ -133,9 +137,23 @@ def create_project(request):
             project = form.save(commit=False)
             project.save()
             form.save_m2m()
-            return redirect("projects_app:view_projects")
+
+            if request.headers.get("x-requested-with") == "XMLHttpRequest":
+                html = render_to_string(
+                    "dashboard/project_list_item.html",
+                    {"project": project},
+                    request=request,
+                )
+                return JsonResponse(
+                    {"message": "Project created successfully!", "html": html}
+                )
+            return redirect("projects_app:admin_projects_dashboard")
+        else:
+            if request.headers.get("x-requested-with") == "XMLHttpRequest":
+                return JsonResponse({"errors": form.errors}, status=400)
     else:
         form = ProjectForm()
+
     return render(request, "projects/project_form.html", {"form": form})
 
 

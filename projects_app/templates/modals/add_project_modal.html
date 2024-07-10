@@ -1,0 +1,59 @@
+<!-- projects_app/templates/modals/add_project_modal.html -->
+
+{% load custom_filters %}
+{% load i18n %}
+{% load static %}
+
+<div class="modal fade" id="addProjectModal" tabindex="-1" aria-labelledby="addProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <form id="addProjectForm" action="{% url 'projects_app:create_project' %}" method="post">
+                {% csrf_token %}
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title" id="addProjectModalLabel">{% trans "Create New Project" %}</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-dark text-white">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group text-start mb-3">
+                                <label for="id_name" class="form-label">{% trans "Project Name" %}</label>
+                                {{ project_form.name|add_class:"form-control" }}
+                            </div>
+                            <div class="form-group text-start mb-3">
+                                <label for="id_description" class="form-label">{% trans "Description" %}</label>
+                                {{ project_form.description|add_class:"form-control"|add_attribute:"rows:4" }}
+                            </div>
+                            <div class="form-group text-start mb-3">
+                                <label for="id_status" class="form-label">{% trans "Status" %}</label>
+                                {{ project_form.status|add_class:"form-control" }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group text-start mb-3">
+                                <label for="id_start_date" class="form-label">{% trans "Start Date" %}</label>
+                                {{ project_form.start_date|add_class:"form-control" }}
+                            </div>
+                            <div class="form-group text-start mb-3">
+                                <label for="id_end_date" class="form-label">{% trans "End Date" %}</label>
+                                {{ project_form.end_date|add_class:"form-control" }}
+                            </div>
+                            <div class="form-group text-start mb-3">
+                                <label for="id_assigned_to_client" class="form-label">{% trans "Assigned to Client" %}</label>
+                                {{ project_form.assigned_to_client|add_class:"form-control" }}
+                            </div>
+                            <div class="form-group text-start mb-3">
+                                <label for="id_assigned_to_employees" class="form-label">{% trans "Assigned to Employees" %}</label>
+                                {{ project_form.assigned_to_employees|add_class:"form-control" }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-dark text-white">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
+                    <button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

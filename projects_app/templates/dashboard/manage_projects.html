@@ -1,10 +1,15 @@
-<!-- projects_app/dashboard/manage_projects.html -->
+<!-- projects_app/templates/dashboard/manage_projects.html -->
+ 
+{% include 'modals/add_project_modal.html' %}
 
 {% load i18n %}
+{% load static %}
+{% load custom_filters %}
+
 <div class="card mb-4" style="height: 269px;">
     <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
         <h4>{% trans "Manage Projects" %}</h4>
-        <a href="{% url 'projects_app:create_project' %}" class="link-light link-offset-2 link-underline-opacity-0 link-underline-opacity-0-hover border-0 m-0 p-0" title="{% trans 'Create New Project' %}">
+        <a href="#" class="link-light link-offset-2 link-underline-opacity-0 link-underline-opacity-0-hover border-0 m-0 p-0" data-bs-toggle="modal" data-bs-target="#addProjectModal" title="{% trans 'Create New Project' %}">
             <i class="bi bi-plus-circle" style="font-size: 1.5em;"></i>
         </a>
     </div>
