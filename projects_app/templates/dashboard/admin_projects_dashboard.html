@@ -19,7 +19,7 @@
         <!-- Primer Panel -->
         <div class="col-md-4 mb-4" style="height: 700px;">
             {% include 'dashboard/performance_metrics.html' %}
-            {% include 'dashboard/manage_projects.html' %}
+            {% include 'dashboard/all_projects.html' %}
             {% include 'dashboard/recent_updates.html' %}
         </div>
 
@@ -37,68 +37,10 @@
 </div>
 
 <!-- Modals -->
-<div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="addTaskForm" action="{% url 'projects_app:create_task' %}" method="post">
-                {% csrf_token %}
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addTaskModalLabel">{% trans "Add New Task" %}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    {{ task_form.as_p }}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
-                    <button type="submit" class="btn btn-primary">{% trans "Save changes" %}</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="addUpdateModal" tabindex="-1" aria-labelledby="addUpdateModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="addUpdateForm" action="{% url 'projects_app:create_update' %}" method="post">
-                {% csrf_token %}
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addUpdateModalLabel">{% trans "Add New Update" %}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    {{ update_form.as_p }}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
-                    <button type="submit" class="btn btn-primary">{% trans "Save changes" %}</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="addDocumentModal" tabindex="-1" aria-labelledby="addDocumentModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="addDocumentForm" action="{% url 'projects_app:add_document' %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addDocumentModalLabel">{% trans "Add New Deliverable" %}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    {{ document_form.as_p }}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
-                    <button type="submit" class="btn btn-primary">{% trans "Save changes" %}</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+{% include 'modals/add_task_modal.html' %}
+{% include 'modals/add_update_modal.html' %}
+{% include 'modals/add_deliverable_modal.html' %}
+{% include 'modals/update_task_status_modal.html' %}
 
 {% endblock %}
 

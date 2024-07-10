@@ -17,136 +17,30 @@
 
     <div class="row">
         <!-- Primer Panel -->
-        <div class="col-md-4 mb-4">
-            <!-- Projects -->
-            <div class="card mb-4">
-                <div class="card-header py-2 align-items-center bg-success text-white d-flex justify-content-between pb-0 align-items-center">
-                    <h4>{% trans "Projects" %}</h4>
-                    <div class="text-end d-inline float-end m-0 p-0">
-                        <a href="{% url 'projects_app:create_project' %}" class="btn btn-success" title="{% trans 'Create New Project' %}">
-                            <i class="bi bi-plus-circle m-0 p-0" style="font-size: 1.5em;"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="card-body p-2" style="height: 200px; overflow-y: auto;">
-                    <ul class="list-group">
-                        {% for project in client_projects %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <a href="{% url 'projects_app:view_project' project.id %}" class="text-decoration-none">{{ project.name }}</a>
-                                <span class="badge bg-primary rounded-pill">{{ project.get_status_display }}</span>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Messages -->
-            <div class="card">
-                <div class="card-header py-2 align-items-center bg-success text-white">
-                    <h4>{% trans "Messages" %}</h4>
-                </div>
-                <div class="card-body" style="height: 200px; overflow-y: auto;">
-                    <ul class="list-group">
-                        {% for message in messages %}
-                            <li class="list-group-item">
-                                <strong>{{ message.sender.username }}</strong>: {{ message.content|truncatewords:10 }}
-                                <small>{% trans "Sent on:" %} {{ message.sent_at }}</small>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
+        <div class="col-md-4 mb-4" style="height: 700px;">
+            {% include 'dashboard/client_projects.html' %}
+            {% include 'dashboard/messages.html' %}
+            {% include 'dashboard/forum_posts.html' %}
         </div>
 
         <!-- Segundo Panel -->
-        <div class="col-md-4 mb-4">
-            <!-- Forum Posts -->
-            <div class="card mb-4">
-                <div class="card-header py-2 align-items-center bg-success text-white">
-                    <h4>{% trans "Forum Posts" %}</h4>
-                </div>
-                <div class="card-body" style="height: 610px; overflow-y: auto;">
-                    <ul class="list-group">
-                        {% for post in forum_posts %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h5 class="mb-1">{{ post.topic.title }}</h5>
-                                    <small>{{ post.content|truncatewords:10 }}</small>
-                                </div>
-                                <div>
-                                    <span class="badge badge-primary badge-pill">{{ post.get_status_display }}</span>
-                                    <a href="{% url 'forum_app:topic_detail' post.topic.id %}" class="btn btn-sm btn-secondary">{% trans "View Post" %}</a>
-                                </div>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
+        <div class="col-md-4 mb-4" style="height: 700px;">
+            {% include 'dashboard/blog_posts.html' %}
         </div>
 
         <!-- Tercer Panel -->
-        <div class="col-md-4 mb-4">
-            <!-- Blog Posts -->
-            <div class="card mb-4">
-                <div class="card-header py-2 align-items-center bg-success text-white">
-                    <h4>{% trans "Blog Posts" %}</h4>
-                </div>
-                <div class="card-body" style="height: 400px; overflow-y: auto;">
-                    <ul class="list-group">
-                        {% for post in blog_posts %}
-                            <li class="list-group-item">
-                                <strong>{{ post.title }}</strong>: {{ post.subtitle|truncatewords:10 }}
-                                <small>{% trans "Published on:" %} {{ post.created_at }}</small>
-                                <a href="{% url 'blog:post_detail' post.id %}" class="btn btn-sm btn-success float-right">{% trans "View Post" %}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Feedback and Support -->
-            <div class="card">
-                <div class="card-header py-2 align-items-center bg-success text-white">
-                    <h4>{% trans "Feedback and Support" %}</h4>
-                </div>
-                <div class="card-body p-0 px-3" style="height: 130px; overflow-y: auto;">
-                    <form action="{% url 'projects_app:submit_feedback' %}" method="post">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <div class="d-flex justify-content-between align-items-end">
-                                <label for="feedback" class="mt-2 mb-1">{% trans "Your Feedback" %}</label>
-                                <button type="submit" class="btn btn-success btn-sm mt-3">{% trans "Submit" %}</button>
-                            </div>
-                            <textarea class="form-control" id="feedback" name="feedback" rows="2" required></textarea>
-                        </div>
-                    </form>
-                </div>
-            </div>
+        <div class="col-md-4 mb-4" style="height: 700px;">
+            {% include 'dashboard/feedback_and_support.html' %}
         </div>
     </div>
 </div>
+
+<!-- Modals -->
+{% include 'modals/add_task_modal.html' %}
+{% include 'modals/add_update_modal.html' %}
+{% include 'modals/add_deliverable_modal.html' %}
+{% include 'modals/update_task_status_modal.html' %}
+
 {% endblock %}
 
-<script>
-    // Script para ajustar la barra de progreso basada en la tasa de finalización de tareas
-    document.addEventListener("DOMContentLoaded", function() {
-        const progressBar = document.querySelector(".progress-bar");
-        const completionRate = progressBar.getAttribute("aria-valuenow");
-        progressBar.style.width = completionRate + "%";
-    });
-
-    // Script para manejar el modal de eliminación de proyecto
-    document.addEventListener("DOMContentLoaded", function() {
-        const deleteProjectModal = document.getElementById('deleteProjectModal');
-        deleteProjectModal.addEventListener('show.bs.modal', function (event) {
-            const button = event.relatedTarget;
-            const projectId = button.getAttribute('data-project-id');
-            const projectName = button.getAttribute('data-project-name');
-            const modalProjectName = deleteProjectModal.querySelector('#modalProjectName');
-            modalProjectName.textContent = projectName;
-
-            const deleteProjectForm = document.getElementById('deleteProjectForm');
-            deleteProjectForm.action = '{% url "projects_app:delete_project" 0 %}'.replace('0', projectId);
-        });
-    });
-</script>
+<script src="{% static 'js/projects.js' %}"></script>

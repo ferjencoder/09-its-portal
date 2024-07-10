@@ -1,6 +1,7 @@
 <!-- projects_app/templates/modals/add_task_modal.html -->
 
 {% load i18n %}
+
 <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -15,8 +16,10 @@
                         <label for="id_project" class="form-label">{% trans "Project" %}</label>
                         <select class="form-control" id="id_project" name="project">
                             <option value="">{% trans "None" %}</option>
-                            {% for project in projects %}
-                                <option value="{{ project.id }}" {% if task_form.project.value == project.id %}selected{% endif %}>{{ project.code }} - {{ project.name }}</option>
+                            {% for project in assigned_projects %}
+                                <option value="{{ project.id }}" {% if task_form.project.value == project.id %}selected{% endif %}>
+                                    {{ project.code }} - {{ project.name }}
+                                </option>
                             {% endfor %}
                         </select>
                     </div>

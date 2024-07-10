@@ -1,4 +1,4 @@
-<!-- projects_app/dashboard/employee_projects_dashboard.html -->
+<!-- projects_app/templates/dashboard/employee_projects_dashboard.html -->
 
 {% extends "sidebars/base_sidebar.html" %}
 {% load i18n %}
@@ -40,7 +40,14 @@
 {% include 'modals/add_task_modal.html' %}
 {% include 'modals/add_update_modal.html' %}
 {% include 'modals/add_deliverable_modal.html' %}
+{% include 'modals/update_task_status_modal.html' %}
+
+{% for project in assigned_projects %}
+    <script>console.log("Assigned project: {{ project.name }}");</script>
+{% endfor %}
 
 {% endblock %}
 
 <script src="{% static 'js/projects.js' %}"></script>
+
+{% include 'modals/add_task_modal.html' with projects=assigned_projects %}

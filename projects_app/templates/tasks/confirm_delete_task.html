@@ -1,0 +1,17 @@
+<!--projects_app/templates/tasks/confirm_delete_task.html-->
+
+{% extends "sidebars/base_sidebar.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container">
+    <h2>{% trans "Confirm Task Deletion" %}</h2>
+    <p>{% trans "Are you sure you want to delete the task" %} "{{ task.name }}"?</p>
+    <form action="{% url 'projects_app:delete_task' task.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
+        <a href="{% url 'projects_app:employee_projects_dashboard' %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+    </form>
+</div>
+{% endblock %}
+

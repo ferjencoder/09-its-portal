@@ -1,6 +1,7 @@
 # projects_app/models.py
 
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 from django.db.models.signals import pre_save
@@ -32,7 +33,7 @@ class Project(models.Model):
         max_length=10, choices=STATUS_CHOICES, default=PENDING, verbose_name=_("Status")
     )
     assigned_to_client = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -40,7 +41,7 @@ class Project(models.Model):
         verbose_name=_("Assigned Client"),
     )
     assigned_to_employees = models.ManyToManyField(
-        User,
+        settings.AUTH_USER_MODEL,
         blank=True,
         related_name="assigned_employee_projects",
         verbose_name=_("Assigned Employees"),
@@ -101,7 +102,11 @@ class Task(models.Model):
     due_date = models.DateField(verbose_name="Fecha de vencimiento")
     status = models.CharField(
         max_length=10,
-        choices=[("pending", "Pendiente"), ("completed", "Completada")],
+        choices=[
+            ("pending", "Pending"),
+            ("ongoing", "Ongoing"),
+            ("completed", "Completed"),
+        ],
         default="pending",
         verbose_name="Estado",
     )
@@ -123,17 +128,19 @@ class Task(models.Model):
 
 # Model de Documento
 class Document(models.Model):
-    deliverable = models.ForeignKey(
-        "Deliverable", on_delete=models.CASCADE, related_name="documents"
+    project = models.ForeignKey(
+        Project, on_delete=models.CASCADE, related_name="documents"
     )
+    name = models.CharField(max_length=100, verbose_name=_("Name"))
     file = models.FileField(upload_to="get_upload_path", verbose_name=_("File"))
     status = models.CharField(
         max_length=10,
         choices=[("pending", _("Pending")), ("uploaded", _("Uploaded"))],
         default="pending",
+        verbose_name=_("Status"),
     )
     assigned_to = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="documents",
         verbose_name=_("Assigned To"),
@@ -141,7 +148,7 @@ class Document(models.Model):
     comments = models.TextField(null=True, blank=True, verbose_name=_("Comments"))
 
     def __str__(self):
-        return self.file.name
+        return self.name
 
 
 # Model de Actualización
@@ -168,18 +175,18 @@ class Deliverable(models.Model):
     name = models.CharField(max_length=100)
     due_date = models.DateField()
     assigned_to = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, blank=True
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True
     )
     document = models.FileField(upload_to="deliverables/", null=True, blank=True)
     status = models.CharField(
         max_length=10,
         choices=[
-            ("pending", "Pending"),
-            ("uploaded", "Uploaded"),
-            ("approved", "Approved"),
-            ("commented", "Commented"),
-            ("rejected", "Rejected"),
-            ("annulled", "Annulled"),
+            ("pending", _("Pending")),
+            ("uploaded", _("Uploaded")),
+            ("approved", _("Approved")),
+            ("commented", _("Commented")),
+            ("rejected", _("Rejected")),
+            ("annulled", _("Annulled")),
         ],
         default="pending",
     )

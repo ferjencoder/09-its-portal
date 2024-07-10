@@ -1,5 +1,6 @@
 # projects_app/views.py
 
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
@@ -38,7 +39,7 @@ def admin_projects_dashboard(request):
         else 0
     )
 
-    # Contexto para pasar a la plantilla
+    # Contexto para pasar a los templates
     context = {
         "projects": projects,
         "tasks": tasks,
@@ -46,7 +47,6 @@ def admin_projects_dashboard(request):
         "uploaded_documents": uploaded_documents,
         "recent_updates": recent_updates,
         "task_completion_rate": task_completion_rate,
-        "projects": projects,
     }
     return render(request, "dashboard/admin_projects_dashboard.html", context)
 
@@ -57,10 +57,10 @@ def employee_projects_dashboard(request):
     assigned_projects = Project.objects.filter(assigned_to_employees=request.user)
     tasks = Task.objects.filter(assigned_to=request.user).order_by("due_date")
     pending_documents = Document.objects.filter(
-        status="pending", assigned_to=request.user
+        status="pending", project__in=assigned_projects
     )
     uploaded_documents = Document.objects.filter(
-        status="uploaded", assigned_to=request.user
+        status="uploaded", project__in=assigned_projects
     )
     recent_updates = Update.objects.filter(project__in=assigned_projects).order_by(
         "-date"
@@ -74,7 +74,6 @@ def employee_projects_dashboard(request):
     task_form = TaskForm()
     update_form = UpdateForm()
     document_form = DocumentForm()
-    projects = Project.objects.all()
 
     context = {
         "assigned_projects": assigned_projects,
@@ -86,7 +85,6 @@ def employee_projects_dashboard(request):
         "task_form": task_form,
         "update_form": update_form,
         "document_form": document_form,
-        "projects": projects,
     }
     return render(request, "dashboard/employee_projects_dashboard.html", context)
 
@@ -94,14 +92,13 @@ def employee_projects_dashboard(request):
 @login_required
 def client_projects_dashboard(request):
     # Vista del tablero del cliente
-    client_projects = Project.objects.filter(client=request.user)
+    client_projects = Project.objects.filter(assigned_to_client=request.user)
     messages = Message.objects.filter(recipient=request.user)[:10]
     forum_posts = ForumPost.objects.filter(author=request.user).select_related("topic")[
         :10
     ]
     blog_posts = BlogPost.objects.filter(author=request.user)[:10]
 
-    # Contexto para pasar a la plantilla
     context = {
         "client_projects": client_projects,
         "messages": messages,
@@ -250,7 +247,6 @@ def submit_feedback(request):
 
 @login_required
 def create_task(request):
-    # Vista para crear una nueva tarea
     if request.method == "POST":
         form = TaskForm(request.POST)
         if form.is_valid():
@@ -260,107 +256,112 @@ def create_task(request):
                 task.is_personal = True  # Marca la tarea como personal si no tiene un proyecto asignado
             task.save()
 
+            if request.headers.get("x-requested-with") == "XMLHttpRequest":
+                return JsonResponse({"message": "Task created successfully!"})
+
             # Determina el rol del usuario y redirige en consecuencia
             profile = Profile.objects.get(user=request.user)
             if profile.role == "admin":
-                projects = Project.objects.all()
-                tasks = Task.objects.all().order_by("due_date")
-                pending_documents = Document.objects.filter(status="pending")
-                uploaded_documents = Document.objects.filter(status="uploaded")
-                recent_updates = Update.objects.all().order_by("-date")[:10]
-                task_completion_rate = (
-                    tasks.filter(status="completed").count() / tasks.count() * 100
-                    if tasks.count() > 0
-                    else 0
-                )
-                context = {
-                    "projects": projects,
-                    "tasks": tasks,
-                    "pending_documents": pending_documents,
-                    "uploaded_documents": uploaded_documents,
-                    "recent_updates": recent_updates,
-                    "task_completion_rate": task_completion_rate,
-                    "task_form": TaskForm(),
-                }
-                return render(
-                    request, "dashboard/admin_projects_dashboard.html", context
-                )
+                return redirect("projects_app:admin_projects_dashboard")
             elif profile.role == "employee":
-                assigned_projects = Project.objects.filter(
-                    assigned_to_employees=request.user
-                )
-                tasks = Task.objects.filter(assigned_to=request.user).order_by(
-                    "due_date"
-                )
-                pending_documents = Document.objects.filter(
-                    status="pending", assigned_to=request.user
-                )
-                uploaded_documents = Document.objects.filter(
-                    status="uploaded", assigned_to=request.user
-                )
-                recent_updates = Update.objects.filter(
-                    project__in=assigned_projects
-                ).order_by("-date")[:10]
-                total_tasks = tasks.count()
-                completed_tasks = tasks.filter(status="completed").count()
-                task_completion_rate = (
-                    (completed_tasks / total_tasks) * 100 if total_tasks > 0 else 0
-                )
-
-                context = {
-                    "assigned_projects": assigned_projects,
-                    "tasks": tasks,
-                    "pending_documents": pending_documents,
-                    "uploaded_documents": uploaded_documents,
-                    "recent_updates": recent_updates,
-                    "task_completion_rate": task_completion_rate,
-                    "task_form": TaskForm(),
-                }
-                return render(
-                    request, "dashboard/employee_projects_dashboard.html", context
-                )
+                return redirect("projects_app:employee_projects_dashboard")
             elif profile.role == "client":
-                client_projects = Project.objects.filter(client=request.user)
-                messages = Message.objects.filter(recipient=request.user)[:10]
-                forum_posts = ForumPost.objects.filter(
-                    author=request.user
-                ).select_related("topic")[:10]
-                blog_posts = BlogPost.objects.filter(author=request.user)[:10]
-                context = {
-                    "client_projects": client_projects,
-                    "messages": messages,
-                    "forum_posts": forum_posts,
-                    "blog_posts": blog_posts,
-                    "task_form": TaskForm(),
-                }
-                return render(
-                    request, "dashboard/client_projects_dashboard.html", context
-                )
+                return redirect("projects_app:client_projects_dashboard")
             else:
                 return redirect("main:dashboard")
+        else:
+            print(form.errors)
     else:
         form = TaskForm()
 
     # Proporciona la variable 'projects' para el formulario
-    projects = Project.objects.all()
+    profile = Profile.objects.get(user=request.user)
+    if profile.role == "employee":
+        projects = Project.objects.filter(assigned_to_employees=request.user)
+    elif profile.role == "client":
+        projects = Project.objects.filter(assigned_to_client=request.user)
+    else:
+        projects = Project.objects.all()
+
     return render(
         request, "tasks/create_task.html", {"form": form, "projects": projects}
     )
 
 
 @login_required
+def edit_task(request, task_id):
+    # Vista para editar una tarea existente
+    task = get_object_or_404(Task, id=task_id)
+    if request.method == "POST":
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            profile = Profile.objects.get(user=request.user)
+            if profile.role == "admin":
+                return redirect("projects_app:admin_projects_dashboard")
+            elif profile.role == "employee":
+                return redirect("projects_app:employee_projects_dashboard")
+            elif profile.role == "client":
+                return redirect("projects_app:client_projects_dashboard")
+            else:
+                return redirect("main:dashboard")
+    else:
+        form = TaskForm(instance=task)
+
+    projects = Project.objects.all()
+    return render(
+        request,
+        "tasks/edit_task.html",
+        {"form": form, "task": task, "projects": projects},
+    )
+
+
+@login_required
+def delete_task(request, task_id):
+    # Vista para eliminar una tarea existente
+    task = get_object_or_404(Task, id=task_id)
+    if request.method == "POST":
+        task.delete()
+        profile = Profile.objects.get(user=request.user)
+        if profile.role == "admin":
+            return redirect("projects_app:admin_projects_dashboard")
+        elif profile.role == "employee":
+            return redirect("projects_app:employee_projects_dashboard")
+        elif profile.role == "client":
+            return redirect("projects_app:client_projects_dashboard")
+        else:
+            return redirect("main:dashboard")
+    return render(request, "tasks/confirm_delete_task.html", {"task": task})
+
+
+@login_required
 def update_task_status(request, task_id):
     # Vista que permite a los empleados actualizar el estado de una tarea
     task = get_object_or_404(Task, id=task_id)
+
     if task.assigned_to != request.user:
         raise PermissionDenied
 
     if request.method == "POST":
         task.status = request.POST.get("status", task.status)
         task.save()
-        return redirect("projects_app:employee_dashboard")
 
-    return render(request, "tasks/update_task_status.html", {"task": task})
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
+            return JsonResponse({"message": "Task status updated successfully!"})
+
+        # Determina el rol del usuario y redirige en consecuencia
+        profile = Profile.objects.get(user=request.user)
+        if profile.role == "admin":
+            return redirect("projects_app:admin_projects_dashboard")
+        elif profile.role == "employee":
+            return redirect("projects_app:employee_projects_dashboard")
+        elif profile.role == "client":
+            return redirect("projects_app:client_projects_dashboard")
+        else:
+            return redirect("main:dashboard")
+    else:
+        # Retorna una promesa vacía para los requests non-POST
+        return JsonResponse({"message": "Invalid request"}, status=400)
 
 
 @login_required
@@ -454,25 +455,36 @@ def add_document(request):
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             document = form.save(commit=False)
-            document.uploaded_at = timezone.now()  # Guardar la fecha de subida
+            document.assigned_to = request.user
             document.save()
-            return redirect(
-                "projects_app:admin_projects_dashboard"
-            )  # Redireccionar según el rol del usuario
+
+            if request.headers.get("x-requested-with") == "XMLHttpRequest":
+                return JsonResponse(
+                    {
+                        "message": "Document added successfully!",
+                        "document_name": document.name,
+                        "document_id": document.id,
+                    }
+                )
+
+            # Determine the user's role and redirect accordingly
+            profile = Profile.objects.get(user=request.user)
+            if profile.role == "admin":
+                return redirect("projects_app:admin_projects_dashboard")
+            elif profile.role == "employee":
+                return redirect("projects_app:employee_projects_dashboard")
+            elif profile.role == "client":
+                return redirect("projects_app:client_projects_dashboard")
+            else:
+                return redirect("main:dashboard")
+        else:
+            return JsonResponse({"errors": form.errors}, status=400)
+
     else:
         form = DocumentForm()
 
-    # Obtener todos los proyectos para el desplegable en el formulario
-    projects = Project.objects.all()
-
-    return render(
-        request,
-        "modals/add_deliverable_modal.html",
-        {
-            "document_form": form,
-            "projects": projects,
-        },
-    )
+    # Manejado via AJAX no renderizo template
+    return JsonResponse({"errors": form.errors}, status=400)
 
 
 @login_required

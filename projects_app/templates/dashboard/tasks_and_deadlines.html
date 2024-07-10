@@ -18,11 +18,43 @@
                         <small>{% trans "Due Date:" %} {{ task.due_date }}</small>
                     </div>
                     <div>
-                        <span class="badge badge-primary badge-pill">{{ task.get_status_display }}</span>
-                        <a href="{% url 'projects_app:update_task_status' task.id %}" class="btn btn-sm btn-secondary">{% trans "Update Status" %}</a>
+                        <span class="badge 
+                            {% if task.status == 'pending' %}bg-warning text-dark
+                            {% elif task.status == 'ongoing' %}bg-success
+                            {% elif task.status == 'completed' %}bg-secondary
+                            {% endif %} rounded-pill">{{ task.get_status_display }}</span>
+                        <a href="#" 
+                        class="update-task-status link-light link-offset-2 link-underline-opacity-0 link-underline-opacity-0-hover border-0 m-0 p-0 mx-2 " 
+                        data-task-id="{{ task.id }}" 
+                        data-task-status="{{ task.status }}" 
+                        title="{% trans 'Update Status' %}">
+                            <i class="bi bi-arrow-repeat"></i>
+                        </a>
                     </div>
                 </li>
             {% endfor %}
         </ul>
     </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const updateTaskButtons = document.querySelectorAll('.update-task-status');
+        console.log('Number of update-task-status buttons:', updateTaskButtons.length);
+
+        updateTaskButtons.forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                console.log('clicked');
+                
+                const taskId = event.currentTarget.getAttribute('data-task-id');
+                const taskStatus = event.currentTarget.getAttribute('data-task-status');
+                const form = document.querySelector('#updateTaskStatusForm');
+                form.action = '{% url "projects_app:update_task_status" 0 %}'.replace('0', taskId);
+                form.querySelector('#id_status').value = taskStatus;
+                const updateTaskStatusModal = new bootstrap.Modal(document.getElementById('updateTaskStatusModal'));
+                updateTaskStatusModal.show();
+            });
+        });
+    });        
+</script>
+
+

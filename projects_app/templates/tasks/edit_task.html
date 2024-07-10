@@ -1,0 +1,47 @@
+<!--projects_app/templates/tasks/edit_task.html-->
+
+{% extends "sidebars/base_sidebar.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container">
+    <h2>{% trans "Edit Task" %}</h2>
+    <form action="{% url 'projects_app:edit_task' task.id %}" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_project" class="form-label">{% trans "Project" %}</label>
+            <select class="form-control" id="id_project" name="project">
+                <option value="">{% trans "None" %}</option>
+                {% for project in projects %}
+                    <option value="{{ project.id }}" {% if form.project.value == project.id %}selected{% endif %}>{{ project.code }} - {{ project.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="id_name" class="form-label">{% trans "Name" %}</label>
+            <input type="text" class="form-control" id="id_name" name="name" value="{{ form.name.value }}">
+        </div>
+        <div class="mb-3">
+            <label for="id_description" class="form-label">{% trans "Description" %}</label>
+            <textarea class="form-control" id="id_description" name="description">{{ form.description.value }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="id_due_date" class="form-label">{% trans "Due Date" %}</label>
+            <input type="date" class="form-control" id="id_due_date" name="due_date" value="{{ form.due_date.value }}">
+        </div>
+        <div class="mb-3">
+            <label for="id_status" class="form-label">{% trans "Status" %}</label>
+            <select class="form-control" id="id_status" name="status">
+                {% for value, display in form.status.field.choices %}
+                    <option value="{{ value }}" {% if form.status.value == value %}selected{% endif %}>{{ display }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="id_is_personal" class="form-label">{% trans "Personal Task" %}</label>
+            <input type="checkbox" class="form-check-input" id="id_is_personal" name="is_personal" {% if form.is_personal.value %}checked{% endif %}>
+        </div>
+        <button type="submit" class="btn btn-primary">{% trans "Save changes" %}</button>
+    </form>
+</div>
+{% endblock %}
