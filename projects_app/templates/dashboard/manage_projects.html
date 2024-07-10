@@ -19,7 +19,7 @@
             {% for project in projects %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <div>
-                        <a href="{% url 'projects_app:view_project' project.id %}" class="text-decoration-none">
+                        <a href="{% url 'projects_app:view_project' project.id %}" class="text-decoration-none fs-6">
                             {{ project.code }} - {{ project.name }}
                         </a>
                         <span class="badge 

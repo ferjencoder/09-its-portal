@@ -27,7 +27,7 @@ def main():
         "blog_app/create_test_blog_data.py",
         "forum_app/create_test_forum_data.py",
         "messages_app/create_test_messages_data.py",
-        # TODO: agregar la ruta a create_test_projects_data.py cuando esté listo
+        "projects_app/create_test_projects_data.py",
     ]
 
     # Ejecutar cada script

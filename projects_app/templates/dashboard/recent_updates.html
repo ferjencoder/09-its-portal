@@ -10,13 +10,11 @@
     </div>
     <div class="card-body p-2" style="overflow-y: auto;">
         <!-- Lista de actualizaciones recientes con barra de desplazamiento -->
-        <ul class="list-group">
+        <ul class="list-group updates-list">
             {% for update in recent_updates %}
-                <li class="list-group-item">
-                    <strong>{{ update.title }}</strong>: {{ update.content|truncatewords:10 }}
-                    <small>{% trans "Updated on:" %} {{ update.date }}</small>
-                </li>
+                {% include 'dashboard/update_list_item.html' with update=update %}
             {% endfor %}
         </ul>
     </div>
 </div>
+

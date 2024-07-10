@@ -1,10 +1,11 @@
-// main/projects.js
+//main/projects.js
 
-document.addEventListener("DOMContentLoaded", function() {
-    // Modal para eliminar deliverable
+
+document.addEventListener("DOMContentLoaded",function() {
+    // Modal para eliminar entregable
     const deleteDeliverableModal = document.getElementById('deleteDeliverableModal');
     if (deleteDeliverableModal) {
-        deleteDeliverableModal.addEventListener('show.bs.modal', function (event) {
+        deleteDeliverableModal.addEventListener('show.bs.modal', function(event) {
             const button = event.relatedTarget;
             const deliverableId = button.getAttribute('data-deliverable-id');
             const deliverableName = button.getAttribute('data-deliverable-name');
@@ -16,10 +17,10 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // modal para subir documento
+    // Modal para subir documento
     const uploadDocumentModal = document.getElementById('uploadDocumentModal');
     if (uploadDocumentModal) {
-        uploadDocumentModal.addEventListener('show.bs.modal', function (event) {
+        uploadDocumentModal.addEventListener('show.bs.modal', function(event) {
             const button = event.relatedTarget;
             const deliverableId = button.getAttribute('data-deliverable-id');
             const uploadDocumentForm = document.getElementById('uploadDocumentForm');
@@ -27,10 +28,10 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // modal para aprobar documento
+    // Modal para aprobar documento
     const approveDocumentModal = document.getElementById('approveDocumentModal');
     if (approveDocumentModal) {
-        approveDocumentModal.addEventListener('show.bs.modal', function (event) {
+        approveDocumentModal.addEventListener('show.bs.modal', function(event) {
             const button = event.relatedTarget;
             const deliverableId = button.getAttribute('data-deliverable-id');
             const approveDocumentForm = document.getElementById('approveDocumentForm');
@@ -38,16 +39,16 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Modal para editar deliverable
+    // Modal para editar entregable
     const editDeliverableModal = document.getElementById('editDeliverableModal');
     if (editDeliverableModal) {
-        editDeliverableModal.addEventListener('show.bs.modal', function (event) {
+        editDeliverableModal.addEventListener('show.bs.modal', function(event) {
             const button = event.relatedTarget;
             const deliverableId = button.getAttribute('data-deliverable-id');
             const editDeliverableForm = document.getElementById('editDeliverableForm');
             editDeliverableForm.action = editDeliverableForm.action.replace('0', deliverableId);
 
-            // form con la info del deliverable
+            // Llenar el formulario con la información del entregable
             const deliverable = button.getAttribute('data-deliverable');
             const parsedDeliverable = JSON.parse(deliverable);
             document.getElementById('deliverableName').value = parsedDeliverable.name;
@@ -56,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // AJAX form para agregar tasks
+    // Formulario AJAX para agregar tareas
     const addTaskForm = document.querySelector("#addTaskForm");
     if (addTaskForm) {
         addTaskForm.addEventListener("submit", function(event) {
@@ -81,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // AJAX form para actualizar tasks
+    // Botones para actualizar tareas
     const updateTaskButtons = document.querySelectorAll('.update-task-status');
     updateTaskButtons.forEach(function(button) {
         button.addEventListener('click', function(event) {
@@ -95,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // AJAX form para agregar deliverables
+    // Formulario AJAX para agregar entregables
     const addDeliverableForm = document.querySelector("#addDeliverableForm");
     if (addDeliverableForm) {
         addDeliverableForm.addEventListener("submit", function(event) {
@@ -127,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // AJAX form para agregar proyectos
+    // Formulario AJAX para agregar proyectos
     const addProjectForm = document.querySelector("#addProjectForm");
     if (addProjectForm) {
         addProjectForm.addEventListener("submit", function(event) {
@@ -147,6 +148,38 @@ document.addEventListener("DOMContentLoaded", function() {
                     });
                 } else {
                     console.error("Error submitting form");
+                }
+            }).catch(error => {
+                console.error("Error submitting form:", error);
+            });
+        });
+    }
+
+    // Formulario AJAX para agregar actualizaciones
+    const addUpdateForm = document.querySelector("#addUpdateForm");
+    if (addUpdateForm) {
+        addUpdateForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const form = event.target;
+
+            fetch(form.action, {
+                method: form.method,
+                body: new FormData(form),
+                headers: {
+                    "X-CSRFToken": form.querySelector('[name="csrfmiddlewaretoken"]').value
+                }
+            }).then(response => response.json()).then(data => {
+                if (data.message) {
+                    // Manejar la creación exitosa
+                    const newUpdate = document.createElement("li");
+                    newUpdate.classList.add("list-group-item");
+                    newUpdate.innerHTML = data.html;
+                    document.querySelector(".updates-list").appendChild(newUpdate);
+                    const addUpdateModal = bootstrap.Modal.getInstance(document.getElementById("addUpdateModal"));
+                    addUpdateModal.hide();
+                } else if (data.errors) {
+                    // Manejar errores
+                    console.error("Error submitting form:", data.errors);
                 }
             }).catch(error => {
                 console.error("Error submitting form:", error);

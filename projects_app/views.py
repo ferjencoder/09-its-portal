@@ -41,6 +41,9 @@ def admin_projects_dashboard(request):
         else 0
     )
     project_form = ProjectForm()
+    update_form = UpdateForm()
+    task_form = TaskForm()
+    document_form = DocumentForm()
 
     context = {
         "projects": projects,
@@ -51,6 +54,9 @@ def admin_projects_dashboard(request):
         "recent_updates": recent_updates,
         "task_completion_rate": task_completion_rate,
         "project_form": project_form,
+        "update_form": update_form,
+        "task_form": task_form,
+        "document_form": document_form,
     }
     return render(request, "dashboard/admin_projects_dashboard.html", context)
 
@@ -485,7 +491,7 @@ def add_document(request):
                     }
                 )
 
-            # Determine the user's role and redirect accordingly
+            # Determina el rol del usuario y redirige en consecuencia
             profile = Profile.objects.get(user=request.user)
             if profile.role == "admin":
                 return redirect("projects_app:admin_projects_dashboard")
@@ -533,7 +539,18 @@ def create_update(request):
         if form.is_valid():
             update = form.save(commit=False)
             update.date = timezone.now()
+            update.project = form.cleaned_data["project"]
             update.save()
+
+            if request.headers.get("x-requested-with") == "XMLHttpRequest":
+                html = render_to_string(
+                    "dashboard/update_list_item.html",
+                    {"update": update, "project": update.project},
+                    request=request,
+                )
+                return JsonResponse(
+                    {"message": "Update created successfully!", "html": html}
+                )
 
             # Determina el rol del usuario y redirige en consecuencia
             profile = Profile.objects.get(user=request.user)
@@ -545,6 +562,10 @@ def create_update(request):
                 return redirect("projects_app:client_projects_dashboard")
             else:
                 return redirect("projects_app:admin_projects_dashboard")
+        else:
+            if request.headers.get("x-requested-with") == "XMLHttpRequest":
+                return JsonResponse({"errors": form.errors}, status=400)
     else:
         form = UpdateForm()
+
     return render(request, "projects/create_update.html", {"form": form})

@@ -41,13 +41,8 @@
 {% include 'modals/add_update_modal.html' %}
 {% include 'modals/add_deliverable_modal.html' %}
 {% include 'modals/update_task_status_modal.html' %}
-
-{% for project in assigned_projects %}
-    <script>console.log("Assigned project: {{ project.name }}");</script>
-{% endfor %}
+{% include 'modals/add_project_modal.html' %}
 
 {% endblock %}
 
 <script src="{% static 'js/projects.js' %}"></script>
-
-{% include 'modals/add_task_modal.html' with projects=assigned_projects %}

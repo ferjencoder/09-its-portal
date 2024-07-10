@@ -60,10 +60,12 @@ class DeliverableForm(forms.ModelForm):
 class UpdateForm(forms.ModelForm):
     class Meta:
         model = Update
-        fields = ["title", "content"]
+        fields = ["title", "content", "status", "project"]
         widgets = {
             "title": forms.TextInput(attrs={"class": "form-control"}),
             "content": forms.Textarea(attrs={"class": "form-control"}),
+            "status": forms.Select(attrs={"class": "form-control"}),
+            "project": forms.Select(attrs={"class": "form-control"}),
         }
 
 

@@ -26,7 +26,7 @@ Esta aplicación está diseñada para facilitar la gestión de proyectos, comuni
 2. python blog_app/create_test_blog_data.py
 3. python forum_app/create_test_forum_data.py 
 4. python messages_app/create_test_messages_data.py
-5. python messages_app/create_test_projects_data.py (pendiente)
+5. python messages_app/create_test_projects_data.py
 
 ## Tests:
 1. python manage.py test blog_app

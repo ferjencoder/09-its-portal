@@ -1,6 +1,8 @@
 // its_portal/static/js/dark_mode.js
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded',function() {
+    document.body.classList.remove('loading');
+      
     const darkModeIcon = document.querySelector('#dark-mode-icon');
     const body = document.body;
     const dropdowns = document.querySelectorAll('.dropdown');
@@ -60,4 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     body.classList.add('fade-in'); // Añadir clase fade-in al cargar la página
+});
+
+window.addEventListener('beforeunload', () => {
+  document.body.classList.add('loading');
 });

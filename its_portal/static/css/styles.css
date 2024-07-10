@@ -1,3 +1,5 @@
+/* static/css/tyles.css */
+
 /* CSS personalizado para la paginación en modo oscuro */
 .pagination.custom-pagination-dark .page-link {
     background-color: #343a40;
@@ -33,9 +35,28 @@ html, body {
 body {
   display: flex;
   flex-direction: column;
-  background-color: #f2f2f2;
+  background-color: #333;
   color: #000;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.3s, color 0.3s, opacity 0.5s;
+  opacity: 1;
+}
+
+body.loading,
+body.fade-out {
+  opacity: 0;
+}
+
+body.fade-in {
+  opacity: 1;
+}
+
+.dark-mode {
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode a {
+  color: #fff;
 }
 
 main {
@@ -96,7 +117,7 @@ video {
 /* Estilos de navegación */
 nav {
   background-color: #f8f9fa;
-  position: fixed;
+  /*position: fixed;*/
   top: 0;
   width: 100%;
   z-index: 1000;

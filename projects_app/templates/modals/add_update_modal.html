@@ -1,6 +1,7 @@
 <!-- projects_app/templates/modals/add_update_modal.html -->
- 
+{% load custom_filters %}
 {% load i18n %}
+
 <div class="modal fade" id="addUpdateModal" tabindex="-1" aria-labelledby="addUpdateModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -10,8 +11,23 @@
                     <h5 class="modal-title" id="addUpdateModalLabel">{% trans "Add New Update" %}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body bg-dark text-white">
-                    {{ update_form.as_p }}
+                <div class="modal-body bg-dark text-white">                  
+                    <div class="mb-3">
+                        <label for="id_project" class="form-label">{% trans "Project" %}</label>
+                        {{ update_form.project|add_class:"form-control" }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_title" class="form-label">{% trans "Title" %}</label>
+                        {{ update_form.title|add_class:"form-control" }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_content" class="form-label">{% trans "Content" %}</label>
+                        {{ update_form.content|add_class:"form-control" }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_status" class="form-label">{% trans "Status" %}</label>
+                        {{ update_form.status|add_class:"form-control" }}
+                    </div>
                 </div>
                 <div class="modal-footer bg-dark text-white">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>

@@ -1,5 +1,6 @@
 # projects_app/models.py
 
+import os
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -126,13 +127,28 @@ class Task(models.Model):
         return self.name
 
 
+def document_upload_path(instance, filename):
+    # Get the project code from the instance
+    project_code = instance.project.code
+    # Check the group of the assigned user
+    if instance.assigned_to.groups.filter(name="employee").exists():
+        folder = "entregados"
+    elif instance.assigned_to.groups.filter(name="client").exists():
+        folder = "recibidos"
+    else:
+        folder = "otros"
+
+    # Define the folder structure
+    return os.path.join("project_files", project_code, "documents", folder, filename)
+
+
 # Model de Documento
 class Document(models.Model):
     project = models.ForeignKey(
         Project, on_delete=models.CASCADE, related_name="documents"
     )
     name = models.CharField(max_length=100, verbose_name=_("Name"))
-    file = models.FileField(upload_to="get_upload_path", verbose_name=_("File"))
+    file = models.FileField(upload_to=document_upload_path, verbose_name=_("File"))
     status = models.CharField(
         max_length=10,
         choices=[("pending", _("Pending")), ("uploaded", _("Uploaded"))],
@@ -153,11 +169,31 @@ class Document(models.Model):
 
 # Model de Actualización
 class Update(models.Model):
+    CRITICAL = "critical"
+    INFORMATIVE = "informative"
+    WARNING = "warning"
+    RESOLVED = "resolved"
+    ANNOUNCEMENT = "announcement"
+
+    STATUS_CHOICES = [
+        (CRITICAL, "Critical"),
+        (INFORMATIVE, "Informative"),
+        (WARNING, "Warning"),
+        (RESOLVED, "Resolved"),
+        (ANNOUNCEMENT, "Announcement"),
+    ]
+
     title = models.CharField(max_length=100, verbose_name="Título")
     content = models.TextField(verbose_name="Contenido")
     date = models.DateTimeField(auto_now_add=True, verbose_name="Fecha")
+    status = models.CharField(
+        max_length=15,
+        choices=STATUS_CHOICES,
+        default=INFORMATIVE,
+        verbose_name="Status",
+    )
     project = models.ForeignKey(
-        Project,
+        "Project",
         on_delete=models.CASCADE,
         related_name="updates",
         verbose_name="Proyecto",
