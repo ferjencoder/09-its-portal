@@ -7,19 +7,22 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card">
+            <div class="card shadow-lg border-0">
                 <div class="card-header bg-secondary text-white">
                     <h4 class="mb-0">{% trans "Upload Document" %}</h4>
                 </div>
                 <div class="card-body">
+                    <!-- Formulario para cargar documentos -->
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="mb-3">
                             <label for="document_file" class="form-label">{% trans "Document" %}</label>
                             <input type="file" name="document_file" class="form-control" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">{% trans "Upload" %}</button>
-                        <a href="{% url 'projects_app:view_project' deliverable.project.id %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">{% trans "Upload" %}</button>
+                            <a href="{% url 'projects_app:view_project' deliverable.project.id %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -27,6 +30,3 @@
     </div>
 </div>
 {% endblock %}
-
-
-

@@ -108,5 +108,39 @@
             </div>
         </div>
     </div>
+
+    {% if request.session.show_welcome_modal %}
+    <!-- Modal de bienvenida -->
+    <div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="welcomeModalLabel">{% trans "Welcome" %}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>{% trans "Welcome to the dashboard! We are glad to have you on board." %}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">{% trans "Close" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
+
+{% if request.session.show_welcome_modal %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
+        welcomeModal.show();
+
+        // Clear the session flag after displaying the modal
+        fetch("{% url 'main:clear_welcome_modal_flag' %}").then(response => response.json()).then(data => {
+            console.log(data);
+        });
+    });
+</script>
+{% endif %}
 {% endblock %}

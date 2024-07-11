@@ -14,7 +14,9 @@ from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils import translation
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
+from django.http import JsonResponse
 from .forms import RegisterForm, ProfileForm, UserEditForm
 from .models import Profile
 from .utils import get_profile, get_or_create_conversation
@@ -108,27 +110,49 @@ def request_quote(request):
 @csrf_protect
 def register(request):
     if request.method == "POST":
+        print("Form submitted with data:", request.POST)  # Debug print
         form = RegisterForm(request.POST)
         if form.is_valid():
+            print("Form is valid with cleaned data:", form.cleaned_data)  # Debug print
             user = form.save(commit=False)
             role = form.cleaned_data.get("role")
             user.save()
-            profile, created = Profile.objects.get_or_create(
-                user=user, defaults={"role": role}
-            )
-            if not created:
-                profile.role = role
-                profile.save()
+            print(f"User saved with role: {role}")  # Debug print
             group = Group.objects.get(name=role)
             user.groups.add(group)
+            print(f"Group assigned: {group}")  # Debug print
+
+            # Ensure the profile is saved correctly with the role
+            profile, created = Profile.objects.get_or_create(user=user)
+            profile.role = role
+            profile.save()
+            print(f"Profile saved with role: {profile.role}")  # Debug print
+
+            # Re-fetch the profile to ensure it is saved
+            profile.refresh_from_db()
+            print(f"Re-fetched profile role: {profile.role}")  # Debug print
+
             login(request, user)
             messages.success(request, "Registration successful.")
-            return redirect("main:home")
+            request.session["show_welcome_modal"] = True
+
+            return redirect("main:dashboard")
         else:
+            print("Form is not valid")  # Debug print
+            print(form.errors)  # Debug print
             messages.error(request, "Unsuccessful registration. Invalid information.")
     else:
         form = RegisterForm()
     return render(request, "main/register.html", {"form": form})
+
+
+# Mensaje de bienvenida
+@login_required
+def clear_welcome_modal_flag(request):
+    # Limpiar la bandera del modal de bienvenida de la sesión
+    if "show_welcome_modal" in request.session:
+        del request.session["show_welcome_modal"]
+    return JsonResponse({"status": "ok"})
 
 
 # Vista para mostrar mensajes del usuario
@@ -245,56 +269,61 @@ def edit_profile(request):
 # Vista para el dashboard del usuario según su rol
 @login_required
 def dashboard(request):
-    profile = get_profile(request.user)
+    # Obtener el perfil del usuario
+    try:
+        profile = Profile.objects.get(user=request.user)
+    except Profile.DoesNotExist:
+        messages.error(request, "Profile not found.")
+        return redirect("main:create_profile")
+
+    # Inicializar el contexto con el perfil del usuario
     context = {"profile": profile}
 
-    if profile:
-        if profile.role == "employee":
-            projects = Project.objects.filter(assigned_to_employees=request.user)
-            messages_list = Message.objects.filter(recipient=request.user)
-            forum_posts = ForumPost.objects.filter(author=request.user)
-            blog_posts = BlogPost.objects.filter(author=request.user)
-            context.update(
-                {
-                    "projects": projects,
-                    "messages": messages_list,
-                    "forum_posts": forum_posts,
-                    "blog_posts": blog_posts,
-                }
-            )
-            return render(request, "dashboard/employee_dashboard.html", context)
-        elif profile.role == "client":
-            projects = Project.objects.filter(client=request.user)
-            messages_list = Message.objects.filter(recipient=request.user)
-            forum_posts = ForumPost.objects.filter(author=request.user)
-            blog_posts = BlogPost.objects.filter(author=request.user)
-            context.update(
-                {
-                    "projects": projects,
-                    "messages": messages_list,
-                    "forum_posts": forum_posts,
-                    "blog_posts": blog_posts,
-                }
-            )
-            return render(request, "dashboard/client_dashboard.html", context)
-        elif profile.role == "admin":
-            projects = Project.objects.all()
-            messages_list = Message.objects.all()[:10]
-            forum_posts = ForumPost.objects.select_related("topic").all()[:10]
-            blog_posts = BlogPost.objects.all()[:10]
-            context.update(
-                {
-                    "projects": projects,
-                    "messages": messages_list,
-                    "forum_posts": forum_posts,
-                    "blog_posts": blog_posts,
-                }
-            )
-            return render(request, "dashboard/admin_dashboard.html", context)
-        else:
-            return render(request, "main/user_dashboard.html", context)
+    # Obtener y asignar datos adicionales según el rol del usuario
+    if profile.role == "employee":
+        projects = Project.objects.filter(assigned_to_employees=request.user)
+        messages_list = Message.objects.filter(recipient=request.user)
+        forum_posts = ForumPost.objects.filter(author=request.user)
+        blog_posts = BlogPost.objects.filter(author=request.user)
+        context.update(
+            {
+                "projects": projects,
+                "messages": messages_list,
+                "forum_posts": forum_posts,
+                "blog_posts": blog_posts,
+            }
+        )
+        return render(request, "dashboard/employee_dashboard.html", context)
+    elif profile.role == "client":
+        projects = Project.objects.filter(assigned_to_client=request.user)
+        messages_list = Message.objects.filter(recipient=request.user)
+        forum_posts = ForumPost.objects.filter(author=request.user)
+        blog_posts = BlogPost.objects.filter(author=request.user)
+        context.update(
+            {
+                "projects": projects,
+                "messages": messages_list,
+                "forum_posts": forum_posts,
+                "blog_posts": blog_posts,
+            }
+        )
+        return render(request, "dashboard/client_dashboard.html", context)
+    elif profile.role == "admin":
+        projects = Project.objects.all()
+        messages_list = Message.objects.all()[:10]
+        forum_posts = ForumPost.objects.select_related("topic").all()[:10]
+        blog_posts = BlogPost.objects.all()[:10]
+        context.update(
+            {
+                "projects": projects,
+                "messages": messages_list,
+                "forum_posts": forum_posts,
+                "blog_posts": blog_posts,
+            }
+        )
+        return render(request, "dashboard/admin_dashboard.html", context)
     else:
-        return redirect("main:create_profile")
+        return render(request, "main/user_dashboard.html", context)
 
 
 # Vista para manejar el login de usuarios

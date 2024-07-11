@@ -11,7 +11,7 @@ from django.dispatch import receiver
 
 # Función para generar la ruta de subida de archivos
 def get_upload_path(instance, filename):
-    return f"projects_files/{instance.deliverable.project.code}/documents/{filename}"
+    return f"project_files/{instance.deliverable.project.code}/documents/{filename}"
 
 
 # Model de Proyecto
@@ -19,19 +19,20 @@ class Project(models.Model):
     PENDING = "pending"
     ONGOING = "ongoing"
     COMPLETED = "completed"
+
     STATUS_CHOICES = [
         (PENDING, _("Pending")),
         (ONGOING, _("Ongoing")),
         (COMPLETED, _("Completed")),
     ]
 
-    name = models.CharField(max_length=100, verbose_name=_("Name"))
-    code = models.CharField(max_length=10, unique=True, verbose_name=_("Code"))
-    description = models.TextField(verbose_name=_("Description"))
-    start_date = models.DateField(verbose_name=_("Start Date"))
-    end_date = models.DateField(verbose_name=_("End Date"))
+    name = models.CharField(max_length=100, verbose_name=_("Nombre"))
+    code = models.CharField(max_length=10, unique=True, verbose_name=_("Código"))
+    description = models.TextField(verbose_name=_("Descripción"))
+    start_date = models.DateField(verbose_name=_("Fecha de Inicio"))
+    end_date = models.DateField(verbose_name=_("Fecha de Finalización"))
     status = models.CharField(
-        max_length=10, choices=STATUS_CHOICES, default=PENDING, verbose_name=_("Status")
+        max_length=10, choices=STATUS_CHOICES, default=PENDING, verbose_name=_("Estado")
     )
     assigned_to_client = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -39,13 +40,13 @@ class Project(models.Model):
         null=True,
         blank=True,
         related_name="client_projects",
-        verbose_name=_("Assigned Client"),
+        verbose_name=_("Cliente Asignado"),
     )
     assigned_to_employees = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         blank=True,
         related_name="assigned_employee_projects",
-        verbose_name=_("Assigned Employees"),
+        verbose_name=_("Empleados Asignados"),
     )
 
     def __str__(self):
@@ -128,9 +129,9 @@ class Task(models.Model):
 
 
 def document_upload_path(instance, filename):
-    # Get the project code from the instance
+    # Obtener el código del proyecto desde la instancia
     project_code = instance.project.code
-    # Check the group of the assigned user
+    # Verificar el grupo del usuario asignado
     if instance.assigned_to.groups.filter(name="employee").exists():
         folder = "entregados"
     elif instance.assigned_to.groups.filter(name="client").exists():
@@ -138,14 +139,24 @@ def document_upload_path(instance, filename):
     else:
         folder = "otros"
 
-    # Define the folder structure
-    return os.path.join("project_files", project_code, "documents", folder, filename)
+    # Incluir el número de versión en el nombre del archivo
+    version = instance.version if instance.version else 1
+    filename_base, filename_ext = os.path.splitext(filename)
+    new_filename = f"{filename_base}_v{version}{filename_ext}"
+
+    # Definir la estructura de carpetas
+    return os.path.join(
+        "project_files", project_code, "documents", folder, new_filename
+    )
 
 
 # Model de Documento
 class Document(models.Model):
     project = models.ForeignKey(
-        Project, on_delete=models.CASCADE, related_name="documents"
+        Project,
+        on_delete=models.CASCADE,
+        related_name="documents",
+        verbose_name=_("Project"),
     )
     name = models.CharField(max_length=100, verbose_name=_("Name"))
     file = models.FileField(upload_to=document_upload_path, verbose_name=_("File"))
@@ -162,9 +173,27 @@ class Document(models.Model):
         verbose_name=_("Assigned To"),
     )
     comments = models.TextField(null=True, blank=True, verbose_name=_("Comments"))
+    version = models.IntegerField(default=1, verbose_name=_("Version"))
+    original_document = models.ForeignKey(
+        "self",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="revisions",
+        verbose_name=_("Original Document"),
+    )
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            # Si es un documento nuevo, incrementar el número de versión
+            if self.original_document:
+                self.version = self.original_document.version + 1
+            else:
+                self.version = 1
+        super(Document, self).save(*args, **kwargs)
 
 
 # Model de Actualización
@@ -176,27 +205,27 @@ class Update(models.Model):
     ANNOUNCEMENT = "announcement"
 
     STATUS_CHOICES = [
-        (CRITICAL, "Critical"),
-        (INFORMATIVE, "Informative"),
-        (WARNING, "Warning"),
-        (RESOLVED, "Resolved"),
-        (ANNOUNCEMENT, "Announcement"),
+        (CRITICAL, _("Critical")),
+        (INFORMATIVE, _("Informative")),
+        (WARNING, _("Warning")),
+        (RESOLVED, _("Resolved")),
+        (ANNOUNCEMENT, _("Announcement")),
     ]
 
-    title = models.CharField(max_length=100, verbose_name="Título")
-    content = models.TextField(verbose_name="Contenido")
-    date = models.DateTimeField(auto_now_add=True, verbose_name="Fecha")
+    title = models.CharField(max_length=100, verbose_name=_("Título"))
+    content = models.TextField(verbose_name=_("Contenido"))
+    date = models.DateTimeField(auto_now_add=True, verbose_name=_("Fecha"))
     status = models.CharField(
         max_length=15,
         choices=STATUS_CHOICES,
         default=INFORMATIVE,
-        verbose_name="Status",
+        verbose_name=_("Estado"),
     )
     project = models.ForeignKey(
-        "Project",
+        Project,
         on_delete=models.CASCADE,
         related_name="updates",
-        verbose_name="Proyecto",
+        verbose_name=_("Proyecto"),
     )
 
     def __str__(self):

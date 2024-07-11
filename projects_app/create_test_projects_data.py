@@ -4,6 +4,7 @@ import os
 import sys
 import django
 from django.utils.translation import gettext_lazy as _
+from shutil import copyfile
 
 # Configurar el directorio del proyecto y el módulo de configuración
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -18,6 +19,11 @@ from django.utils import timezone
 from random import choice, randint
 from datetime import timedelta
 
+# Path to the default document
+default_document_path = os.path.join(
+    project_root, "media", "project_files", "default_document.webp"
+)
+
 
 # Función para obtener usuarios existentes
 def get_existing_users():
@@ -31,20 +37,28 @@ def get_existing_users():
     return clients, employees
 
 
+# Función para generar un código único de proyecto
+def generate_unique_project_code(index):
+    return f"AA{index:03}"
+
+
 # Función para crear proyectos de prueba
 def create_test_projects(clients, employees):
     projects = []
     for i in range(1, 6):
+        client = clients[i % len(clients)]  # Loopea a través de los clientes
+        employee = employees[i % len(employees)]  # Loopea a través de los empleados
+        project_code = generate_unique_project_code(i)
         project = Project.objects.create(
             name=f"Project {i}",
-            code=f"AA{i:03}",
+            code=project_code,
             description=f"Esta es la descripción del Proyecto {i}.",
             start_date=timezone.now().date(),
             end_date=(timezone.now() + timedelta(days=365)).date(),
             status=choice([Project.PENDING, Project.ONGOING, Project.COMPLETED]),
-            assigned_to_client=choice(clients),
+            assigned_to_client=client,
         )
-        project.assigned_to_employees.set(employees)
+        project.assigned_to_employees.set([employee])
         projects.append(project)
     return projects
 
@@ -66,20 +80,70 @@ def create_test_tasks(projects, employees):
     return tasks
 
 
-# Función para crear documentos de prueba
-def create_test_documents(projects, employees):
+# Función para crear documentos de prueba con control de versiones
+def create_test_documents(projects, employees, clients):
     documents = []
     for project in projects:
         for i in range(1, 6):
+            # Crear documento original
+            assigned_to = choice(employees.union(clients))
+            folder = "entregados" if assigned_to in employees else "recibidos"
+            document_path = os.path.join(
+                "project_files", project.code, "documents", folder, f"doc_{i}.webp"
+            )
+
+            # Ensure the directory exists
+            os.makedirs(
+                os.path.dirname(os.path.join(project_root, "media", document_path)),
+                exist_ok=True,
+            )
+
+            # Copy the default document to the new path
+            copyfile(
+                default_document_path,
+                os.path.join(project_root, "media", document_path),
+            )
+            print(f"Documento {document_path} subido exitosamente.")
+
             document = Document.objects.create(
                 project=project,
                 name=f"Document {i} for {project.name}",
-                file=f"documents/doc_{i}.pdf",
+                file=document_path,
                 status=choice(["pending", "uploaded"]),
-                assigned_to=choice(employees),
-                comments=f"Coentarios para el documento {i} de {project.name}.",
+                assigned_to=assigned_to,
+                comments=f"Comentarios para el documento {i} de {project.name}.",
+                version=1,
             )
             documents.append(document)
+
+            # Crear versiones adicionales del documento original
+            for v in range(2, 4):  # Crear 3 versiones por ejemplo
+                document_version_path = os.path.join(
+                    "project_files",
+                    project.code,
+                    "documents",
+                    folder,
+                    f"doc_{i}_v{v}.webp",
+                )
+
+                # Copy the default document to the new path
+                copyfile(
+                    default_document_path,
+                    os.path.join(project_root, "media", document_version_path),
+                )
+                print(f"Documento {document_version_path} subido exitosamente.")
+
+                document_version = Document.objects.create(
+                    project=project,
+                    name=f"Document {i} for {project.name} v{v}",
+                    file=document_version_path,
+                    status=choice(["pending", "uploaded"]),
+                    assigned_to=assigned_to,
+                    comments=f"Comentarios para el documento {i} versión {v} de {project.name}.",
+                    version=v,
+                    original_document=document,
+                )
+                documents.append(document_version)
     return documents
 
 
@@ -90,7 +154,7 @@ def create_test_updates(projects):
         for i in range(1, 6):
             update = Update.objects.create(
                 title=f"Actualización {i} para {project.name}",
-                content=f"Contentenido de la actualización {i} para {project.name}.",
+                content=f"Contenido de la actualización {i} para {project.name}.",
                 date=timezone.now(),
                 status=choice(
                     [
@@ -140,7 +204,7 @@ def main():
     if clients and employees:
         projects = create_test_projects(clients, employees)
         create_test_tasks(projects, employees)
-        create_test_documents(projects, employees)
+        create_test_documents(projects, employees, clients)
         create_test_updates(projects)
         create_test_deliverables(projects, employees)
         print(_("Datos de prueba creados exitosamente."))
@@ -152,6 +216,5 @@ def main():
         )
 
 
-# Ejecutar la función principal
 if __name__ == "__main__":
     main()

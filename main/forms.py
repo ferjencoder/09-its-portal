@@ -1,10 +1,10 @@
 # main/forms.py
-# This file is used to create forms using Django's form classes. It's where forms are defined for the models or custom forms.
 
 from django import forms
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import Profile
+from django.utils.translation import gettext_lazy as _
 
 
 # Formulario para registro de usuarios
@@ -49,12 +49,11 @@ class ProfileForm(forms.ModelForm):
 # Formulario de registro que incluye rol y email
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)
-    # IDEA: Agregar user a las choices si alguna vez decido implementarlo para los msjs
     role = forms.ChoiceField(
         choices=[
-            ("client", "Client"),
-            ("employee", "Employee"),
-            ("admin", "Admin"),
+            ("admin", _("Admin")),
+            ("client", _("Client")),
+            ("employee", _("Employee")),
         ],
         required=True,
     )
@@ -71,14 +70,17 @@ class RegisterForm(UserCreationForm):
             "role",
         ]
 
+    # Guardar el usuario con el rol y grupo asignado
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data["email"]
         role = self.cleaned_data["role"]
         if commit:
             user.save()
+            print(f"User saved with role: {role}")  # Debug print
             group = Group.objects.get(name=role)
             user.groups.add(group)
+            print(f"User added to group: {group}")  # Debug print
             Profile.objects.get_or_create(user=user, defaults={"role": role})
         return user
 

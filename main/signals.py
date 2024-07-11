@@ -23,7 +23,6 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
 @receiver(post_migrate)
 def create_default_groups(sender, **kwargs):
     if sender.name == "main":
-        Group.objects.get_or_create(name="user")
         Group.objects.get_or_create(name="client")
         Group.objects.get_or_create(name="employee")
         Group.objects.get_or_create(name="admin")

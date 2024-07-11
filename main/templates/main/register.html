@@ -1,4 +1,4 @@
-<!--main/register.html-->
+<!-- main/templates/main/register.html -->
 
 {% extends 'main/base_generic.html' %}
 {% load i18n %}
@@ -26,6 +26,12 @@
                                     <div class="invalid-feedback">
                                         {% trans "Please choose a username." %}
                                     </div>
+                                    <!-- Display field errors -->
+                                    {% if form.username.errors %}
+                                    <div class="text-danger">
+                                        {{ form.username.errors }}
+                                    </div>
+                                    {% endif %}
                                 </div>
                                 <div class="form-group mt-3 text-start">
                                     <label for="id_first_name" class="form-label">{% trans "First Name" %}</label>
@@ -33,6 +39,12 @@
                                     <div class="invalid-feedback">
                                         {% trans "Please provide your first name." %}
                                     </div>
+                                    <!-- Display field errors -->
+                                    {% if form.first_name.errors %}
+                                    <div class="text-danger">
+                                        {{ form.first_name.errors }}
+                                    </div>
+                                    {% endif %}
                                 </div>
                                 <div class="form-group mt-3 text-start">
                                     <label for="id_last_name" class="form-label">{% trans "Last Name" %}</label>
@@ -40,6 +52,12 @@
                                     <div class="invalid-feedback">
                                         {% trans "Please provide your last name." %}
                                     </div>
+                                    <!-- Display field errors -->
+                                    {% if form.last_name.errors %}
+                                    <div class="text-danger">
+                                        {{ form.last_name.errors }}
+                                    </div>
+                                    {% endif %}
                                 </div>
                                 <div class="form-group mt-3 text-start">
                                     <label for="id_email" class="form-label">{% trans "Email" %} <span class="text-danger">*</span></label>
@@ -47,6 +65,12 @@
                                     <div class="invalid-feedback">
                                         {% trans "Please provide a valid email." %}
                                     </div>
+                                    <!-- Display field errors -->
+                                    {% if form.email.errors %}
+                                    <div class="text-danger">
+                                        {{ form.email.errors }}
+                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -56,6 +80,12 @@
                                     <div class="invalid-feedback">
                                         {% trans "Please provide a password." %}
                                     </div>
+                                    <!-- Display field errors -->
+                                    {% if form.password1.errors %}
+                                    <div class="text-danger">
+                                        {{ form.password1.errors }}
+                                    </div>
+                                    {% endif %}
                                     <div class="caps-lock-warning text-danger mt-2" style="display: none;">
                                         {% trans "Caps Lock is on." %}
                                     </div>
@@ -66,6 +96,12 @@
                                     <div class="invalid-feedback">
                                         {% trans "Passwords must match." %}
                                     </div>
+                                    <!-- Display field errors -->
+                                    {% if form.password2.errors %}
+                                    <div class="text-danger">
+                                        {{ form.password2.errors }}
+                                    </div>
+                                    {% endif %}
                                     <div class="caps-lock-warning text-danger mt-2" style="display: none;">
                                         {% trans "Caps Lock is on." %}
                                     </div>
@@ -76,11 +112,23 @@
                                     <div class="invalid-feedback">
                                         {% trans "Please select a role." %}
                                     </div>
+                                    <!-- Display field errors -->
+                                    {% if form.role.errors %}
+                                    <div class="text-danger">
+                                        {{ form.role.errors }}
+                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary btn-block mt-4">{% trans "Register" %}</button>
                     </form>
+                    <!-- Display non-field errors -->
+                    {% if form.non_field_errors %}
+                    <div class="text-danger mt-3">
+                        {{ form.non_field_errors }}
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

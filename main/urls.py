@@ -1,5 +1,4 @@
 # main/urls.py
-# This file is where the URL patterns for the app are defined. It routes URLs to the appropriate views.
 
 from django.urls import path, include
 from . import views
@@ -9,6 +8,11 @@ app_name = "main"
 urlpatterns = [
     path("", views.home, name="home"),  # Página principal
     path("set_language/", include("django.conf.urls.i18n")),  # Configuración de idioma
+    path(
+        "clear_welcome_modal_flag/",
+        views.clear_welcome_modal_flag,
+        name="clear_welcome_modal_flag",
+    ),  # Mensaje de bienvenida
     path("about/", views.about, name="about"),  # Página "About Us"
     path("contact/", views.contact, name="contact"),  # Página de contacto
     path("services/", views.services, name="services"),  # Página de servicios

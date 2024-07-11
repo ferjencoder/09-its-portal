@@ -1,0 +1,31 @@
+<!-- projects_app/templates/documents/document_history.html -->
+
+{% extends "base_generic.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="mb-0">{% trans "Document History" %}: {{ document.name }}</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Lista de revisiones de documentos -->
+                    <ul class="list-group">
+                        {% for revision in revisions %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>{% trans "Version" %} {{ revision.version }}</span>
+                            <a href="{{ revision.file.url }}" class="btn btn-outline-primary btn-sm" download>
+                                {% trans "Download" %}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
