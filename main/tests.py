@@ -45,5 +45,4 @@ class UserCreationTests(TestCase):
 
         # Adding more debug output to understand what went wrong
         profile = Profile.objects.get(user=user)
-        print(f"User profile role: '{profile.role}'")  # Debug print
         self.assertEqual(profile.role, "admin")

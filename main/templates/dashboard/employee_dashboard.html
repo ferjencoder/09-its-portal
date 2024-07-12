@@ -109,4 +109,92 @@
         </div>
     </div>
 </div>
+
+{% if request.session.show_welcome_modal %}
+        <!-- Modal de bienvenida -->
+        <div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content text-center bg-dark" data-bs-theme="dark">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-body bg-dark text-white">
+                        <img src="{% static 'assets/images/welcome.svg' %}" alt="{% trans 'Welcome' %}" class="img-fluid mb-4" 
+                        style="max-width: 550px;">
+                        <h5 class="modal-title mb-3" id="welcomeModalLabel">{% trans "Welcome to your workspace!" %}</h5>
+                        <p class="mb-4">{% trans "What do you do here? You can access your projects" %}</p>
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-warning text-dark mx-2" id="projectsButton">{% trans "Projects" %}</button>
+                            <button type="button" class="btn btn-warning text-dark mx-2" id="messagesButton">{% trans "Messages" %}</button>
+                            <button type="button" class="btn btn-warning text-dark mx-2" id="forumButton">{% trans "Forum Posts" %}</button>
+                            <button type="button" class="btn btn-warning text-dark mx-2" id="blogButton">{% trans "Blog Posts" %}</button>
+                            <button type="button" class="btn btn-warning text-dark mx-2" id="dashboardButton">{% trans "Dashboard Overview" %}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+{% if request.session.show_welcome_modal %}
+        <!-- Modal de bienvenida -->
+        <div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content text-center bg-dark" data-bs-theme="dark">
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn-close text-end" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body bg-dark text-white border-0">
+                        <img src="{% static 'assets/images/welcome.svg' %}" alt="{% trans 'Welcome' %}" class="img-fluid mb-4" 
+                        style="max-height: 350px;">
+                        <h5 class="modal-title mb-3" id="welcomeModalLabel">{% trans "Welcome to your workspace!" %}</h5>
+                        <p class="mb-4">{% trans "What do you do here? You can access your projects" %}</p>
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-warning text-dark mx-2" id="projectsButton">{% trans "Projects" %}</button>
+                            <button type="button" class="btn btn-warning text-dark mx-2" id="messagesButton">{% trans "Messages" %}</button>
+                            <button type="button" class="btn btn-warning text-dark mx-2" id="forumButton">{% trans "Forum Posts" %}</button>
+                            <button type="button" class="btn btn-warning text-dark mx-2" id="blogButton">{% trans "Blog Posts" %}</button>
+                            <button type="button" class="btn btn-warning text-dark mx-2" id="dashboardButton">{% trans "Dashboard Overview" %}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+{% if request.session.show_welcome_modal %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
+        welcomeModal.show();
+
+        document.getElementById('projectsButton').onclick = function() {
+            window.location.href = "{% url 'projects_app:view_projects' %}";
+        };
+        document.getElementById('messagesButton').onclick = function() {
+            window.location.href = "{% url 'messages_app:default_messages_view' %}";
+        };
+        document.getElementById('forumButton').onclick = function() {
+            window.location.href = "{% url 'forum_app:forum' %}";
+        };
+        document.getElementById('blogButton').onclick = function() {
+            window.location.href = "{% url 'blog:admin_blog_list' %}";
+        };
+        document.getElementById('dashboardButton').onclick = function() {
+            window.location.href = "{% url 'main:dashboard' %}";
+        };
+
+        // Clear the session flag after displaying the modal
+        fetch("{% url 'main:clear_welcome_modal_flag' %}").then(response => response.json()).then(data => {
+            console.log(data);
+        });
+    });
+</script>
+{% endif %}
+
+<style>
+.card-header-link:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+</style>
 {% endblock %}

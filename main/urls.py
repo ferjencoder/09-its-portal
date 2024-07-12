@@ -32,4 +32,5 @@ urlpatterns = [
     path(
         "test_media_static/", views.test_media_static, name="test_media_static"
     ),  # Prueba de media y static
+    path("show_welcome_modal/", views.show_welcome_modal, name="show_welcome_modal"),
 ]

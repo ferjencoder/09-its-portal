@@ -226,3 +226,31 @@ body.dark-mode .errorlist {
 .text-test-assignment {
     color: red;
 }
+
+/*welcomeModal para los users que se acaban de registrar*/
+
+#welcomeModal .modal-content {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+#welcomeModal .modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+#welcomeModal .modal-body img {
+    max-width: 100%;
+    height: auto;
+}
+
+#welcomeModal .btn-outline-primary {
+    border-color: #563d7c;
+    color: #563d7c;
+}
+
+#welcomeModal .btn-outline-primary:hover {
+    background-color: #563d7c;
+    color: #fff;
+}

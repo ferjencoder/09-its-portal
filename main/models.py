@@ -34,9 +34,6 @@ class Profile(models.Model):
     def save(self, *args, **kwargs):
         if self.user.is_superuser and not self.role:
             self.role = "admin"
-        print(
-            f"From Model: Saving profile for {self.user.username} with role {self.role}"
-        )
         super().save(*args, **kwargs)
 
     def __str__(self):

@@ -54,8 +54,8 @@
             <div class="dropdown" title="{{ user.username }}">
                 <hr>
                 <a href="#" class="d-flex align-items-center justify-content-center text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    {% if user.profile.profile_picture %}
-                        <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}" width="32" height="32" class="rounded-circle me-2">
+                    {% if user.profile_main.profile_picture %}
+                        <img src="{{ user.profile_main.profile_picture.url }}" alt="{{ user.username }}" width="32" height="32" class="rounded-circle me-2">
                     {% else %}
                         <img src="{% static 'assets/images/default_avatar.png' %}" alt="{% trans 'Default Avatar' %}" width="32" height="32" class="rounded-circle me-2">
                     {% endif %}
@@ -84,8 +84,8 @@
             </ul>
             <div class="dropdown border-top">
                 <a href="#" class="d-flex align-items-center justify-content-center p-3 link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    {% if user.profile.profile_picture %}
-                        <img src="{{ user.profile.profile_picture.url }}" alt="{{ user.username }}" width="24" height="24" class="rounded-circle">
+                    {% if user.profile_main.profile_picture %}
+                        <img src="{{ user.profile_main.profile_picture.url }}" alt="{{ user.username }}" width="24" height="24" class="rounded-circle">
                     {% else %}
                         <img src="{% static 'assets/images/default_avatar.png' %}" alt="{% trans 'Default Avatar' %}" width="24" height="24" class="rounded-circle">
                     {% endif %}

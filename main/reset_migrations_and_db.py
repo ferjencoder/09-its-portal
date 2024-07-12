@@ -44,23 +44,6 @@ def run_migrate():
     os.system("python manage.py migrate")
 
 
-# def create_superuser(username, email, password):
-#    # Crear un superusuario usando subprocess.run
-#    subprocess.run(
-#        [
-#            "python",
-#            "manage.py",
-#            "createsuperuser",
-#            "--noinput",
-#            "--username",
-#            username,
-#            "--email",
-#            email,
-#        ],
-#        env={**os.environ, "DJANGO_SUPERUSER_PASSWORD": password},
-#    )
-
-
 def main():
     app_names = ["blog_app", "forum_app", "main", "messages_app", "projects_app"]
     db_path = os.path.join(project_root, "db.sqlite3")
@@ -69,9 +52,6 @@ def main():
     delete_database(db_path)
     run_makemigrations(app_names)
     run_migrate()
-
-    # Crear superusuario
-    # create_superuser("superadmin", "superadmin@gm.com", "superadminpass")
 
 
 if __name__ == "__main__":

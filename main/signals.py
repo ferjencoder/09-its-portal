@@ -11,7 +11,6 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:
         if not Profile.objects.filter(user=instance).exists():
             Profile.objects.create(user=instance)
-            print(f"Signal: Creating profile for new user {instance.username}")
     else:
         if hasattr(instance, "profile_main"):
             profile = instance.profile_main
@@ -21,11 +20,7 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
                 if group:
                     profile.role = group.name
                     profile.save()
-                    print(
-                        f"Signal: Setting role for existing user {instance.username} to {profile.role}"
-                    )
             profile.save()
-            print(f"Signal: Updating profile for existing user {instance.username}")
 
 
 # Crear grupos por defecto si no existen

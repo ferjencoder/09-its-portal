@@ -17,7 +17,6 @@ def is_employee(user):
 # Obtener perfil del usuario o devolver none si no existe
 def get_profile(user):
     try:
-        print(user, user.profile_main)
         return user.profile_main
     except AttributeError:
         return None

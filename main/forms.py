@@ -73,22 +73,21 @@ class RegisterForm(UserCreationForm):
         user = super().save(commit=False)
         user.email = self.cleaned_data["email"]
         role = self.cleaned_data["role"]
-        print(f"Form: Saving user with role {role}")
         if commit:
             user.save()
-            print(f"User saved with role: {role}")
             group = Group.objects.get(name=role)
             user.groups.add(group)
             profile, created = Profile.objects.get_or_create(user=user)
             if created:
                 profile.role = role
                 profile.save()
-                print(f"Form: Profile saved with role {profile.role}")
         return user
 
 
 # Formulario para editar el usuario
-class UserEditForm(forms.ModelForm):
+class UserEditForm(UserChangeForm):
+    password = None
+
     class Meta:
         model = User
         fields = ("first_name", "last_name")

@@ -20,8 +20,8 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12 mb-2 text-center">
-                        {% if user.profile.profile_picture %}
-                            <img src="{{ user.profile.profile_picture.url }}" class="img-fluid rounded-circle mb-3 profile-image" style="width: 100px; height: 100px;" alt="{% trans 'Profile Picture' %}">
+                        {% if user.profile_main.profile_picture %}
+                            <img src="{{ user.profile_main.profile_picture.url }}" class="img-fluid rounded-circle mb-3 profile-image" style="width: 100px; height: 100px;" alt="{% trans 'Profile Picture' %}">
                         {% else %}
                             <img src="{% static 'assets/images/default_avatar.png' %}" class="img-fluid rounded-circle mb-3 profile-image" style="width: 100px; height: 100px;" alt="{% trans 'Default Avatar' %}">
                         {% endif %}

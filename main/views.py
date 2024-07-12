@@ -126,6 +126,12 @@ def clear_welcome_modal_flag(request):
 
 
 @login_required
+def show_welcome_modal(request):
+    request.session["show_welcome_modal"] = True
+    return redirect("main:dashboard")
+
+
+@login_required
 def messages_view(request):
     messages = Message.objects.filter(recipient=request.user)
     return render(request, "messages_app/messages.html", {"messages": messages})
