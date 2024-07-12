@@ -37,15 +37,18 @@ def default_messages_view(request):
         last_message = conversation.messages.order_by("-created_at").first()
         recipient_user = conversation.participants.exclude(id=request.user.id).first()
         if recipient_user:
+            profile_picture_url = static("assets/images/default_avatar.png")
+            if (
+                hasattr(recipient_user, "profile_main")
+                and recipient_user.profile_main.profile_picture
+            ):
+                profile_picture_url = recipient_user.profile_main.profile_picture.url
+
             conversation_details.append(
                 {
                     "id": recipient_user.id,
                     "name": recipient_user.username,
-                    "avatar": (
-                        recipient_user.profile.profile_picture.url
-                        if recipient_user.profile.profile_picture
-                        else static("assets/images/default_avatar.png")
-                    ),
+                    "avatar": profile_picture_url,
                     "last_message": last_message,
                     "last_message_time": last_message.created_at,
                 }
@@ -86,15 +89,18 @@ def messages_view(request, recipient_id=None):
     for conversation in conversations:
         last_message = conversation.messages.order_by("-created_at").first()
         recipient_user = conversation.participants.exclude(id=user.id).first()
+        profile_picture_url = static("assets/images/default_avatar.png")
+        if (
+            hasattr(recipient_user, "profile_main")
+            and recipient_user.profile_main.profile_picture
+        ):
+            profile_picture_url = recipient_user.profile_main.profile_picture.url
+
         conversation_details.append(
             {
                 "id": recipient_user.id,
                 "name": recipient_user.username,
-                "avatar": (
-                    recipient_user.profile.profile_picture.url
-                    if recipient_user.profile.profile_picture
-                    else static("assets/images/default_avatar.png")
-                ),
+                "avatar": profile_picture_url,
                 "last_message": last_message,
                 "last_message_time": last_message.created_at,
             }
@@ -218,15 +224,18 @@ def search_messages(request):
                 .first()
             )
 
+            profile_picture_url = static("assets/images/default_avatar.png")
+            if (
+                hasattr(other_user, "profile_main")
+                and other_user.profile_main.profile_picture
+            ):
+                profile_picture_url = other_user.profile_main.profile_picture.url
+
             conversations.append(
                 {
                     "id": other_user.id,
                     "name": other_user.username,
-                    "avatar": (
-                        other_user.profile.profile_picture.url
-                        if other_user.profile.profile_picture
-                        else static("assets/images/default_avatar.png")
-                    ),
+                    "avatar": profile_picture_url,
                     "last_message": last_message,
                     "last_message_time": last_message.created_at,
                 }

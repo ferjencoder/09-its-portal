@@ -17,13 +17,13 @@
     <div class="row">
         <!-- Sección de Proyectos -->
         <div class="col-md-6 mb-4">
-            <div class="card">
+            <div class="card" style="height: 338px">
                 <div class="card-header bg-primary text-white">
                     <a href="{% url 'projects_app:view_projects' %}" class="text-white text-decoration-none">
                         <h4>{% trans "Your Projects" %}</h4>
                     </a>
                 </div>
-                <div class="card-body" style="max-height: 270px; overflow-y: auto;">
+                <div class="card-body" style="overflow-y: auto;">
                     <ul class="list-group">
                         {% for project in projects %}
                             {% url 'projects_app:view_project' project.id as view_project_url %}
@@ -47,13 +47,13 @@
 
         <!-- Sección de Mensajes -->
         <div class="col-md-6 mb-4">
-            <div class="card">
+            <div class="card" style="height: 338px">
                 <div class="card-header bg-primary text-white">
                     <a href="{% url 'messages_app:default_messages_view' %}" class="text-white text-decoration-none">
                         <h4>{% trans "Messages" %}</h4>
                     </a>
                 </div>
-                <div class="card-body" style="max-height: 270px; overflow-y: auto;">
+                <div class="card-body" style="overflow-y: auto;">
                     <ul class="list-group">
                         {% for message in messages %}
                             {% url 'messages_app:messages_view' message.sender.id as messages_view_url %}
@@ -68,13 +68,13 @@
 
         <!-- Sección de Posts en el Foro -->
         <div class="col-md-6 mb-4">
-            <div class="card">
+            <div class="card" style="height: 338px">
                 <div class="card-header bg-primary text-white">
                     <a href="{% url 'forum_app:forum' %}" class="text-white text-decoration-none">
                         <h4>{% trans "Forum Posts" %}</h4>
                     </a>
                 </div>
-                <div class="card-body" style="max-height: 270px; overflow-y: auto;">
+                <div class="card-body" style="overflow-y: auto;">
                     <ul class="list-group">
                         {% for post in forum_posts %}
                             {% url 'forum_app:create_post' post.topic.id as create_post_url %}
@@ -89,13 +89,13 @@
 
         <!-- Sección de Posts en el Blog -->
         <div class="col-md-6 mb-4">
-            <div class="card">
+            <div class="card" style="height: 338px">
                 <div class="card-header bg-primary text-white">
                     <a href="{% url 'blog:admin_blog_list' %}" class="text-white text-decoration-none">
                         <h4>{% trans "Blog Posts" %}</h4>
                     </a>
                 </div>
-                <div class="card-body" style="max-height: 270px; overflow-y: auto;">
+                <div class="card-body" style="overflow-y: auto;">
                     <ul class="list-group">
                         {% for post in blog_posts %}
                             {% url 'blog:edit_blog_post' post.id as edit_blog_post_url %}
@@ -126,7 +126,6 @@
                             <button type="button" class="btn btn-warning text-dark mx-2" id="projectsButton">{% trans "Projects" %}</button>
                             <button type="button" class="btn btn-warning text-dark mx-2" id="messagesButton">{% trans "Messages" %}</button>
                             <button type="button" class="btn btn-warning text-dark mx-2" id="forumButton">{% trans "Forum Posts" %}</button>
-                            <button type="button" class="btn btn-warning text-dark mx-2" id="blogButton">{% trans "Blog Posts" %}</button>
                             <button type="button" class="btn btn-warning text-dark mx-2" id="dashboardButton">{% trans "Dashboard Overview" %}</button>
                         </div>
                     </div>
@@ -150,9 +149,6 @@
         };
         document.getElementById('forumButton').onclick = function() {
             window.location.href = "{% url 'forum_app:forum' %}";
-        };
-        document.getElementById('blogButton').onclick = function() {
-            window.location.href = "{% url 'blog:admin_blog_list' %}";
         };
         document.getElementById('dashboardButton').onclick = function() {
             window.location.href = "{% url 'main:dashboard' %}";

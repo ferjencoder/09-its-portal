@@ -82,6 +82,7 @@ def employee_projects_dashboard(request):
         (completed_tasks / total_tasks) * 100 if total_tasks > 0 else 0
     )
 
+    project_form = ProjectForm()
     task_form = TaskForm()
     update_form = UpdateForm()
     document_form = DocumentForm()
@@ -93,6 +94,7 @@ def employee_projects_dashboard(request):
         "uploaded_documents": uploaded_documents,
         "recent_updates": recent_updates,
         "task_completion_rate": task_completion_rate,
+        "project_form": project_form,
         "task_form": task_form,
         "update_form": update_form,
         "document_form": document_form,
@@ -104,6 +106,27 @@ def employee_projects_dashboard(request):
 @login_required
 def client_projects_dashboard(request):
     client_projects = Project.objects.filter(assigned_to_client=request.user)
+    tasks = Task.objects.filter(project__in=client_projects).order_by("due_date")
+    pending_documents = Document.objects.filter(
+        project__in=client_projects, status="pending"
+    )
+    uploaded_documents = Document.objects.filter(
+        project__in=client_projects, status="uploaded"
+    )
+    recent_updates = Update.objects.filter(project__in=client_projects).order_by(
+        "-date"
+    )[:10]
+    task_completion_rate = (
+        tasks.filter(status="completed").count() / tasks.count() * 100
+        if tasks.count() > 0
+        else 0
+    )
+
+    project_form = ProjectForm()
+    update_form = UpdateForm()
+    task_form = TaskForm()
+    document_form = DocumentForm()
+
     messages = Message.objects.filter(recipient=request.user)[:10]
     forum_posts = ForumPost.objects.filter(author=request.user).select_related("topic")[
         :10
@@ -112,6 +135,15 @@ def client_projects_dashboard(request):
 
     context = {
         "client_projects": client_projects,
+        "tasks": tasks,
+        "pending_documents": pending_documents,
+        "uploaded_documents": uploaded_documents,
+        "recent_updates": recent_updates,
+        "task_completion_rate": task_completion_rate,
+        "project_form": project_form,
+        "update_form": update_form,
+        "task_form": task_form,
+        "document_form": document_form,
         "messages": messages,
         "forum_posts": forum_posts,
         "blog_posts": blog_posts,

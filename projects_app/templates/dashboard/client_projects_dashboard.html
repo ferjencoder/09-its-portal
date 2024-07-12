@@ -18,18 +18,19 @@
     <div class="row">
         <!-- Primer Panel -->
         <div class="col-md-4 mb-4" style="height: 700px;">
-            {% include 'dashboard/client_projects.html' %}
-            {% include 'dashboard/messages.html' %}
-            {% include 'dashboard/forum_posts.html' %}
+            {% include 'dashboard/performance_metrics.html' %}
+            {% include 'dashboard/manage_projects.html' %}
+            {% include 'dashboard/recent_updates.html' %}
         </div>
 
         <!-- Segundo Panel -->
         <div class="col-md-4 mb-4" style="height: 700px;">
-            {% include 'dashboard/blog_posts.html' %}
+            {% include 'dashboard/tasks_and_deadlines.html' %}
         </div>
 
         <!-- Tercer Panel -->
         <div class="col-md-4 mb-4" style="height: 700px;">
+            {% include 'dashboard/deliverables.html' %}
             {% include 'dashboard/feedback_and_support.html' %}
         </div>
     </div>
@@ -40,6 +41,7 @@
 {% include 'modals/add_update_modal.html' %}
 {% include 'modals/add_deliverable_modal.html' %}
 {% include 'modals/update_task_status_modal.html' %}
+{% include 'modals/add_project_modal.html' %}
 
 {% endblock %}
 

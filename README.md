@@ -22,13 +22,14 @@ Esta aplicación está diseñada para facilitar la gestión de proyectos, comuni
 - [Contacto](#contacto)
 
 
-## Pasos para cargar la bd y probar el site:
-0. python create_test_all_data.py
-1. python main/create_test_users.py
-2. python blog_app/create_test_blog_data.py
-3. python forum_app/create_test_forum_data.py 
-4. python messages_app/create_test_messages_data.py
-5. python messages_app/create_test_projects_data.py
+## Pasos para cargar la db y probar el site:
+1. python create_test_all_data.py
+2. python main/create_test_users.py (crea data para blog_app, forum_app, messages_app y projects_app)
+
+1. python blog_app/create_test_blog_data.py
+2. python forum_app/create_test_forum_data.py 
+3. python messages_app/create_test_messages_data.py
+4. python messages_app/create_test_projects_data.py
 
 ## Tests:
 1. python manage.py test blog_app

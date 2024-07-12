@@ -1,0 +1,10 @@
+<!--main/templates/admin/base_site.html-->
+
+{% extends 'main/base_generic.html' %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
+{% endblock %}
