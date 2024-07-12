@@ -3,6 +3,8 @@
 ITS Portal es una aplicación web desarrollada como proyecto final para el curso de Python de Coderhouse.
 Esta aplicación está diseñada para facilitar la gestión de proyectos, comunicaciones y foros para distintos tipos de usuarios: administradores, empleados y clientes.
 
+---
+
 ## Índice
 - [Pasos para cargar la bd y probar el site](#pasos-para-cargar-la-bd-y-probar-el-site)
 - [Tests](#tests)
