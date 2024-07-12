@@ -1,6 +1,4 @@
 # main/views.py
-# This file contains the views for the app. Views handle the logic for the web pages and return HTTP responses.
-
 import os
 import shutil
 import logging
@@ -11,12 +9,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import Group, User
 from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
-from django.http import JsonResponse
 from .forms import RegisterForm, ProfileForm, UserEditForm
 from .models import Profile
 from .utils import get_profile, get_or_create_conversation
@@ -28,12 +25,10 @@ from blog_app.models import BlogPost
 logger = logging.getLogger(__name__)
 
 
-# Manejo de fallo de verificación CSRF
 def csrf_failure(request, reason=""):
     return HttpResponse("CSRF verification failed. Reason: %s" % reason)
 
 
-# Vista protegida con login y manejo de roles de usuario
 @login_required
 def some_view(request):
     user_role = request.user.groups.first().name
@@ -47,7 +42,6 @@ def some_view(request):
         return render(request, "main/sidebar_generic.html")
 
 
-# Configuración del idioma del usuario
 def set_language(request):
     user_language = request.GET.get("language", "en")
     translation.activate(user_language)
@@ -55,17 +49,14 @@ def set_language(request):
     return redirect(request.META.get("HTTP_REFERER"))
 
 
-# Renderiza la página principal
 def home(request):
     return render(request, "main/home.html")
 
 
-# Renderiza la página "About Us"
 def about(request):
     return render(request, "main/about.html")
 
 
-# Maneja el formulario de contacto y envía un mensaje al administrador
 def contact(request):
     if request.method == "POST":
         name = request.POST["name"]
@@ -78,7 +69,6 @@ def contact(request):
             messages.error(request, "No admin found to send the message to.")
             return redirect("main:contact")
 
-        # Crear o obtener la conversación
         conversation = get_or_create_conversation(
             None if request.user.is_anonymous else request.user, admin_user
         )
@@ -96,73 +86,51 @@ def contact(request):
     return render(request, "main/contact.html")
 
 
-# Renderiza la página de servicios
 def services(request):
     return render(request, "main/services.html")
 
 
-# Renderiza la página de solicitud de cotización
 def request_quote(request):
     return render(request, "main/request_quote.html")
 
 
-# Maneja el registro de usuarios y asignación de roles
 @csrf_protect
 def register(request):
     if request.method == "POST":
-        print("Form submitted with data:", request.POST)  # Debug print
         form = RegisterForm(request.POST)
         if form.is_valid():
-            print("Form is valid with cleaned data:", form.cleaned_data)  # Debug print
             user = form.save(commit=False)
             role = form.cleaned_data.get("role")
             user.save()
-            print(f"User saved with role: {role}")  # Debug print
             group = Group.objects.get(name=role)
             user.groups.add(group)
-            print(f"Group assigned: {group}")  # Debug print
-
-            # Ensure the profile is saved correctly with the role
-            profile, created = Profile.objects.get_or_create(user=user)
-            profile.role = role
-            profile.save()
-            print(f"Profile saved with role: {profile.role}")  # Debug print
-
-            # Re-fetch the profile to ensure it is saved
-            profile.refresh_from_db()
-            print(f"Re-fetched profile role: {profile.role}")  # Debug print
-
+            profile, created = Profile.objects.get_or_create(
+                user=user, defaults={"role": role}
+            )
             login(request, user)
             messages.success(request, "Registration successful.")
             request.session["show_welcome_modal"] = True
-
             return redirect("main:dashboard")
         else:
-            print("Form is not valid")  # Debug print
-            print(form.errors)  # Debug print
             messages.error(request, "Unsuccessful registration. Invalid information.")
     else:
         form = RegisterForm()
     return render(request, "main/register.html", {"form": form})
 
 
-# Mensaje de bienvenida
 @login_required
 def clear_welcome_modal_flag(request):
-    # Limpiar la bandera del modal de bienvenida de la sesión
     if "show_welcome_modal" in request.session:
         del request.session["show_welcome_modal"]
     return JsonResponse({"status": "ok"})
 
 
-# Vista para mostrar mensajes del usuario
 @login_required
 def messages_view(request):
     messages = Message.objects.filter(recipient=request.user)
     return render(request, "messages_app/messages.html", {"messages": messages})
 
 
-# Vista para mostrar y editar el perfil del usuario
 @login_required
 def profile(request):
     profile = get_profile(request.user)
@@ -177,7 +145,6 @@ def profile(request):
     return render(request, "main/profile.html", {"form": form})
 
 
-# Vista para editar el perfil del usuario
 @login_required
 def edit_profile(request):
     profile = Profile.objects.get(user=request.user)
@@ -266,20 +233,16 @@ def edit_profile(request):
     )
 
 
-# Vista para el dashboard del usuario según su rol
 @login_required
 def dashboard(request):
-    # Obtener el perfil del usuario
     try:
         profile = Profile.objects.get(user=request.user)
     except Profile.DoesNotExist:
         messages.error(request, "Profile not found.")
         return redirect("main:create_profile")
 
-    # Inicializar el contexto con el perfil del usuario
     context = {"profile": profile}
 
-    # Obtener y asignar datos adicionales según el rol del usuario
     if profile.role == "employee":
         projects = Project.objects.filter(assigned_to_employees=request.user)
         messages_list = Message.objects.filter(recipient=request.user)
@@ -326,7 +289,6 @@ def dashboard(request):
         return render(request, "main/user_dashboard.html", context)
 
 
-# Vista para manejar el login de usuarios
 def login_view(request):
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
@@ -346,13 +308,11 @@ def login_view(request):
     return render(request, "main/login.html", {"form": form})
 
 
-# Vista para manejar el logout de usuarios
 def logout_view(request):
     logout(request)
     return redirect("main:home")
 
 
-# Vista de prueba para las carpetas media y static
 def test_media_static(request):
     return render(
         request,

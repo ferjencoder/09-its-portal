@@ -1,6 +1,4 @@
 # main/models.py
-# This file contains the models for the Django app. Models define the structure of the database tables.
-
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
@@ -19,7 +17,9 @@ class Profile(models.Model):
         ("employee", _("Employee")),
     )
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="profile_main"
+    )
     role = models.CharField(max_length=20, choices=USER_ROLES, default="")
     bio = models.TextField(blank=True, null=True)
     location = models.CharField(max_length=100, blank=True, null=True)
@@ -32,9 +32,11 @@ class Profile(models.Model):
     )
 
     def save(self, *args, **kwargs):
+        if self.user.is_superuser and not self.role:
+            self.role = "admin"
         print(
-            f"Saving profile for {self.user.username} with role {self.role}"
-        )  # Debug print
+            f"From Model: Saving profile for {self.user.username} with role {self.role}"
+        )
         super().save(*args, **kwargs)
 
     def __str__(self):

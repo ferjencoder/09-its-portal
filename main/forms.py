@@ -46,14 +46,13 @@ class ProfileForm(forms.ModelForm):
         }
 
 
-# Formulario de registro que incluye rol y email
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)
     role = forms.ChoiceField(
         choices=[
-            ("admin", _("Admin")),
-            ("client", _("Client")),
-            ("employee", _("Employee")),
+            ("client", "Client"),
+            ("employee", "Employee"),
+            ("admin", "Admin"),
         ],
         required=True,
     )
@@ -70,18 +69,21 @@ class RegisterForm(UserCreationForm):
             "role",
         ]
 
-    # Guardar el usuario con el rol y grupo asignado
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data["email"]
         role = self.cleaned_data["role"]
+        print(f"Form: Saving user with role {role}")
         if commit:
             user.save()
-            print(f"User saved with role: {role}")  # Debug print
+            print(f"User saved with role: {role}")
             group = Group.objects.get(name=role)
             user.groups.add(group)
-            print(f"User added to group: {group}")  # Debug print
-            Profile.objects.get_or_create(user=user, defaults={"role": role})
+            profile, created = Profile.objects.get_or_create(user=user)
+            if created:
+                profile.role = role
+                profile.save()
+                print(f"Form: Profile saved with role {profile.role}")
         return user
 
 
