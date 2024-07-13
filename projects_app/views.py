@@ -32,7 +32,7 @@ from .forms import (
 def admin_projects_dashboard(request):
     assigned_projects = Project.objects.all()
     projects = Project.objects.all()
-    tasks = Task.objects.all().order_by("due_date")
+    tasks = Task.objects.all().select_related("project").order_by("due_date")
     pending_documents = Document.objects.filter(status="pending")
     uploaded_documents = Document.objects.filter(status="uploaded")
     recent_updates = Update.objects.all().order_by("-date")[:10]
@@ -396,30 +396,38 @@ def delete_task(request, task_id):
 @login_required
 def update_task_status(request, task_id):
     task = get_object_or_404(Task, id=task_id)
+    user = request.user
 
-    if task.assigned_to != request.user:
-        raise PermissionDenied
-
-    if request.method == "POST":
-        task.status = request.POST.get("status", task.status)
-        task.save()
-
-        if request.headers.get("x-requested-with") == "XMLHttpRequest":
-            return JsonResponse({"message": "Task status updated successfully!"})
-
-        # Determina el rol del usuario y redirige en consecuencia
-        profile = Profile.objects.get(user=request.user)
-        if profile.role == "admin":
+    # Verificar si el usuario es un administrador
+    if is_admin(user):
+        # Los administradores pueden actualizar el estado de cualquier tarea
+        if request.method == "POST":
+            task.status = request.POST.get("status", task.status)
+            task.save()
+            if request.headers.get("x-requested-with") == "XMLHttpRequest":
+                return JsonResponse(
+                    {"message": "¡Estado de la tarea actualizado exitosamente!"}
+                )
             return redirect("projects_app:admin_projects_dashboard")
-        elif profile.role == "employee":
-            return redirect("projects_app:employee_projects_dashboard")
-        elif profile.role == "client":
-            return redirect("projects_app:client_projects_dashboard")
-        else:
-            return redirect("main:dashboard")
     else:
-        # Retorna una promesa vacía para los requests non-POST
-        return JsonResponse({"message": "Invalid request"}, status=400)
+        # Verificar si la tarea está asignada al usuario actual o si el usuario forma parte de los empleados o clientes del proyecto
+        if (
+            task.assigned_to == user
+            or task.project.assigned_to_employees.filter(id=user.id).exists()
+            or task.project.assigned_to_client == user
+        ):
+            if request.method == "POST":
+                task.status = request.POST.get("status", task.status)
+                task.save()
+                if request.headers.get("x-requested-with") == "XMLHttpRequest":
+                    return JsonResponse(
+                        {"message": "¡Estado de la tarea actualizado exitosamente!"}
+                    )
+                return redirect("projects_app:employee_projects_dashboard")
+        else:
+            raise PermissionDenied
+
+    return JsonResponse({"message": "Solicitud inválida"}, status=400)
 
 
 # Vista que permite a los usuarios cargar documentos para un entregable específico

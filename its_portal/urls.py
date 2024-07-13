@@ -8,6 +8,11 @@ from django.urls import path, include
 from main import views as main_views
 from django.contrib.auth import views as auth_views
 
+
+admin.site.index_title = "ITS Portal 🤓"
+admin.site.header = "ITS Portal Admin"
+admin.site.site_title = "Admin Site "
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("set_language/", include("django.conf.urls.i18n")),

@@ -5,9 +5,9 @@ Esta aplicación está diseñada para facilitar la gestión de proyectos, comuni
 
 Link del video!
 
-https://youtu.be/0GwYjHTqOlo
+https://youtu.be/4NmeXTjjz4g
 
-[![Alt text](https://img.youtube.com/vi/0GwYjHTqOlo/0.jpg)](https://www.youtube.com/watch?v=0GwYjHTqOlo)
+[![Alt text](https://img.youtube.com/vi/4NmeXTjjz4g/0.jpg)](https://www.youtube.com/watch?v=4NmeXTjjz4g)
 
 ---
 

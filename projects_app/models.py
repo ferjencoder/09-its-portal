@@ -123,6 +123,9 @@ class Task(models.Model):
         related_name="tasks",
     )
     is_personal = models.BooleanField(default=False)
+    created_by = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, related_name="created_tasks"
+    )
 
     def __str__(self):
         return self.name

@@ -34,12 +34,12 @@ urlpatterns = [
         name="client_projects_dashboard",
     ),
     path("submit_feedback/", views.submit_feedback, name="submit_feedback"),
+    path("create_task/", views.create_task, name="create_task"),
     path(
         "tasks/<int:task_id>/update_status/",
         views.update_task_status,
         name="update_task_status",
     ),
-    path("create_task/", views.create_task, name="create_task"),
     path("edit_task/<int:task_id>/", views.edit_task, name="edit_task"),
     path("delete_task/<int:task_id>/", views.delete_task, name="delete_task"),
     path(
