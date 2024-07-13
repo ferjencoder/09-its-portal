@@ -3,10 +3,14 @@
 ITS Portal es una aplicación web desarrollada como proyecto final para el curso de Python de Coderhouse.
 Esta aplicación está diseñada para facilitar la gestión de proyectos, comunicaciones y foros para distintos tipos de usuarios: administradores, empleados y clientes.
 
+Link del video!
+
+https://youtu.be/0GwYjHTqOlo
+
 ---
 
 ## Índice
-- [Pasos para cargar la bd y probar el site](#pasos-para-cargar-la-bd-y-probar-el-site)
+- [Pasos para popular la db y probar el sitio](#pasos-para-popular-la-db-y-probar-el-sitio)
 - [Tests](#tests)
 - [Tecnologías Utilizadas](#tecnologías-utilizadas)
 - [Funcionalidades de la Aplicación](#funcionalidades-de-la-aplicación)
@@ -22,7 +26,7 @@ Esta aplicación está diseñada para facilitar la gestión de proyectos, comuni
 - [Contacto](#contacto)
 
 
-## Pasos para popular la db y probar el site:
+## Pasos para popular la db y probar el sitio:
 
 ### Scripts para popular la db
 1. python main/reset_migrations_and_db.py
@@ -34,7 +38,7 @@ Esta aplicación está diseñada para facilitar la gestión de proyectos, comuni
 3. python blog_app/create_test_blog_data.py
 4. python forum_app/create_test_forum_data.py 
 5. python messages_app/create_test_messages_data.py
-6. python messages_app/create_test_projects_data.py
+6. python projects_app/create_test_projects_data.py
 
 ## Tests:
 1. python manage.py test blog_app
