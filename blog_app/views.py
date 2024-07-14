@@ -84,7 +84,10 @@ def blog_list(request):
 # Detalle de un blog específico
 def blog_detail(request, id):
     post = get_object_or_404(BlogPost, id=id)
-    return render(request, "blog_app/blog_detail.html", {"post": post})
+    if request.user.is_authenticated:
+        return render(request, "blog_app/blog_detail.html", {"post": post})
+    else:
+        return render(request, "blog_app/blog_detail_public.html", {"post": post})
 
 
 # Lista de blogs del empleado logueado con paginación

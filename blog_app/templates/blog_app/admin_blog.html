@@ -41,7 +41,7 @@
                         <h5 class="card-title">{{ post.title }}</h5>
                         <p class="card-text">{{ post.subtitle }}</p>
                         <!-- Enlaces para leer más, editar y eliminar la entrada -->
-                        <a href="{% url 'blog_app:blog_detail' post.id %}" class="btn btn-primary">{% trans "Read More" %}</a>
+                        <a href="{% url 'blog_app:blog_detail' post.id %}" class="btn its-btn-danger">{% trans "Read More" %}</a>
                         <a href="{% url 'blog_app:edit_blog_post' post.id %}" class="btn btn-secondary ms-2">{% trans "Edit" %}</a>
                         <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#deleteModal" data-post-id="{{ post.id }}">{% trans "Delete" %}</button>
                     </div>
@@ -129,7 +129,7 @@
                         <label for="categoryName" class="form-label">{% trans "Category Name" %}</label>
                         <input type="text" class="form-control" id="categoryName" name="name" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">{% trans "Create" %}</button>
+                    <button type="submit" class="btn its-btn-danger">{% trans "Create" %}</button>
                 </form>
                 <hr>
                 <h5>{% trans "Delete Category" %}</h5>

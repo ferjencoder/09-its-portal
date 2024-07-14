@@ -1,0 +1,23 @@
+<!-- modals/request_quote_success.html -->
+ 
+{% extends 'main/base_generic.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="modal fade" id="requestQuoteSuccessModal" tabindex="-1" aria-labelledby="requestQuoteSuccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="requestQuoteSuccessModalLabel">{% trans "Request Sent" %}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% trans "Thank you for your request. We will get back to you soon." %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

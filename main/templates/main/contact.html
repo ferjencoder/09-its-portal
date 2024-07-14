@@ -2,6 +2,7 @@
 
 {% extends 'main/base_generic.html' %}
 {% load i18n %}
+{% load static %}
 
 {% block content %}
 <div class="container mt-1">
@@ -11,18 +12,25 @@
         <hr class="mt-4 mb-3">
     </div>
     <div class="row justify-content-center mt-4">
-        <div class="col-md-6">
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
                     <form method="post" action="{% url 'main:contact' %}">
                         {% csrf_token %}
-                        <div class="form-group text-start mb-3">
-                            <label for="name">{% trans "Name" %}</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
-                        </div>
-                        <div class="form-group text-start mb-3">
-                            <label for="email">{% trans "Email address" %}</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
+                        <input type="hidden" id="show_success_modal" value="{{ show_success_modal }}">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group text-start mb-3">
+                                    <label for="name">{% trans "Name" %}</label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group text-start mb-3">
+                                    <label for="email">{% trans "Email address" %}</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group text-start mb-3">
                             <label for="subject">{% trans "Subject" %}</label>
@@ -32,7 +40,7 @@
                             <label for="message">{% trans "Message" %}</label>
                             <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block">{% trans "Send Message" %}</button>
+                        <button type="submit" class="btn its-btn-danger btn-block">{% trans "Send Message" %}</button>
                     </form>
                 </div>
             </div>
@@ -40,15 +48,20 @@
     </div>
 </div>
 
-<!-- JavaScript para la notificación de mensajes -->
+<!-- Modal para avisar el éxito del contacto -->
+{% include 'modals/contact_success_modal.html' %}
+{% endblock %}
+
+{% block scripts %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const messagesContainer = document.getElementById('messages');
-        if (messagesContainer) {
-            const message = messagesContainer.dataset.message;
-            if (message) {
-                alert(message);
-            }
+        const showModal = document.getElementById('show_success_modal').value;
+        
+        if (showModal === "True") {
+            const successModal = new bootstrap.Modal(document.getElementById('successModal'), {
+                backdrop: false
+            });
+            successModal.show();
         }
     });
 </script>

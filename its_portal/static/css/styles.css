@@ -1,22 +1,5 @@
 /* static/css/tyles.css */
 
-/* CSS personalizado para la paginación en modo oscuro */
-.pagination.custom-pagination-dark .page-link {
-    background-color: #343a40;
-    color: #fff;
-    border: 1px solid #343a40;
-}
-
-.pagination.custom-pagination-dark .page-link:hover {
-    background-color: #495057;
-    color: #fff;
-}
-
-.pagination.custom-pagination-dark .page-item.active .page-link {
-    background-color: #007bff;
-    border-color: #007bff;
-}
-
 /* Reset de márgenes y padding para todos los elementos */
 *,
 ::after,
@@ -35,10 +18,22 @@ html, body {
 body {
   display: flex;
   flex-direction: column;
-  background-color: #333;
+  background-color: #e4e4e4;
   color: #000;
   transition: background-color 0.3s, color 0.3s, opacity 0.5s;
   opacity: 1;
+}
+
+.its-bg{
+  background-color: #e4e4e4;
+}
+
+body.dark-mode .its-bg{
+  background-color: #333;
+}
+
+body.dark-mode{
+  background-color: #333;
 }
 
 body.loading,
@@ -73,12 +68,16 @@ main {
 footer {
   flex-shrink: 0;
   padding: 0.5rem 0;
-  background-color: #343a40;
-  color: #e0e0e0;
+  background-color: #f8f9fa;
+  color: #090909;
   text-align: center;
   z-index: 2;
   position: relative;
   transition: background-color 0.3s;
+}
+
+footer a{
+  color: #090909;
 }
 
 /* Estilos para video */
@@ -259,6 +258,20 @@ header .container-big {
   border-radius: 25px;
 }
 
+.its-btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+}
+
+.its-btn-danger:hover {
+  background-color: #b02a37;
+  border-color: #b02a37;
+}
+
+
 .btn-block {
   font-size: 1.1rem;
 }
@@ -296,7 +309,8 @@ body.dark-mode {
 }
 
 body.dark-mode footer {
-  background-color: #1f1f1f;
+  color: #f2f2f2;
+  background-color: #333;
 }
 
 body.dark-mode .navbar {
@@ -513,22 +527,48 @@ body.dark-mode .btn-primary {
   border-color: #0062cc;
 }
 
-/* Estilos personalizados para la paginación en modo oscuro */
+/* Estilos personalizados para la paginación en modo claro */
 .pagination.custom-pagination-dark .page-link {
-    background-color: #343a40;
-    color: #fff;
-    border: 1px solid #343a40;
+    --bs-pagination-padding-x: 0.75rem;
+    --bs-pagination-padding-y: 0.375rem;
+    --bs-pagination-color: #101010;
+    --bs-pagination-bg: #ffffff;
+    --bs-pagination-border-width: 1px;
+    --bs-pagination-border-color: #ffffff;
+    --bs-pagination-border-radius: 0.25rem;
+    --bs-pagination-hover-color: #ffffff;
+    --bs-pagination-hover-bg: #e25e6b;
+    --bs-pagination-hover-border-color: #e25e6b;
+    --bs-pagination-focus-color: #ffffff;
+    --bs-pagination-focus-bg: #e25e6b;
+    --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+    --bs-pagination-active-color: #ffffff;
+    --bs-pagination-active-bg: #dc3545;
+    --bs-pagination-active-border-color: #dc3545;
+    --bs-pagination-disabled-color: #6c757d;
+    --bs-pagination-disabled-bg: #e9ecef;
+    --bs-pagination-disabled-border-color: #dee2e6;
 }
 
-.pagination.custom-pagination-dark .page-link:hover {
-    background-color: #495057;
-    color: #fff;
+body.dark-mode .pagination.custom-pagination-dark .page-link {
+    --bs-pagination-color: #fff;
+    --bs-pagination-bg: #343a40;
+    --bs-pagination-border-color: #343a40;
+    --bs-pagination-disabled-bg: #495057;
+    --bs-pagination-disabled-border-color: #495057;
 }
 
-.pagination.custom-pagination-dark .page-item.active .page-link {
-    background-color: #007bff;
-    border-color: #007bff;
+body.dark-mode .pagination.custom-pagination-dark .page-link:hover {
+    --bs-pagination-hover-bg: #495057;
+    --bs-pagination-hover-color: #fff;
 }
+
+body.dark-mode .pagination.custom-pagination-dark .page-item.active .page-link {
+    --bs-pagination-active-bg: #dc3545;
+    --bs-pagination-active-border-color: #dc3545;
+}
+
+
 
 /* CSS personalizado para el form select en modo oscuro */
 
@@ -577,4 +617,12 @@ body.dark-mode .form-select {
 
 body.dark-mode .card-footer{
     color: #929292;
+}
+
+.text-muted{
+    color: #444;
+}
+
+body.dark-mode .text-muted{
+    color: #999;
 }

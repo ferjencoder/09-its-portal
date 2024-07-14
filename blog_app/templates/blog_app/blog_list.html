@@ -38,7 +38,7 @@
                         <h5 class="card-title">{{ post.title }}</h5>
                         <p class="card-text">{{ post.subtitle }}</p>
                         <!-- Enlaces para leer más, editar y eliminar la entrada -->
-                        <a href="{% url 'blog:blog_detail' post.id %}" class="btn btn-primary">{% trans "Read More" %}</a>
+                        <a href="{% url 'blog:blog_detail' post.id %}" class="btn its-btn-danger">{% trans "Read More" %}</a>
                         {% if post.author == request.user or request.user|has_group:"admin" %}
                             <a href="{% url 'blog:edit_blog_post' post.id %}" class="btn btn-secondary ms-2">{% trans "Edit" %}</a>
                             <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#deleteModal" data-post-id="{{ post.id }}">{% trans "Delete" %}</button>

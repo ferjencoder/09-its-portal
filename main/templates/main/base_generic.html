@@ -12,6 +12,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'icons/favicon-16x16.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'icons/favicon-32x32.png' %}">
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'icons/apple-touch-icon.png' %}">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
@@ -88,15 +89,15 @@
             {% endblock %}
         </main>
 
-        <footer class="footer text-white p-3 mt-4">
+        <footer class="footer p-3 mt-4">
             <div class="container text-center mt-3">
-                <a href="https://github.com/ferjencoder" class="text-white mx-2" target="_blank">
+                <a href="https://github.com/ferjencoder" class="mx-2" target="_blank">
                     <i class="fab fa-github fa-2x"></i>
                 </a>
-                <a href="https://www.linkedin.com/in/ferjen/" class="text-white mx-2" target="_blank">
+                <a href="https://www.linkedin.com/in/ferjen/" class="mx-2" target="_blank">
                     <i class="fab fa-linkedin fa-2x"></i>
                 </a>
-                <a href="https://fernandajensen.netlify.app/" class="text-white mx-2" target="_blank">
+                <a href="https://fernandajensen.netlify.app/" class="mx-2" target="_blank">
                     <i class="fas fa-globe fa-2x"></i>
                 </a>
                 <p class="mt-3 small">© 2024 ferJen. {% trans "Todos los derechos reservados" %}.</p>
@@ -107,5 +108,8 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+
+    {% block scripts %}
+    {% endblock %}
 </body>
 </html>

@@ -129,25 +129,3 @@ body.dark-mode .bi-arrow-bar-right {
         width: 100%;
     }
 }
-
-/* Dark mode for modal */
-.modal-content {
-    background-color: var(--modal-bg);
-}
-
-body.dark-mode .modal-content {
-    background-color: var(--modal-bg-dark);
-    color: var(--icon-color-dark);
-}
-
-body.dark-mode .modal-header {
-    border-bottom: 1px solid var(--modal-border-dark);
-}
-
-body.dark-mode .modal-body {
-    border-top: 1px solid var(--modal-border-dark);
-}
-
-body.dark-mode .text-muted {
-    color: #e0e0e0;
-}

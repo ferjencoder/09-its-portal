@@ -14,8 +14,16 @@ from django.shortcuts import render, redirect
 from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
-from .forms import RegisterForm, ProfileForm, UserEditForm
-from .models import Profile
+from itertools import chain
+from operator import attrgetter
+from .forms import (
+    RegisterForm,
+    ProfileForm,
+    UserEditForm,
+    ContactForm,
+    QuoteRequestForm,
+)
+from .models import Profile, ContactMessage, QuoteRequest
 from .utils import get_profile, get_or_create_conversation
 from forum_app.models import ForumTopic, ForumPost
 from messages_app.models import Message
@@ -58,32 +66,60 @@ def about(request):
 
 
 def contact(request):
+    show_success_modal = False
+
     if request.method == "POST":
-        name = request.POST["name"]
-        email = request.POST["email"]
-        subject = request.POST["subject"]
-        message_body = request.POST["message"]
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            contact_message = form.save()
 
-        admin_user = User.objects.filter(groups__name="admin").first()
-        if not admin_user:
-            messages.error(request, "No admin found to send the message to.")
-            return redirect("main:contact")
+            admin_user = User.objects.filter(groups__name="admin").first()
+            if not admin_user:
+                messages.error(request, "No admin found to send the message to.")
+                return redirect("main:contact")
 
-        conversation = get_or_create_conversation(
-            None if request.user.is_anonymous else request.user, admin_user
-        )
+            conversation = get_or_create_conversation(
+                None if request.user.is_anonymous else request.user, admin_user
+            )
 
-        Message.objects.create(
-            sender=None if request.user.is_anonymous else request.user,
-            recipient=admin_user,
-            content=f"Name: {name}\nEmail: {email}\n\n{message_body}",
-            conversation=conversation,
-        )
+            Message.objects.create(
+                sender=None if request.user.is_anonymous else request.user,
+                recipient=admin_user,
+                content=f"Name: {contact_message.name}\nEmail: {contact_message.email}\n\n{contact_message.message}",
+                conversation=conversation,
+            )
 
-        messages.success(request, "Your message has been sent successfully!")
-        return redirect("main:contact")
+            messages.success(request, "Your message has been sent successfully!")
+            return redirect("main:contact_success")
 
-    return render(request, "main/contact.html")
+    else:
+        form = ContactForm()
+
+    return render(
+        request,
+        "main/contact.html",
+        {"form": form, "show_success_modal": show_success_modal},
+    )
+
+
+def contact_success(request):
+    return render(request, "main/contact.html", {"show_success_modal": True})
+
+
+def admin_inbox(request):
+    contact_messages = ContactMessage.objects.all().order_by("-created_at")
+    quote_requests = QuoteRequest.objects.all().order_by("-created_at")
+
+    # Combine and ensure unique messages
+    messages = list(contact_messages) + list(quote_requests)
+
+    # Debug log to check for duplicates
+    logger.debug(f"Combined Messages: {messages}")
+
+    context = {
+        "messages": messages,
+    }
+    return render(request, "dashboard/admin_inbox.html", context)
 
 
 def services(request):
@@ -91,7 +127,28 @@ def services(request):
 
 
 def request_quote(request):
-    return render(request, "main/request_quote.html")
+    show_success_modal = False
+
+    if request.method == "POST":
+        form = QuoteRequestForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your quote request has been sent successfully!")
+            show_success_modal = True
+            return redirect("main:request_quote")
+
+    else:
+        form = QuoteRequestForm()
+
+    return render(
+        request,
+        "main/request_quote.html",
+        {"form": form, "show_success_modal": show_success_modal},
+    )
+
+
+def request_quote_success(request):
+    return render(request, "main/request_quote_success.html")
 
 
 @csrf_protect

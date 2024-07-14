@@ -22,7 +22,7 @@
                 <h2 class="card-title">{{ post.title }}</h2>
                 <p class="card-text">{{ post.subtitle }}</p>
                 <!-- Enlace para leer más -->
-                <a href="{% url 'blog:blog_detail' post.id %}" class="btn btn-primary">{% trans "Read More" %} &rarr;</a>
+                <a href="{% url 'blog:blog_detail' post.id %}" class="btn its-btn-danger">{% trans "Read More" %} &rarr;</a>
             </div>
             <div class="card-footer text-muted">
                 <!-- Información del pie de la tarjeta -->

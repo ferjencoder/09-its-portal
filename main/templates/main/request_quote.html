@@ -1,4 +1,4 @@
-<!--main/request_quote.html-->
+<!-- main/request_quote.html -->
 
 {% extends 'main/base_generic.html' %}
 {% load i18n %}
@@ -14,7 +14,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <form method="post" action="#">
+                    <form method="post" action="{% url 'main:request_quote' %}">
                         {% csrf_token %}
                         <div class="row">
                             <div class="col-md-6">
@@ -63,5 +63,20 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal for success message -->
+    {% include 'modals/request_quote_success.html' %}
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const showModal = "{{ show_success_modal }}";
+        if (showModal === "True") {
+            const successModal = new bootstrap.Modal(document.getElementById('requestQuoteSuccessModal'));
+            successModal.show();
+        }
+    });
+</script>
 {% endblock %}

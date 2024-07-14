@@ -4,6 +4,12 @@
 
 {% block sidebar_links %}
     <li class="nav-item">
+        <!-- Enlace al inbox del admin -->
+        <a href="{% url 'main:admin_inbox' %}" class="nav-link py-3 border-bottom rounded-0" data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Inbox' %}">
+            <i class="bi bi-inbox me-2"></i>
+        </a>
+    </li>
+    <li class="nav-item">
         <!-- Enlace al dashboard del admin -->
         <a href="{% url 'main:dashboard' %}" class="nav-link py-3 border-bottom rounded-0" data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Dashboard' %}">
             <i class="bi-speedometer me-2"></i>

@@ -1,6 +1,6 @@
-<!-- blog_app/blog_detail.html -->
+<!-- blog_app/blog_detail_public.html -->
 
-{% extends "sidebars/base_sidebar.html" %}
+{% extends "main/base_generic.html" %}
 {% load i18n %}
 
 {% block content %}
@@ -8,15 +8,15 @@
     <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
             <!-- Título del post -->
-             <div>
+            <div>
                 <h1 class="display-4">{{ post.title }}</h1>
                 <!-- Información del autor, la categoría y la fecha de creación -->
-                <p class="text-muted">
+                <p class="text-muted-blog">
                     {% trans "by" %} {{ post.author }} {% trans "in" %} {{ post.category.name }} {% trans "on" %} {{ post.created_at|date:"F j, Y" }}
                 </p>
                 <hr class="mb-0 pb-0">
             </div>
-            <div class="bg-dark p-4" style="height: 700px; overflow-y: auto;">
+            <div class="its-bg p-4" style="height: 700px; overflow-y: auto;">
                 {% if post.image %}
                     <!-- Imagen del post si existe -->
                     <img src="{{ post.image.url }}" class="img-fluid mb-4" alt="{{ post.title }}">

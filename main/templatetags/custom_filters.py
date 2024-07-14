@@ -2,6 +2,8 @@
 
 from django import template
 from django.forms.boundfield import BoundField
+from main.models import ContactMessage, QuoteRequest
+
 
 register = template.Library()
 
@@ -41,3 +43,12 @@ def add_percent(value):
         return f"{value}%"
     except (ValueError, TypeError):
         return "0%"
+
+
+@register.filter
+def get_message_type(value):
+    if isinstance(value, ContactMessage):
+        return "CT"
+    elif isinstance(value, QuoteRequest):
+        return "QR"
+    return ""

@@ -254,3 +254,44 @@ body.dark-mode .errorlist {
     background-color: #563d7c;
     color: #fff;
 }
+
+
+/* Dark mode styles for the table */
+
+.custom-table {
+    --bs-table-color: #fff !important;
+    --bs-table-bg: #333 !important;
+    --bs-table-border-color: #555 !important;
+    --bs-table-striped-bg: #444 !important;
+    --bs-table-striped-color: #fff !important;
+    --bs-table-hover-bg: #555 !important;
+    --bs-table-hover-color: #fff !important;
+    --bs-table-active-bg: #666 !important;
+    --bs-table-active-color: #fff !important;
+}
+
+.custom-table th, .custom-table td {
+    color: #fff !important;
+}
+
+body.dark-mode .custom-table {
+    color: #fff !important;
+    background-color: #333 !important;
+    border-color: #555 !important;
+}
+
+body.dark-mode .custom-table thead {
+    background-color: #444 !important;
+}
+
+body.dark-mode .custom-table tbody tr {
+    border-color: #555 !important;
+}
+
+body.dark-mode .custom-table tbody tr:hover {
+    background-color: #555 !important;
+}
+
+body.dark-mode .custom-table tbody td {
+    color: #fff !important;
+}

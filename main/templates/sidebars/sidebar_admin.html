@@ -1,8 +1,14 @@
-<!-- main/sidebar_admin.html -->
+<!-- main/templates/sidebars/sidebar_admin.html -->
 
 {% load i18n %}
 
 {% block sidebar_links %}
+    <li class="my-1">
+        <!-- Enlace a la vista de mensajes -->
+        <a href="{% url 'main:admin_inbox' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'admin_inbox' %}active{% endif %}">
+            <i class="bi bi-inbox me-2"></i> {% trans "Inbox" %}
+        </a>
+    </li>
     <li class="my-1">
         <!-- Enlace al dashboard del admin -->
         <a href="{% url 'main:dashboard' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
@@ -13,12 +19,6 @@
         <!-- Enlace a la vista de proyectos del admin -->
         <a href="{% url 'projects_app:admin_projects_dashboard' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'view_projects' %}active{% endif %}">
             <i class="bi-briefcase me-2"></i> {% trans "Projects" %}
-        </a>
-    </li>
-    <li class="my-1">
-        <!-- Enlace a la vista de mensajes -->
-        <a href="{% url 'messages_app:default_messages_view' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'default_messages_view' %}active{% endif %}">
-            <i class="bi-envelope me-2"></i> {% trans "Messages" %}
         </a>
     </li>
     <li class="my-1">
