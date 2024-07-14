@@ -1,10 +1,9 @@
 # main/apps.py
-# This file contains the configuration for the Django app. It's where the name of the app is defined and any app-specific configurations.
+# Configuración de la aplicación Django. Define el nombre de la app y configuraciones específicas.
 
 from django.apps import AppConfig
 
 
-# Importa signals cuando la aplicación esté lista
 class MainConfig(AppConfig):
     name = "main"
 

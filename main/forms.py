@@ -3,7 +3,7 @@
 from django import forms
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import Profile, ContactMessage, QuoteRequest
+from .models import Profile
 from django.utils.translation import gettext_lazy as _
 
 
@@ -91,17 +91,3 @@ class UserEditForm(UserChangeForm):
     class Meta:
         model = User
         fields = ("first_name", "last_name")
-
-
-class ContactForm(forms.ModelForm):
-
-    class Meta:
-        model = ContactMessage
-        fields = ["name", "email", "subject", "message"]
-
-
-class QuoteRequestForm(forms.ModelForm):
-
-    class Meta:
-        model = QuoteRequest
-        fields = ["name", "phone", "email", "company", "service", "message"]

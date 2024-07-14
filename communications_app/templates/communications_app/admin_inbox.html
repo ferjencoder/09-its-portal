@@ -1,0 +1,119 @@
+<!--communications_app/templates/communications_app/admin_inbox.html-->
+
+{% extends "sidebars/base_sidebar.html" %}
+{% load i18n %}
+{% load static %}
+{% load custom_filters %}
+
+{% block content %}
+<div class="container mt-1">
+    <div class="text-center">
+        <h1 class="display-4">{% trans "Admin Inbox" %}</h1>
+        <p class="lead">{% trans "Here you can see all messages received from the contact form and quote requests." %}</p>
+        <hr class="mt-4 mb-3">
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-striped table-hover custom-table">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Type" %}</th>
+                                <th>{% trans "Name" %}</th>
+                                <th>{% trans "Email" %}</th>
+                                <th>{% trans "Message/Request" %}</th>
+                                <th>{% trans "Received At" %}</th>
+                                <th>{% trans "Actions" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for message in messages %}
+                            <tr class="table-row">
+                                <td>{{ message|get_message_type }}</td>
+                                <td>{{ message.name }}</td>
+                                <td>{{ message.email }}</td>
+                                <td>
+                                    {% if message.message %}
+                                        {{ message.message }}
+                                    {% elif message.request %}
+                                        {{ message.request }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ message.created_at }}</td>
+                                <td>
+                                    {% if not message.read %}
+                                    <span class="badge bg-warning text-dark">New</span>
+                                    {% endif %}
+                                    <div class="btn-group" role="group" aria-label="Message Actions">
+                                        <button class="btn btn-primary btn-sm" 
+                                        style="width: 38px;" title="{% trans 'Reply' %}" 
+                                        data-message-id="{{ message.id }}" 
+                                        onclick="replyMessage(this)"
+                                        >
+                                            <i class="bi bi-reply-fill"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" 
+                                        style="width: 38px;" title="{% trans 'Archive' %}" 
+                                        data-message-id="{{ message.id }}" 
+                                        onclick="archiveMessage(this)"
+                                        >
+                                            <i class="bi bi-archive-fill"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Retrieve CSRF token from the form
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        // Define the replyMessage function
+        window.replyMessage = function(button) {
+            const messageId = button.getAttribute('data-message-id');
+            fetch(`/communications/reply/${messageId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => response.json()).then(data => {
+                if (data.status === "ok") {
+                    window.location.href = "/messages/";
+                } else {
+                    alert("Error replying to the message.");
+                }
+            }).catch(error => console.error('Error:', error));
+        }
+
+        // Define the archiveMessage function
+        window.archiveMessage = function(button) {
+            const messageId = button.getAttribute('data-message-id');
+            fetch(`/communications/archive/${messageId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => response.json()).then(data => {
+                if (data.status === "ok") {
+                    window.location.reload();
+                } else {
+                    alert("Error archiving the message.");
+                }
+            }).catch(error => console.error('Error:', error));
+        }
+    });
+</script>
+{% endblock %}

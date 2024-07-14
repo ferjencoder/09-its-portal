@@ -15,7 +15,7 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
         if hasattr(instance, "profile_main"):
             profile = instance.profile_main
             if not profile.role:
-                # Attempt to set role based on user's group if not already set
+                # Intentar establecer el rol según el grupo del usuario si no está ya definido
                 group = instance.groups.first()
                 if group:
                     profile.role = group.name

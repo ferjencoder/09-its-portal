@@ -5,7 +5,7 @@
 {% block sidebar_links %}
     <li class="my-1">
         <!-- Enlace a la vista de mensajes -->
-        <a href="{% url 'main:admin_inbox' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'admin_inbox' %}active{% endif %}">
+        <a href="{% url 'communications_app:admin_inbox' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'admin_inbox' %}active{% endif %}">
             <i class="bi bi-inbox me-2"></i> {% trans "Inbox" %}
         </a>
     </li>
@@ -17,7 +17,7 @@
     </li>
     <li class="my-1">
         <!-- Enlace a la vista de proyectos del admin -->
-        <a href="{% url 'projects_app:admin_projects_dashboard' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'view_projects' %}active{% endif %}">
+        <a href="{% url 'projects_app:admin_projects_dashboard' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'admin_projects_dashboard' %}active{% endif %}">
             <i class="bi-briefcase me-2"></i> {% trans "Projects" %}
         </a>
     </li>
@@ -29,7 +29,7 @@
     </li>
     <li class="my-1">
         <!-- Enlace a la lista de blogs del admin -->
-        <a href="{% url 'blog_app:admin_blog_list' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'admin_blog_list' %}active{% endif %}">
+        <a href="{% url 'blog:admin_blog_list' %}" class="nav-link text-white {% if request.resolver_match.url_name == 'admin_blog_list' %}active{% endif %}">
             <i class="bi-pencil me-2"></i> {% trans "Blog" %}
         </a>
     </li>

@@ -125,8 +125,10 @@
                         <div class="d-flex justify-content-center">
                             <button type="button" class="btn btn-warning text-dark mx-2" id="projectsButton">{% trans "Projects" %}</button>
                             <button type="button" class="btn btn-warning text-dark mx-2" id="messagesButton">{% trans "Messages" %}</button>
+                            <button type="button" class="btn btn-warning text-dark mx-2" id="inboxButton">{% trans "Inbox" %}</button>
                             <button type="button" class="btn btn-warning text-dark mx-2" id="forumButton">{% trans "Forum Posts" %}</button>
-                            <button type="button" class="btn btn-warning text-dark mx-2" id="dashboardButton">{% trans "Dashboard Overview" %}</button>
+                            <button type="button" class="btn btn-warning text-dark mx-2" id="blogButton">{% trans "Blog Posts" %}</button>
+                            <button type="button" class="btn btn-warning text-dark mx-2" id="dashboardButton">{% trans "Dashboard" %}</button>
                         </div>
                     </div>
                 </div>
@@ -147,14 +149,20 @@
         document.getElementById('messagesButton').onclick = function() {
             window.location.href = "{% url 'messages_app:default_messages_view' %}";
         };
+        document.getElementById('inboxButton').onclick = function() {
+            window.location.href = "{% url 'communications_app:admin_inbox' %}";
+        };
         document.getElementById('forumButton').onclick = function() {
             window.location.href = "{% url 'forum_app:forum' %}";
+        };
+        document.getElementById('blogButton').onclick = function() {
+            window.location.href = "{% url 'blog:admin_blog_list' %}";
         };
         document.getElementById('dashboardButton').onclick = function() {
             window.location.href = "{% url 'main:dashboard' %}";
         };
 
-        // Clear the session flag after displaying the modal
+        // Borrar la bandera de selección luego de desplegar el modal
         fetch("{% url 'main:clear_welcome_modal_flag' %}").then(response => response.json()).then(data => {
             console.log(data);
         });

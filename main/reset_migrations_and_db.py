@@ -45,7 +45,14 @@ def run_migrate():
 
 
 def main():
-    app_names = ["blog_app", "forum_app", "main", "messages_app", "projects_app"]
+    app_names = [
+        "blog_app",
+        "communications_app",
+        "forum_app",
+        "main",
+        "messages_app",
+        "projects_app",
+    ]
     db_path = os.path.join(project_root, "db.sqlite3")
 
     delete_migrations_folders(app_names)

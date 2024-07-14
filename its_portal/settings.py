@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "django_ckeditor_5",  # Editor WYSIWYG CKEditor
     "main.apps.MainConfig",  # Aplicación principal
     "blog_app.apps.BlogConfig",  # Aplicación del blog
+    "communications_app.apps.CommunicationsAppConfig",  # Aplicación de comunicaciones
     "forum_app.apps.ForumAppConfig",  # Aplicación del foro
     "messages_app.apps.MessagesAppConfig",  # Aplicación de mensajes
     "projects_app.apps.ProjectsConfig",  # Aplicación de proyectos

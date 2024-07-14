@@ -5,7 +5,7 @@
 {% block sidebar_links %}
     <li class="nav-item">
         <!-- Enlace al inbox del admin -->
-        <a href="{% url 'main:admin_inbox' %}" class="nav-link py-3 border-bottom rounded-0" data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Inbox' %}">
+        <a href="{% url 'communications_app:admin_inbox' %}" class="nav-link py-3 border-bottom rounded-0" data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Inbox' %}">
             <i class="bi bi-inbox me-2"></i>
         </a>
     </li>
@@ -35,7 +35,7 @@
     </li>
     <li class="nav-item">
         <!-- Enlace a la lista de blogs del admin -->
-        <a href="{% url 'blog_app:admin_blog_list' %}" class="nav-link py-3 border-bottom rounded-0" data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Blog' %}">
+        <a href="{% url 'blog:admin_blog_list' %}" class="nav-link py-3 border-bottom rounded-0" data-bs-toggle="tooltip" data-bs-placement="right" title="{% trans 'Blog' %}">
             <i class="bi-pencil me-2"></i>
         </a>
     </li>

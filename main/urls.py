@@ -9,30 +9,15 @@ urlpatterns = [
     path("", views.home, name="home"),  # Página principal
     path("set_language/", include("django.conf.urls.i18n")),  # Configuración de idioma
     path(
-        "admin/inbox/", views.admin_inbox, name="admin_inbox"
-    ),  # Inbox para los admins para el handle los mensajes de contact.html y request_quote.html
-    path(
         "clear_welcome_modal_flag/",
         views.clear_welcome_modal_flag,
         name="clear_welcome_modal_flag",
-    ),  # Mensaje de bienvenida
+    ),  # Limpiar flag de modal de bienvenida
     path("about/", views.about, name="about"),  # Página "About Us"
-    path("contact/", views.contact, name="contact"),  # Página de contacto
-    path(
-        "contact/success/", views.contact_success, name="contact_success"
-    ),  # Modal para el éxito del envío del contact.html
     path("services/", views.services, name="services"),  # Página de servicios
     path("register/", views.register, name="register"),  # Registro de usuario
     path("profile/", views.profile, name="profile"),  # Perfil de usuario
     path("edit_profile/", views.edit_profile, name="edit_profile"),  # Editar perfil
-    path(
-        "request_quote/", views.request_quote, name="request_quote"
-    ),  # Solicitud de cotización
-    path(
-        "request_quote/success/",
-        views.request_quote_success,
-        name="request_quote_success",
-    ),
     path("dashboard/", views.dashboard, name="dashboard"),  # Dashboard principal
     path("forum/", include("forum_app.urls", namespace="forum_app")),  # URLs del foro
     path(
@@ -43,5 +28,11 @@ urlpatterns = [
     path(
         "test_media_static/", views.test_media_static, name="test_media_static"
     ),  # Prueba de media y static
-    path("show_welcome_modal/", views.show_welcome_modal, name="show_welcome_modal"),
+    path(
+        "show_welcome_modal/", views.show_welcome_modal, name="show_welcome_modal"
+    ),  # Mostrar modal de bienvenida
+    path(
+        "communications/",
+        include("communications_app.urls", namespace="communications_app"),
+    ),  # URLs del app de comunicaciones
 ]

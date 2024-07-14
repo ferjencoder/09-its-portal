@@ -295,3 +295,7 @@ body.dark-mode .custom-table tbody tr:hover {
 body.dark-mode .custom-table tbody td {
     color: #fff !important;
 }
+
+/*.table-warning {
+    background-color: #fff3cd !important;
+}*/
