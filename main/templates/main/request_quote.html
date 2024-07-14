@@ -2,6 +2,7 @@
 
 {% extends 'main/base_generic.html' %}
 {% load i18n %}
+{% load static %}
 
 {% block content %}
 <div class="container mt-1">
@@ -63,10 +64,9 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal for success message -->
-    {% include 'modals/request_quote_success.html' %}
 </div>
+<!-- Modal for success message -->
+{% include 'modals/request_quote_success.html' %}
 {% endblock %}
 
 {% block scripts %}
@@ -74,7 +74,9 @@
     document.addEventListener('DOMContentLoaded', function() {
         const showModal = "{{ show_success_modal }}";
         if (showModal === "True") {
-            const successModal = new bootstrap.Modal(document.getElementById('requestQuoteSuccessModal'));
+            const successModal = new bootstrap.Modal(document.getElementById('requestQuoteSuccessModal'), {
+                backdrop: false
+            });
             successModal.show();
         }
     });

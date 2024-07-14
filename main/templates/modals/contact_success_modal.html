@@ -1,6 +1,7 @@
 <!-- modals/contact_success_modal.html -->
 
 {% load i18n %}
+{% load static %}
 
 <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -10,7 +11,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                {% trans "Your message has been sent successfully." %}
+                <div class="d-flex flex-column justify-content-center">
+                <img src="{% static 'assets/images/contact_sent.svg' %}" alt="{% trans 'Welcome' %}" class="img-fluid mb-4" 
+                        style="max-height: 350px;">
+                <div>{% trans "Your message has been sent successfully." %}</div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>

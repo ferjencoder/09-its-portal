@@ -135,7 +135,10 @@ def request_quote(request):
             form.save()
             messages.success(request, "Your quote request has been sent successfully!")
             show_success_modal = True
-            return redirect("main:request_quote")
+        else:
+            messages.error(
+                request, "There was an error with your submission. Please try again."
+            )
 
     else:
         form = QuoteRequestForm()
@@ -148,7 +151,10 @@ def request_quote(request):
 
 
 def request_quote_success(request):
-    return render(request, "main/request_quote_success.html")
+
+    return render(
+        request, "main/request_quote_success.html", {"show_success_modal": True}
+    )
 
 
 @csrf_protect

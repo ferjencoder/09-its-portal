@@ -1,9 +1,8 @@
 <!-- modals/request_quote_success.html -->
- 
-{% extends 'main/base_generic.html' %}
-{% load i18n %}
 
-{% block content %}
+{% load i18n %}
+{% load static %}
+
 <div class="modal fade" id="requestQuoteSuccessModal" tabindex="-1" aria-labelledby="requestQuoteSuccessModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -12,7 +11,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                {% trans "Thank you for your request. We will get back to you soon." %}
+                <div class="d-flex flex-column justify-content-center">
+                <img src="{% static 'assets/images/request_quote_sent.svg' %}" alt="{% trans 'Welcome' %}" class="img-fluid mb-4" 
+                        style="max-height: 350px;">
+                <div>{% trans "Thank you for your request. We will get back to you soon." %}</div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
@@ -20,4 +23,12 @@
         </div>
     </div>
 </div>
-{% endblock %}
+
+<style>
+    .modal-backdrop {
+        z-index: 1040 !important;
+    }
+    .modal {
+        z-index: 1050 !important;
+    }
+</style>
