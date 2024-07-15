@@ -8,16 +8,22 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.utils import translation
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
-from .forms import RegisterForm, ProfileForm, UserEditForm
+from .forms import (
+    RegisterForm,
+    ProfileForm,
+    UserEditForm,
+    ContactForm,
+    QuoteRequestForm,
+)
 from .models import Profile
-from .utils import get_profile
+from .utils import get_profile, get_or_create_conversation
 from forum_app.models import ForumPost
 from messages_app.models import Message
 from projects_app.models import Project
@@ -285,6 +291,79 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("main:home")
+
+
+def contact(request):
+    show_success_modal = False
+
+    if request.method == "POST":
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            contact_message = form.save()
+
+            admin_user = User.objects.filter(groups__name="admin").first()
+            if not admin_user:
+                messages.error(request, "No admin found to send the message to.")
+                return redirect("main:contact")
+
+            conversation = get_or_create_conversation(
+                None if request.user.is_anonymous else request.user, admin_user
+            )
+
+            Message.objects.create(
+                sender=None if request.user.is_anonymous else request.user,
+                recipient=admin_user,
+                content=f"Name: {contact_message.name}\nEmail: {contact_message.email}\n\n{contact_message.message}",
+                conversation=conversation,
+            )
+
+            messages.success(request, "Your message has been sent successfully!")
+            return redirect("main:contact_success")
+
+    else:
+        form = ContactForm()
+
+    return render(
+        request,
+        "main/contact.html",
+        {"form": form, "show_success_modal": show_success_modal},
+    )
+
+
+def contact_success(request):
+    return render(request, "main/contact.html", {"show_success_modal": True})
+
+
+def request_quote(request):
+    show_success_modal = False
+
+    if request.method == "POST":
+        form = QuoteRequestForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your quote request has been sent successfully!")
+            show_success_modal = True
+        else:
+            messages.error(
+                request, "There was an error with your submission. Please try again."
+            )
+
+    else:
+        form = QuoteRequestForm()
+
+    return render(
+        request,
+        "main/request_quote.html",
+        {"form": form, "show_success_modal": show_success_modal},
+    )
+
+
+def request_quote_success(request):
+    return render(
+        request,
+        "main/request_quote_success.html",
+        {"show_success_modal": True},
+    )
 
 
 def test_media_static(request):

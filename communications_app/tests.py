@@ -2,11 +2,11 @@
 
 from django.test import TestCase
 from django.utils import timezone
-from .models import ContactMessage, QuoteRequest
+from main.models import ContactMessage, QuoteRequest
 
 
+# Configuración inicial para las pruebas
 class ContactMessageModelTest(TestCase):
-    # Configuración inicial para las pruebas
     def setUp(self):
         self.contact_message = ContactMessage.objects.create(
             name="Test User",
@@ -34,8 +34,8 @@ class ContactMessageModelTest(TestCase):
         self.assertTrue(updated_message.read)
 
 
+# Configuración inicial para las pruebas
 class QuoteRequestModelTest(TestCase):
-    # Configuración inicial para las pruebas
     def setUp(self):
         self.quote_request = QuoteRequest.objects.create(
             name="Test Company",

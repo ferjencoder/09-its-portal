@@ -8,10 +8,9 @@ from django.urls import path, include
 from main import views as main_views
 from django.contrib.auth import views as auth_views
 
-
 admin.site.index_title = "ITS Portal 🤓"
 admin.site.header = "ITS Portal Admin"
-admin.site.site_title = "Admin Site "
+admin.site.site_title = "Admin Site"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -21,9 +20,13 @@ urlpatterns = [
 urlpatterns += i18n_patterns(
     path("", include("main.urls")),
     path("ckeditor5/", include("django_ckeditor_5.urls")),
+    path(
+        "communications/",
+        include("communications_app.urls", namespace="communications_app"),
+    ),
+    path("projects/", include("projects_app.urls", namespace="projects_app")),
     path("messages/", include("messages_app.urls")),
     path("forum/", include("forum_app.urls")),
-    path("projects/", include("projects_app.urls")),
     path("blog/", include("blog_app.urls", namespace="blog")),
     path(
         "login/",

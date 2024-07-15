@@ -28,6 +28,7 @@ def main():
         "forum_app/create_test_forum_data.py",
         "messages_app/create_test_messages_data.py",
         "projects_app/create_test_projects_data.py",
+        "communications_app/create_test_communications_data.py",  # Añadir este script
     ]
 
     # Ejecutar cada script

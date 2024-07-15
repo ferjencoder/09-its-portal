@@ -31,8 +31,12 @@ urlpatterns = [
     path(
         "show_welcome_modal/", views.show_welcome_modal, name="show_welcome_modal"
     ),  # Mostrar modal de bienvenida
+    path("contact/", views.contact, name="contact"),
+    path("contact/success/", views.contact_success, name="contact_success"),
+    path("request_quote/", views.request_quote, name="request_quote"),
     path(
-        "communications/",
-        include("communications_app.urls", namespace="communications_app"),
-    ),  # URLs del app de comunicaciones
+        "request_quote/success/",
+        views.request_quote_success,
+        name="request_quote_success",
+    ),
 ]

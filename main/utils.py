@@ -1,7 +1,7 @@
 # main/utils.py
 
-from .models import Profile
 from messages_app.models import Conversation
+from .models import Profile
 
 
 # Verifica si el usuario es administrador
@@ -22,7 +22,7 @@ def get_profile(user):
         return None
 
 
-# Asegura que se crean conversaciones una vez para cada par de usuarios
+# Crear u obtener una conversación entre dos usuarios
 def get_or_create_conversation(user1, user2):
     conversation = (
         Conversation.objects.filter(participants=user1)
