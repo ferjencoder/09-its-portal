@@ -1,9 +1,12 @@
 # communications_app/views.py
 
+from django.conf import settings
+from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from main.models import ContactMessage, QuoteRequest
+import json
 
 
 def admin_inbox(request):
@@ -17,10 +20,23 @@ def admin_inbox(request):
 
 
 def reply_message(request, message_id):
-    message = get_object_or_404(ContactMessage, id=message_id)
-    message.read = True
-    message.save()
-    return JsonResponse({"status": "ok"})
+    if request.method == "POST":
+        data = json.loads(request.body)
+        message_content = data.get("message", "")
+
+        if message_content:
+            message = get_object_or_404(ContactMessage, id=message_id)
+            send_mail(
+                f"Reply to your message: {message.subject}",
+                message_content,
+                settings.DEFAULT_FROM_EMAIL,
+                [message.email],
+            )
+            message.replied = True
+            message.save()
+            return JsonResponse({"status": "ok"})
+        return JsonResponse({"status": "error", "message": "No message content"})
+    return JsonResponse({"status": "error", "message": "Invalid request method"})
 
 
 def mark_as_read(request, message_id):

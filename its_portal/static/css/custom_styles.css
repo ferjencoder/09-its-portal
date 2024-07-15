@@ -1,5 +1,27 @@
 /* static/css/custom_styles.css */
 
+/* Change focus color for input, textarea, and select elements */
+input:focus, 
+textarea:focus, 
+select:focus {
+    border-color: #dc3545; /* Bootstrap danger color (red) */
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25); /* Adjust the shadow color */
+}
+input:active, 
+textarea:active, 
+select:active {
+    border-color: #dc3545; /* Bootstrap danger color (red) */
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25); /* Adjust the shadow color */
+}
+
+/* Change focus color for buttons */
+.btn:focus, 
+.btn:active {
+    border-color: #dc3545; /* Bootstrap danger color (red) */
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25); /* Adjust the shadow color */
+}
+
+
 /* Custom Styles for Employee Dashboard & Register & Blog */
 
 /* Dark Mode for List Group Items */

@@ -24,6 +24,21 @@ body {
   opacity: 1;
 }
 
+/* Change focus color for input, textarea, and select elements */
+input:focus, 
+textarea:focus, 
+select:focus {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+input:active, 
+textarea:active, 
+select:active {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+
+
 .its-bg{
   background-color: #e4e4e4;
 }
@@ -271,6 +286,18 @@ header .container-big {
   border-color: #b02a37;
 }
 
+.btn-danger {
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+}
+.btn-warning {
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+}
+.btn-success {
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+}
 
 .btn-block {
   font-size: 1.1rem;
