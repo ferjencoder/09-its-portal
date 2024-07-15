@@ -1,24 +1,28 @@
 // static/js/inbox.js
 
-// static/js/inbox.js
-
 document.addEventListener('DOMContentLoaded', function() {
     // Obtener token CSRF
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-    // Abrir modal y establecer el email
-    const replyMessageModal = document.getElementById('replyMessageModal');
-    replyMessageModal.addEventListener('show.bs.modal', function(event) {
-        const button = event.relatedTarget;
+    // Definir función para responder mensaje
+    window.replyMessage = function(button) {
         const messageId = button.getAttribute('data-message-id');
         const messageEmail = button.getAttribute('data-message-email');
-        const emailInput = replyMessageModal.querySelector('#reply-email');
+        const messageText = button.getAttribute('data-message-text');
+
+        const replyMessageModal = new bootstrap.Modal(document.getElementById('replyMessageModal'));
+        replyMessageModal.show();
+
+        const emailInput = document.getElementById('reply-email');
+        const messageTextarea = document.getElementById('reply-message');
+        
         emailInput.value = messageEmail;
+        messageTextarea.value = `\n\n---\nFrom: ${messageEmail}\nSent: ${new Date().toLocaleString()}\n\n${messageText}\n`;
 
         const form = document.getElementById('replyMessageForm');
         form.onsubmit = function(event) {
             event.preventDefault();
-            const replyMessage = document.getElementById('reply-message').value;
+            const replyMessage = messageTextarea.value;
             fetch(`/communications/reply/${messageId}/`, {
                 method: 'POST',
                 headers: {
@@ -34,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }).catch(error => console.error('Error:', error));
         };
-    });
+    };
 
     // Definir función para archivar mensaje
     window.archiveMessage = function(button) {

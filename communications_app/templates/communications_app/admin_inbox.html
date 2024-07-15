@@ -1,4 +1,4 @@
-<!--communications_app/templates/communications_app/admin_inbox.html-->
+<!-- communications_app/templates/communications_app/admin_inbox.html -->
 
 {% extends "sidebars/base_sidebar.html" %}
 {% load i18n %}
@@ -52,10 +52,11 @@
                                         <button class="btn btn-sm btn-outline-primary border-0" 
                                         style="width: 38px;" title="{% trans 'Reply' %}" 
                                         data-message-id="{{ message.id }}" 
-                                        data-message-email="{{ message.email }}" 
-                                        data-bs-toggle="modal" 
-                                        data-bs-target="#replyMessageModal">
-                                            <i class="bi bi-reply-fill"></i>
+                                        data-message-email="{{ message.email }}"
+                                        data-message-text="{% if message.message %}{{ message.message }}{% else %}{{ message.request }}{% endif %}"
+                                        onclick="replyMessage(this)"
+                                        >
+                                        <i class="bi bi-reply-fill"></i>
                                         </button>
                                         <button class="btn btn-sm btn-outline-danger border-0" 
                                         style="width: 38px;" title="{% trans 'Archive' %}" 
@@ -74,6 +75,7 @@
         </div>
     </div>
 </div>
+
 {% include "modals/reply_message_modal.html" %}
 {% endblock %}
 

@@ -1,6 +1,5 @@
 <!-- communications_app/templates/modals/reply_message_modal.html -->
 
-
 {% load i18n %}
 
 <div class="modal fade" id="replyMessageModal" tabindex="-1" aria-labelledby="replyMessageModalLabel" aria-hidden="true">
@@ -19,7 +18,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="reply-message" class="form-label">{% trans "Message" %}</label>
-                        <textarea class="form-control" id="reply-message" rows="4" required></textarea>
+                        <textarea class="form-control" id="reply-message" rows="8" required></textarea>
                     </div>
                     <div class="d-flex justify-content-center">
                         <button type="submit" class="btn its-btn-danger">{% trans "Send Reply" %}</button>
@@ -29,4 +28,3 @@
         </div>
     </div>
 </div>
-
